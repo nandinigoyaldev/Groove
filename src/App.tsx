@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Project } from './types';
-import { PinterestGrid } from './components/PinterestGrid';
+import { VinylPlayer } from './components/VinylPlayer';
 import { CodeInspector } from './components/CodeInspector';
 import { synthAudio } from './lib/audio';
 import * as Icons from 'lucide-react';
@@ -13,7 +13,7 @@ const PROJECTS: Project[] = [
     longDescription: 'Get real-time, accurate weather updates for any city worldwide including temperature, humidity, wind speed & more. Styled with dynamic components.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Weather API'],
     themeColor: '#10b981',
-    gradient: '#faf9f5', // Warm cream background
+    gradient: '#faf9f5', // Cozy cream
     particleType: 'rain',
     url: '/projects/aura-weather/index.html',
   },
@@ -58,7 +58,6 @@ export default function App() {
   const [sandboxCode, setSandboxCode] = useState<string | null>(null);
 
   const handleOpenProject = (proj: Project) => {
-    synthAudio.playClick();
     setOpenProject(proj);
     setSandboxCode(null);
   };
@@ -68,7 +67,7 @@ export default function App() {
   };
 
   return (
-    <div className="gallery-app pinetab-theme">
+    <div className="gallery-app spins-theme">
       {/* Background Grid Overlay */}
       <div className="board-overlay-grid" />
 
@@ -76,18 +75,18 @@ export default function App() {
       <nav className="gallery-nav">
         <div className="nav-left">
           <h1 className="nav-brand">
-            <Icons.Heart size={20} color="#e11d48" fill="#e11d48" /> Pinetab
+            <Icons.Disc size={20} color="#b45309" className="spin-slow" /> Spins // Vinyl Shelf
           </h1>
-          <span className="nav-tagline">Visual Board</span>
+          <span className="nav-tagline">Analog Showcase</span>
         </div>
         <div className="nav-right">
           <span className="nav-credit">Curated by @nandini</span>
         </div>
       </nav>
 
-      {/* Pinterest Masonry Grid */}
-      <main className="pinetab-main">
-        <PinterestGrid
+      {/* Turntable & Crate Dashboard */}
+      <main className="spins-main">
+        <VinylPlayer
           projects={PROJECTS}
           onOpenProject={handleOpenProject}
         />
@@ -98,7 +97,7 @@ export default function App() {
         <div className="fullscreen-app-overlay">
           <div className="overlay-navbar">
             <span className="overlay-title">
-              <Icons.Eye size={16} /> Viewfinder Live // {openProject.title}
+              <Icons.Eye size={16} /> Platter Live // {openProject.title}
             </span>
             <div className="overlay-controls">
               <button
@@ -108,7 +107,7 @@ export default function App() {
                   setShowCode(!showCode);
                 }}
               >
-                <Icons.Code size={16} /> Editor Sandbox
+                <Icons.Code size={16} /> Edit Album Code
               </button>
               <button
                 className="overlay-btn overlay-close"
@@ -118,7 +117,7 @@ export default function App() {
                   setShowCode(false);
                 }}
               >
-                <Icons.X size={16} /> Close
+                <Icons.X size={16} /> Close Platter
               </button>
             </div>
           </div>

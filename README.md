@@ -1,18 +1,17 @@
-# Pinetab 📌🌿☕
+# Spins // The Vinyl Shelf 📻🌿☕
 
-Welcome to **Pinetab**—an aesthetic, Pinterest-inspired visual masonry board showcase designed to display web projects as interactive pins inside a relaxing social-style grid.
+Welcome to **Spins**—a tactile, relaxing vinyl record player showcase designed to display web projects as illustrated record albums inside an interactive crate shelf.
 
-Instead of browsing lists or technical grids, visitors explore a staggered column board of projects mixed with calming photography (cozy lofi vibes, rain on windows, clay pots).
+Instead of browsing standard directories, visitors swipe through album sleeves in a wooden crate shelf and place records on a spinning turntable to run code sandboxes.
 
 ---
 
-## 📌 Creative & Aesthetic Features
+## 📻 Tactile & Aesthetic Features
 
-- 🌿 **Pinterest Masonry Grid**: A clean, staggered columns feed displaying cards of varying heights with rounded corners and warm drop shadows.
-- 🔍 **Capsule Search Filtering**: Styled like Pinterest's search bar. Instantly filters projects and vibe cards by title, technologies, or custom tags (e.g. `#cozy`, `#weather`, `html`).
-- 🛑 **Pin & Save Interactions**: Click the red "Save" button on any project pin to toggle save states on your board.
-- 📓 **In-Feed Community Registry**: The guestbook is integrated directly as a pin in the masonry grid, letting visitors sign and read logs without opening drawers or side panels.
-- 💻 **Fullscreen Live Sandbox**: Clicking a pin opens a clean popup sandbox overlay side-by-side with a dark code editor.
+- 📦 **Illustrated Record Crate**: Swipe and cycle through album sleeves in a custom wooden shelf. Covers feature high-fidelity minimal art styles.
+- 💿 **Rotating Turntable Platter**: A top-down vintage vinyl record player. Clicking "Play Album" drops the tonearm, spins the vinyl platter, and launches the live project sandbox.
+- 📓 **Registry Liner Notes**: One special record in the archive holds the "Guest Log". Expose it on the platter to open a registry booklet to sign and read community messages.
+- 💻 **Fullscreen Live Sandbox**: Zoom cleanly into the active project with side-by-side editing sandbox view.
 
 ---
 
