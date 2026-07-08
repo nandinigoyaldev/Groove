@@ -1,18 +1,18 @@
-# Aperture Showcase 📸🎞️🌌
+# Pinetab 📌🌿☕
 
-Welcome to **Aperture Showcase**—an interactive retro rangefinder camera web environment designed to display developer projects as optical visual focus points.
+Welcome to **Pinetab**—an aesthetic, Pinterest-inspired visual masonry board showcase designed to display web projects as interactive pins inside a relaxing social-style grid.
 
-Instead of navigating standard grids, visitors look through a large circular **viewfinder lens** in the center of a vintage gunmetal camera casing. Scrolling or clicking the dial ring rotates the focus ring to shift between project anomalies, accompanied by dynamic depth-of-field blur transitions.
+Instead of browsing lists or technical grids, visitors explore a staggered column board of projects mixed with calming photography (cozy lofi vibes, rain on windows, clay pots).
 
 ---
 
-## 📸 Camera Console Features
+## 📌 Creative & Aesthetic Features
 
-- ⚙️ **Circular Viewfinder Lens**: The primary view is a circular camera lens display with crosshairs, recorders, guidelines, and aperture parameters (e.g. `f/1.8` for arcade games, `f/2.8` for hotel cards).
-- 🎚️ **Manual Focus Control Slider**: Drag the slider on the dial pane to adjust the lens blur depth-of-field (`filter: blur(...)`) manually!
-- 🎞️ **Vintage Film Roll Guestbook**: Pinned like a 35mm canister on the left. Click it to expose and pull out a horizontal strip of transparent **film negatives** containing signed visitor logs inside sprocket frames.
-- ⚡ **Shutter Capture Overlay**: Click the blue capture shutter button to trigger a mechanical shutter sound and zoom the viewfinder cleanly into a full-viewport live preview overlay.
-- 💻 **Darkroom Live Code Sandbox**: Split-screen view inside the preview panel allows viewing the folder directories and editing source code live in a darkroom editor to hot-reload changes on the fly.
+- 🌿 **Pinterest Masonry Grid**: A clean, staggered columns feed displaying cards of varying heights with rounded corners and warm drop shadows.
+- 🔍 **Capsule Search Filtering**: Styled like Pinterest's search bar. Instantly filters projects and vibe cards by title, technologies, or custom tags (e.g. `#cozy`, `#weather`, `html`).
+- 🛑 **Pin & Save Interactions**: Click the red "Save" button on any project pin to toggle save states on your board.
+- 📓 **In-Feed Community Registry**: The guestbook is integrated directly as a pin in the masonry grid, letting visitors sign and read logs without opening drawers or side panels.
+- 💻 **Fullscreen Live Sandbox**: Clicking a pin opens a clean popup sandbox overlay side-by-side with a dark code editor.
 
 ---
 

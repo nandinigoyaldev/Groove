@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import type { Project } from './types';
-import { CameraViewfinder } from './components/CameraViewfinder';
+import { PinterestGrid } from './components/PinterestGrid';
 import { CodeInspector } from './components/CodeInspector';
-import { FilmGuestbook } from './components/FilmGuestbook';
 import { synthAudio } from './lib/audio';
 import * as Icons from 'lucide-react';
 
@@ -14,7 +13,7 @@ const PROJECTS: Project[] = [
     longDescription: 'Get real-time, accurate weather updates for any city worldwide including temperature, humidity, wind speed & more. Styled with dynamic components.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Weather API'],
     themeColor: '#10b981',
-    gradient: 'radial-gradient(circle at 50% 50%, #062f21 0%, #031410 100%)',
+    gradient: '#faf9f5', // Warm cream background
     particleType: 'rain',
     url: '/projects/aura-weather/index.html',
   },
@@ -25,7 +24,7 @@ const PROJECTS: Project[] = [
     longDescription: 'A classic game built with beautiful buttons, sound logic, randomized computer choices, and active visual state indicators.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Local Storage'],
     themeColor: '#ef4444',
-    gradient: 'radial-gradient(circle at 50% 50%, #2a080c 0%, #0d0204 100%)',
+    gradient: '#faf9f5',
     particleType: 'grid',
     url: '/projects/rock-paper-scissors/game.html',
   },
@@ -36,7 +35,7 @@ const PROJECTS: Project[] = [
     longDescription: 'Escape to mountain heights. High-fidelity layouts, smooth responsive scrolling pages, and aesthetic room booking showcase design.',
     tech: ['HTML', 'SASS', 'JavaScript', 'Google Fonts'],
     themeColor: '#f59e0b',
-    gradient: 'radial-gradient(circle at 50% 50%, #2d1a04 0%, #0f0801 100%)',
+    gradient: '#faf9f5',
     particleType: 'sparkles',
     url: '/projects/hotel-landing/index.html',
   },
@@ -47,25 +46,16 @@ const PROJECTS: Project[] = [
     longDescription: 'Modern web layout template inspired by innovative shifts. Integrates sleek variables and dynamic parallax design components.',
     tech: ['HTML', 'SASS', 'JavaScript', 'Responsive Grid'],
     themeColor: '#3b82f6',
-    gradient: 'radial-gradient(circle at 50% 50%, #0a192f 0%, #020813 100%)',
+    gradient: '#faf9f5',
     particleType: 'lasers',
     url: '/projects/paradigm-shift/index.html',
   },
 ];
 
 export default function App() {
-  const [activeProject, setActiveProject] = useState<Project>(PROJECTS[0]);
   const [openProject, setOpenProject] = useState<Project | null>(null);
   const [showCode, setShowCode] = useState(false);
-  const [isFilmOpen, setIsFilmOpen] = useState(false);
   const [sandboxCode, setSandboxCode] = useState<string | null>(null);
-
-  const handleActiveProjectChange = (proj: Project) => {
-    if (activeProject.id !== proj.id) {
-      synthAudio.playHover();
-      setActiveProject(proj);
-    }
-  };
 
   const handleOpenProject = (proj: Project) => {
     synthAudio.playClick();
@@ -78,39 +68,27 @@ export default function App() {
   };
 
   return (
-    <div
-      className="gallery-app aperture-theme"
-      style={{
-        background: activeProject.gradient,
-      }}
-    >
+    <div className="gallery-app pinetab-theme">
       {/* Background Grid Overlay */}
       <div className="board-overlay-grid" />
 
       {/* Navigation Header */}
       <nav className="gallery-nav">
-        <h1 className="nav-brand">
-          <Icons.Camera size={24} color="#3b82f6" /> Aperture Showcase
-        </h1>
-        <div className="nav-links">
-          <button
-            className="nav-btn"
-            onClick={() => {
-              synthAudio.playClick();
-              setIsFilmOpen(true);
-            }}
-          >
-            <Icons.Film size={16} /> Guest Film Roll
-          </button>
+        <div className="nav-left">
+          <h1 className="nav-brand">
+            <Icons.Heart size={20} color="#e11d48" fill="#e11d48" /> Pinetab
+          </h1>
+          <span className="nav-tagline">Visual Board</span>
+        </div>
+        <div className="nav-right">
+          <span className="nav-credit">Curated by @nandini</span>
         </div>
       </nav>
 
-      {/* Camera Viewfinder System */}
-      <main className="camera-viewfinder-main">
-        <CameraViewfinder
+      {/* Pinterest Masonry Grid */}
+      <main className="pinetab-main">
+        <PinterestGrid
           projects={PROJECTS}
-          activeProject={activeProject}
-          onActiveProjectChange={handleActiveProjectChange}
           onOpenProject={handleOpenProject}
         />
       </main>
@@ -130,7 +108,7 @@ export default function App() {
                   setShowCode(!showCode);
                 }}
               >
-                <Icons.Code size={16} /> Darkroom Editor
+                <Icons.Code size={16} /> Editor Sandbox
               </button>
               <button
                 className="overlay-btn overlay-close"
@@ -161,15 +139,6 @@ export default function App() {
           </div>
         </div>
       )}
-
-      {/* Film Guestbook */}
-      <FilmGuestbook
-        isOpen={isFilmOpen}
-        onClose={() => {
-          synthAudio.playClick();
-          setIsFilmOpen(false);
-        }}
-      />
     </div>
   );
 }
