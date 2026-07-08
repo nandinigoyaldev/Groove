@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentino Alpina Resort | Mountain Luxury</title>
+  <link rel="stylesheet" href="style/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Navigation Header -->
+  <header class="luxury-nav">
+    <div class="nav-container">
+      <div class="logo-gold"><i class="fa-regular fa-gem"></i> VALENTINO</div>
+      <nav class="nav-links">
+        <a href="#about">The Resort</a>
+        <a href="#rooms">Suites</a>
+        <a href="#booking">Reservations</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="luxury-hero">
+    <div class="hero-overlay">
+      <p class="hero-sub">MOUNTAIN RETREAT & LUXURY SPA</p>
+      <h1 class="hero-title">Experience Serene Alpine Splendor</h1>
+      <p class="hero-desc">Escape to the high peaks and experience unmatched comfort, bespoke gastronomy, and wellness in a glassmorphic sanctuary.</p>
+      <a href="#rooms" class="btn-gold">Explore The Suites</a>
+    </div>
+  </section>
+
+  <!-- Catalog Grid -->
+  <section id="rooms" class="luxury-rooms">
+    <div class="section-header">
+      <span class="sub">EXCLUSIVE EXPERIENCE</span>
+      <h2>Our Premium Residences</h2>
+      <div class="gold-divider"></div>
+    </div>
+
+    <div class="rooms-grid">
+      <!-- Card 1 -->
+      <div class="room-card">
+        <div class="room-img junior"></div>
+        <div class="room-details">
+          <h3>JUNIOR PANORAMA SUITE</h3>
+          <p class="room-desc">Spacious alpine retreat with custom wood accents, open fireplace, and wide balcony overlooking the east peaks.</p>
+          <div class="room-specs">
+            <span><i class="fa-solid fa-maximize"></i> 55 m²</span>
+            <span><i class="fa-solid fa-user-group"></i> 2 Guests</span>
+            <span><i class="fa-solid fa-mountain"></i> Valley view</span>
+          </div>
+          <div class="room-footer">
+            <span class="price">From $450<small>/night</small></span>
+            <a href="#booking" class="btn-outline">Select Suite</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="room-card">
+        <div class="room-img grand"></div>
+        <div class="room-details">
+          <h3>GRAND ALPINA SUITE</h3>
+          <p class="room-desc">Featuring a free-standing stone bathtub, separate lounge, and custom glass walls showcasing the peaks.</p>
+          <div class="room-specs">
+            <span><i class="fa-solid fa-maximize"></i> 85 m²</span>
+            <span><i class="fa-solid fa-user-group"></i> 4 Guests</span>
+            <span><i class="fa-solid fa-mountain"></i> Ridge view</span>
+          </div>
+          <div class="room-footer">
+            <span class="price">From $750<small>/night</small></span>
+            <a href="#booking" class="btn-outline">Select Suite</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking Section -->
+  <section id="booking" class="luxury-booking">
+    <div class="booking-wrapper glass">
+      <h2>RESERVE YOUR STAY</h2>
+      <form class="booking-form" onsubmit="alert('Booking Inquiry Received!'); return false;">
+        <div class="form-grid">
+          <div class="input-group">
+            <label>Check In</label>
+            <input type="date" required>
+          </div>
+          <div class="input-group">
+            <label>Check Out</label>
+            <input type="date" required>
+          </div>
+          <div class="input-group">
+            <label>Suite Type</label>
+            <select>
+              <option>Junior Panorama Suite</option>
+              <option>Grand Alpina Suite</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn-gold">Check Availability</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="luxury-footer">
+    <p>&copy; 2026 VALENTINO ALPINA RESORT. ALL RIGHTS RESERVED.</p>
+  </footer>
+</body>
+</html>

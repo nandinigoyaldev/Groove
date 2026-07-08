@@ -1,0 +1,184 @@
+/* Futuristic Minimal Sci-Fi Showcase Style */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #030712;
+  color: #38bdf8;
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.cyber-framework {
+  width: 100%;
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.framework-header {
+  border-left: 2px solid #38bdf8;
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+.grid-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #0ea5e9;
+  margin-bottom: 6px;
+}
+
+.glow-title {
+  font-size: 36px;
+  font-weight: 900;
+  color: white;
+  letter-spacing: -0.5px;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+}
+
+.framework-subtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* Grid Framework */
+.framework-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.cyber-module {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: all 0.3s;
+}
+
+.cyber-module:hover {
+  border-color: #38bdf8;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
+  transform: translateY(-2px);
+}
+
+.module-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.module-header .index {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: #0ea5e9;
+}
+
+.module-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.5px;
+}
+
+.cyber-module p {
+  font-size: 13.5px;
+  color: #94a3b8;
+  line-height: 1.6;
+}
+
+.status-indicator {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #0ea5e9;
+  margin-top: auto;
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+/* Console card */
+.cyber-console {
+  background: rgba(15, 23, 42, 0.2);
+  border: 1px dashed rgba(56, 189, 248, 0.25);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.console-wrapper h3 {
+  font-size: 14px;
+  color: white;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.console-wrapper p {
+  font-size: 12.5px;
+  color: #64748b;
+  margin-bottom: 16px;
+}
+
+.btn-cyan {
+  background: #38bdf8;
+  color: #030712;
+  border: none;
+  padding: 10px 24px;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: opacity 0.2s;
+}
+
+.btn-cyan:hover {
+  opacity: 0.9;
+}
+
+.framework-footer {
+  text-align: center;
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  color: #475569;
+  letter-spacing: 1px;
+  margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+  .framework-grid {
+    grid-template-columns: 1fr;
+  }
+}

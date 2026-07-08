@@ -1,0 +1,340 @@
+/* Luxury Gold & Mountain Retreat Styling */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0c0803;
+  color: #fcf8f2;
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.6;
+}
+
+/* Nav Header */
+.luxury-nav {
+  height: 80px;
+  background: rgba(12, 8, 3, 0.95);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 40px;
+}
+
+.nav-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-gold {
+  color: #d4af37;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-links a {
+  color: #e5d5c5;
+  text-decoration: none;
+  font-size: 14px;
+  letter-spacing: 1px;
+  margin-left: 30px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #d4af37;
+}
+
+/* Hero Section */
+.luxury-hero {
+  height: 50vh;
+  background: linear-gradient(rgba(12,8,3,0.5), rgba(12,8,3,0.9)), url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.hero-overlay {
+  max-width: 750px;
+}
+
+.hero-sub {
+  color: #d4af37;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  margin-bottom: 14px;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.hero-desc {
+  font-size: 15px;
+  color: #c5bba8;
+  margin-bottom: 24px;
+  line-height: 1.7;
+}
+
+.btn-gold {
+  display: inline-block;
+  background: linear-gradient(135deg, #d4af37 0%, #b89728 100%);
+  color: #0c0803;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 12px 30px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  font-size: 14px;
+  transition: opacity 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-gold:hover {
+  opacity: 0.95;
+}
+
+/* Catalog section */
+.luxury-rooms {
+  max-width: 1100px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-header .sub {
+  color: #d4af37;
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.section-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  margin-top: 8px;
+  font-weight: 400;
+}
+
+.gold-divider {
+  width: 60px;
+  height: 1px;
+  background: #d4af37;
+  margin: 16px auto 0;
+}
+
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.room-card {
+  background: #140f0a;
+  border: 1px solid rgba(212, 175, 55, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.room-img {
+  height: 240px;
+  background-size: cover;
+  background-position: center;
+}
+
+.room-img.junior {
+  background-image: url('https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=600&q=80');
+}
+
+.room-img.grand {
+  background-image: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=600&q=80');
+}
+
+.room-details {
+  padding: 30px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.room-details h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: #d4af37;
+}
+
+.room-desc {
+  font-size: 14px;
+  color: #a89f92;
+  line-height: 1.6;
+}
+
+.room-specs {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+  color: #8c8273;
+  margin-top: auto;
+}
+
+.room-specs span i {
+  color: #d4af37;
+  margin-right: 4px;
+}
+
+.room-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(212, 175, 55, 0.08);
+  padding-top: 20px;
+  margin-top: auto;
+}
+
+.price {
+  font-size: 22px;
+  font-family: 'Playfair Display', serif;
+  color: #fff;
+}
+
+.price small {
+  font-size: 12px;
+  color: #a89f92;
+  font-family: 'Outfit', sans-serif;
+}
+
+.btn-outline {
+  border: 1px solid #d4af37;
+  color: #d4af37;
+  text-decoration: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  background: #d4af37;
+  color: #0c0803;
+}
+
+/* Booking Panel */
+.luxury-booking {
+  max-width: 1100px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.booking-wrapper {
+  background: rgba(20, 15, 10, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+}
+
+.booking-wrapper h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: #d4af37;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+}
+
+.booking-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 8px;
+}
+
+.input-group label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #a89f92;
+}
+
+.input-group input, .input-group select {
+  background: #0c0803;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 4px;
+  padding: 10px 14px;
+  color: white;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.input-group input:focus, .input-group select:focus {
+  border-color: #d4af37;
+}
+
+.luxury-footer {
+  text-align: center;
+  padding: 40px 0;
+  border-top: 1px solid rgba(212, 175, 55, 0.08);
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #8c8273;
+}
+
+@media (max-width: 768px) {
+  .rooms-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuraWeather | Premium Dashboard</title>
+  <link rel="stylesheet" href="style/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="weather-dashboard">
+    <!-- Glass Header Card -->
+    <header class="glass-header">
+      <div class="brand-text">AURAWEATHER</div>
+      <div class="search-box">
+        <input type="text" id="city-input" placeholder="Search city..." spellcheck="false">
+        <button id="enter-button"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
+    </header>
+
+    <main class="grid-layout">
+      <!-- Main Temp Panel -->
+      <section class="widget temp-panel">
+        <div class="weather-state">
+          <img src="assets/cloudy.png" class="weather-icon" alt="weather condition">
+          <h2 class="city-name">Loading...</h2>
+        </div>
+        <h1 class="temperature">--°C</h1>
+        <p class="weather-desc">Cloudy sky conditions</p>
+      </section>
+
+      <!-- Hourly Forecast Mock -->
+      <section class="widget forecast-panel">
+        <h3>HOURLY FORECAST</h3>
+        <div class="hourly-list">
+          <div class="hour-item"><span>Now</span><i class="fa-solid fa-cloud-sun"></i><span>18°</span></div>
+          <div class="hour-item"><span>19:00</span><i class="fa-solid fa-cloud-showers-heavy"></i><span>17°</span></div>
+          <div class="hour-item"><span>20:00</span><i class="fa-solid fa-cloud-rain"></i><span>17°</span></div>
+          <div class="hour-item"><span>21:00</span><i class="fa-solid fa-cloud"></i><span>16°</span></div>
+          <div class="hour-item"><span>22:00</span><i class="fa-solid fa-moon"></i><span>16°</span></div>
+        </div>
+      </section>
+
+      <!-- Wind Dial Widget -->
+      <section class="widget metric-card">
+        <div class="metric-title">
+          <i class="fa-solid fa-wind"></i> WIND SPEED
+        </div>
+        <div class="metric-value wind">-- km/h</div>
+        <div class="metric-sub">Direction: North-West</div>
+      </section>
+
+      <!-- Humidity Meter Widget -->
+      <section class="widget metric-card">
+        <div class="metric-title">
+          <i class="fa-solid fa-droplet"></i> HUMIDITY
+        </div>
+        <div class="metric-value humidity">--%</div>
+        <div class="metric-sub">The dew point is 12° right now</div>
+      </section>
+    </main>
+
+    <!-- Support Form Section -->
+    <section class="contact-section">
+      <h3>REPORT WEATHER CORRECTIONS</h3>
+      <form id="contact" onsubmit="handleSubmit(); return false;" class="contact-form">
+        <input type="text" name="user_name" placeholder="Your Name" required>
+        <input type="email" name="user_email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Describe weather mismatch details..." required></textarea>
+        <button type="submit">Submit Correction</button>
+      </form>
+    </section>
+  </div>
+
+  <script src="js/script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+/* Cyberpunk Retro-Arcade Game Stylesheet */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #05050a;
+  color: #ff0055;
+  font-family: 'Outfit', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 98vh;
+  overflow: hidden;
+}
+
+.cyber-container {
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.game-header {
+  text-align: center;
+}
+
+.matrix-glitch {
+  font-size: 32px;
+  font-weight: 800;
+  color: #00ffff;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(0,255,255,0.5), 0 0 20px rgba(0,255,255,0.2);
+  margin-bottom: 4px;
+}
+
+.sub-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ff0055;
+  letter-spacing: 4px;
+  text-shadow: 0 0 8px rgba(255,0,85,0.4);
+}
+
+/* Console Box */
+.console-box {
+  background: rgba(10, 10, 18, 0.9);
+  border: 1px solid rgba(255, 0, 85, 0.25);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 0 25px rgba(255, 0, 85, 0.15), inset 0 0 15px rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Scoreboard */
+.scoreboard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 12px;
+  padding: 12px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.score-card {
+  text-align: center;
+}
+
+.score-card .label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: #9ca3af;
+  margin-bottom: 4px;
+}
+
+.score-card .value {
+  font-size: 36px;
+  font-family: 'Fira Code', monospace;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.vs-divider {
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  color: #ff0055;
+  text-shadow: 0 0 8px rgba(255, 0, 85, 0.5);
+  font-weight: bold;
+}
+
+/* Live Arena */
+.arena {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.choice-preview {
+  width: 90px;
+  height: 90px;
+  background: rgba(0,0,0,0.5);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: #fff;
+  transition: all 0.3s;
+}
+
+.choice-preview.active {
+  border-style: solid;
+  border-color: #00ffff;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.versus-glow {
+  font-size: 20px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* Status Panel */
+.status-panel {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.4);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.status-msg {
+  font-size: 13px;
+  font-family: 'Fira Code', monospace;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: #9ca3af;
+  text-align: center;
+  padding: 8px 16px;
+}
+
+.status-msg.win {
+  color: #39ff14;
+  text-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
+}
+
+.status-msg.lose {
+  color: #ff0055;
+  text-shadow: 0 0 10px rgba(255, 0, 85, 0.4);
+}
+
+.status-msg.tie {
+  color: #00ffff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+/* Weapon Grid */
+.weapon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.weapon-btn {
+  background: rgba(255, 0, 85, 0.03);
+  border: 1px solid rgba(255, 0, 85, 0.3);
+  border-radius: 12px;
+  padding: 16px 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.weapon-btn:hover {
+  background: rgba(255, 0, 85, 0.12);
+  border-color: #ff0055;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 0, 85, 0.2);
+}
+
+.weapon-btn:active {
+  transform: scale(0.95);
+}
+
+.weapon-btn .emoji {
+  font-size: 28px;
+}
+
+.weapon-btn .btn-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+/* Reset Button */
+.reset-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #9ca3af;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: 'Fira Code', monospace;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reset-btn:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.cyber-footer {
+  text-align: center;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.15);
+  letter-spacing: 1px;
+}
