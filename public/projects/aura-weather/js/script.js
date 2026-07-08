@@ -5,6 +5,117 @@ const apiKey = "ff19c9d8dacd0e5f339bc5f242cd49fe";
 const searchBox = document.getElementById("city-input");
 const searchBtn = document.getElementById("enter-button");
 const weatherIcon = document.querySelector(".weather-icon");
+const toggleBtn = document.getElementById("toggle-broadcast");
+const playIcon = document.getElementById("play-icon");
+
+// Custom Audio Synthesizer for Radio Static/Hum
+class RadioBroadcast {
+  constructor() {
+    this.ctx = null;
+    this.staticNode = null;
+    this.humNode = null;
+    this.gainNode = null;
+    this.isPlaying = false;
+  }
+
+  start() {
+    if (this.isPlaying) return;
+    this.isPlaying = true;
+
+    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Create white noise static
+    const bufferSize = this.ctx.sampleRate * 2;
+    const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = (Math.random() * 2 - 1) * 0.015; // Soft static hiss
+    }
+    
+    this.staticNode = this.ctx.createBufferSource();
+    this.staticNode.buffer = noiseBuffer;
+    this.staticNode.loop = true;
+
+    // Create 60Hz radio hum oscillator
+    this.humNode = this.ctx.createOscillator();
+    this.humNode.type = 'sine';
+    this.humNode.frequency.setValueAtTime(60, this.ctx.currentTime);
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.value = 1000;
+
+    this.gainNode = this.ctx.createGain();
+    this.gainNode.gain.setValueAtTime(0.3, this.ctx.currentTime);
+
+    this.staticNode.connect(filter);
+    this.humNode.connect(filter);
+    filter.connect(this.gainNode);
+    this.gainNode.connect(this.ctx.destination);
+
+    this.staticNode.start();
+    this.humNode.start();
+  }
+
+  stop() {
+    this.isPlaying = false;
+    if (this.staticNode) {
+      try { this.staticNode.stop(); } catch(e){}
+    }
+    if (this.humNode) {
+      try { this.humNode.stop(); } catch(e){}
+    }
+    if (this.ctx) {
+      this.ctx.close();
+      this.ctx = null;
+    }
+  }
+}
+
+const radio = new RadioBroadcast();
+let signalInterval = null;
+
+function animateSignal(active) {
+  const bars = [
+    document.getElementById('signal-bar-1'),
+    document.getElementById('signal-bar-2'),
+    document.getElementById('signal-bar-3')
+  ];
+
+  if (active) {
+    signalInterval = setInterval(() => {
+      bars.forEach(bar => {
+        if (bar) {
+          if (Math.random() > 0.4) {
+            bar.classList.add('active');
+          } else {
+            bar.classList.remove('active');
+          }
+        }
+      });
+    }, 150);
+  } else {
+    if (signalInterval) clearInterval(signalInterval);
+    bars.forEach(bar => bar?.classList.remove('active'));
+  }
+}
+
+// Toggle play button
+if (toggleBtn) {
+  toggleBtn.addEventListener('click', () => {
+    if (radio.isPlaying) {
+      radio.stop();
+      toggleBtn.classList.remove('playing');
+      toggleBtn.innerHTML = '<i class="fa-solid fa-play" id="play-icon"></i> LISTEN FM 108.0';
+      animateSignal(false);
+    } else {
+      radio.start();
+      toggleBtn.classList.add('playing');
+      toggleBtn.innerHTML = '<i class="fa-solid fa-stop" id="play-icon"></i> STATIC PLAYING';
+      animateSignal(true);
+    }
+  });
+}
 
 async function checkWeather(city) {
   if (!city) return;
@@ -13,7 +124,6 @@ async function checkWeather(city) {
     const response = await fetch(`${baseURL}&q=${city}&appid=${apiKey}`);
 
     if (!response.ok) {
-      // API failed or key issue: Use mock weather data for clean presentation
       useMockWeather(city);
       return;
     }
@@ -43,7 +153,6 @@ function updateWeatherUI(data) {
 }
 
 function useMockWeather(city) {
-  // Graceful fallback mock so the UI always looks full and rich
   const mockData = {
     name: city.charAt(0).toUpperCase() + city.slice(1),
     main: { temp: 18 + Math.floor(Math.random() * 8), humidity: 65 + Math.floor(Math.random() * 10) },
@@ -73,10 +182,3 @@ if (searchBox) {
 document.addEventListener("DOMContentLoaded", () => {
   checkWeather(searchBox?.value.trim() || "San Francisco");
 });
-
-// Handle contact form submission
-function handleSubmit() {
-  const form = document.getElementById("contact");
-  alert("Weather correction submitted successfully! (Analog Broadcast Logged)");
-  if (form) form.reset();
-}

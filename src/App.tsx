@@ -8,9 +8,9 @@ import * as Icons from 'lucide-react';
 const PROJECTS: Project[] = [
   {
     id: 'aura-weather',
-    title: 'AuraWeather',
-    description: 'A beautiful real-time weather application showing global forecast details.',
-    longDescription: 'Get real-time, accurate weather updates for any city worldwide including temperature, humidity, wind speed & more. Styled with dynamic components.',
+    title: 'AeroTune',
+    description: 'A vintage weather radio console playing synthesized static alerts.',
+    longDescription: 'Get atmospheric weather readouts. Features a bakelite dial receiver frame, Nixie-tube temperature indicators, and an interactive AM radio broadcast synthesizer.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Weather API'],
     themeColor: '#10b981',
     gradient: '#faf9f5', // Cozy cream

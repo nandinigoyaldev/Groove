@@ -14,20 +14,24 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 24px;
+  padding: 12px;
+  overflow: hidden; /* Prevent scrolling inside iframe */
 }
 
 .weather-dashboard {
   width: 100%;
-  max-width: 500px;
+  max-width: 420px;
+  height: 480px; /* Fixed height to match iframe viewport perfectly */
   background: #2b1f1d; /* Bakelite dark brown chassis */
-  border: 10px solid #1a100f; /* Outer bezel */
+  border: 8px solid #1a100f; /* Outer bezel */
   border-radius: 16px;
-  padding: 24px;
+  padding: 18px;
   box-shadow: 0 15px 40px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  justify-content: space-between;
+  gap: 12px;
+  overflow: hidden;
 }
 
 /* Radio Dial Header */
@@ -35,7 +39,7 @@ body {
   background: #0f0706;
   border: 2px solid #b45309;
   border-radius: 8px;
-  padding: 12px 18px;
+  padding: 10px 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -44,7 +48,7 @@ body {
 .brand-text {
   font-family: monospace;
   font-weight: 800;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: #f59e0b; /* Amber bulb glow */
   text-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
@@ -56,7 +60,7 @@ body {
   border-radius: 6px;
   display: flex;
   align-items: center;
-  padding: 4px 10px;
+  padding: 4px 8px;
 }
 
 .search-box input {
@@ -64,8 +68,8 @@ body {
   border: none;
   outline: none;
   color: #fff;
-  font-size: 12px;
-  width: 120px;
+  font-size: 11px;
+  width: 100px;
 }
 
 .search-box button {
@@ -73,20 +77,21 @@ body {
   border: none;
   color: #f59e0b;
   cursor: pointer;
+  font-size: 11px;
 }
 
 /* Grid Layout */
 .grid-layout {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 10px;
 }
 
 .widget {
   background: #170d0c;
   border: 1.5px solid rgba(245, 158, 11, 0.15);
   border-radius: 8px;
-  padding: 16px;
+  padding: 12px;
 }
 
 /* Main Display Receiver */
@@ -95,7 +100,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px;
+  padding: 16px;
   text-align: center;
   border-color: #b45309;
   background: radial-gradient(circle, #251210 0%, #0d0605 100%);
@@ -104,19 +109,19 @@ body {
 .weather-state {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 6px;
+  gap: 10px;
+  margin-bottom: 4px;
 }
 
 .weather-icon {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   filter: sepia(0.8) hue-rotate(15deg) saturate(1.5);
 }
 
 .city-name {
   font-family: monospace;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
   color: #fff;
   letter-spacing: 1px;
@@ -124,47 +129,17 @@ body {
 
 .temperature {
   font-family: monospace;
-  font-size: 48px;
+  font-size: 40px;
   font-weight: 800;
   color: #fbbf24; /* Glowing nixie tubes */
   text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+  line-height: 1.1;
 }
 
 .weather-desc {
-  font-size: 12px;
-  color: #9ca3af;
-  margin-top: 4px;
-}
-
-/* Forecast Panel */
-.forecast-panel {
-  grid-column: span 2;
-}
-
-.forecast-panel h3 {
-  font-size: 10px;
-  font-family: monospace;
-  color: #b45309;
-  letter-spacing: 1px;
-  margin-bottom: 12px;
-}
-
-.hourly-list {
-  display: flex;
-  justify-content: space-between;
-}
-
-.hour-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
   font-size: 11px;
   color: #9ca3af;
-}
-
-.hour-item i {
-  color: #f59e0b;
+  margin-top: 2px;
 }
 
 /* Metric Cards */
@@ -172,79 +147,99 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100px;
+  height: 85px;
 }
 
 .metric-title {
   font-family: monospace;
-  font-size: 9px;
+  font-size: 8px;
   color: #9ca3af;
   letter-spacing: 0.5px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .metric-value {
   font-family: monospace;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: #fff;
 }
 
 .metric-sub {
-  font-size: 10px;
+  font-size: 9px;
   color: #6b7280;
 }
 
-/* Contact form */
-.contact-section {
+/* Radio Tuning Broadcast Panel (Replaces Bulky Form) */
+.broadcast-panel {
   background: #170d0c;
-  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(245, 158, 11, 0.15);
   border-radius: 8px;
-  padding: 16px;
-}
-
-.contact-section h3 {
-  font-family: monospace;
-  font-size: 10px;
-  color: #b45309;
-  margin-bottom: 12px;
-  letter-spacing: 1px;
-}
-
-.contact-form {
+  padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.contact-form input, .contact-form textarea {
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 4px;
-  padding: 8px 12px;
-  color: white;
-  font-size: 12px;
-  outline: none;
+.broadcast-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.contact-form textarea {
-  height: 50px;
-  resize: none;
-}
-
-.contact-form button {
+.broadcast-play-btn {
   background: #b45309;
   color: white;
   border: none;
-  border-radius: 4px;
-  padding: 10px;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-family: monospace;
+  font-size: 10px;
   font-weight: 700;
   cursor: pointer;
-  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
 }
 
-.contact-form button:hover {
-  opacity: 0.9;
+.broadcast-play-btn:hover {
+  background: #f59e0b;
+  color: black;
+}
+
+.broadcast-play-btn.playing {
+  background: #ef4444;
+}
+
+.broadcast-meter {
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 16px;
+}
+
+.signal-bar {
+  width: 4px;
+  background: rgba(245, 158, 11, 0.2);
+  border-radius: 1px;
+}
+
+.signal-bar.active {
+  background: #fbbf24;
+  box-shadow: 0 0 4px #fbbf24;
+}
+
+#signal-bar-1 { height: 6px; }
+#signal-bar-2 { height: 11px; }
+#signal-bar-3 { height: 16px; }
+
+.broadcast-status {
+  font-family: monospace;
+  font-size: 9px;
+  color: #6b7280;
+  text-align: center;
+  letter-spacing: 0.5px;
 }
