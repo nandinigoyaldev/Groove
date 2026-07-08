@@ -3,69 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sketch Paper Scissors</title>
+  <title>Retro Cassette Showdown</title>
   <link rel="stylesheet" href="style/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Gochi+Hand&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="chalk-board">
-    <header class="chalk-header">
-      <h1 class="chalk-title">Chalkboard Showdown</h1>
-      <p class="chalk-subtitle">Grab your crayon & select your weapon!</p>
+  <div class="cassette-deck">
+    {/* Boombox Header */}
+    <header class="deck-header">
+      <h1 class="deck-title">ANALOG TAPE DECK</h1>
+      <span class="deck-model">MODEL RP-88 // STEREO</span>
     </header>
 
-    <main class="sketch-panel">
-      <!-- Scoreboard -->
-      <div class="sketch-score">
-        <div class="score-box player">
-          <span class="lbl">PLAYER</span>
-          <span class="num" id="player-score">0</span>
+    {/* Cassette Window */}
+    <div class="tape-window">
+      <div class="spindle-left spinning-spindle"></div>
+      <div class="spindle-right spinning-spindle"></div>
+      
+      {/* Tape readout display */}
+      <div class="tape-display">
+        <div class="status-meta">TAPE COUNTER: <span id="tape-counter">00:00</span></div>
+        <div class="outcome-text" id="game-status">PRESS A SHAPE KEY...</div>
+      </div>
+    </div>
+
+    {/* VU Meter (Volume indicators) */}
+    <div class="vu-meter">
+      <div class="vu-channel">
+        <span>L</span>
+        <div class="vu-leds" id="vu-l">
+          <div class="led green"></div><div class="led green"></div><div class="led green"></div>
+          <div class="led orange"></div><div class="led red"></div>
         </div>
-        <div class="vs-mark">vs</div>
-        <div class="score-box computer">
-          <span class="lbl">CPU</span>
-          <span class="num" id="computer-score">0</span>
+      </div>
+      <div class="vu-channel">
+        <span>R</span>
+        <div class="vu-leds" id="vu-r">
+          <div class="led green"></div><div class="led green"></div><div class="led green"></div>
+          <div class="led orange"></div><div class="led red"></div>
         </div>
       </div>
+    </div>
 
-      <!-- Play Arena -->
-      <div class="sketch-arena">
-        <div class="sketch-box" id="player-preview">?</div>
-        <div class="sketch-box" id="computer-preview">?</div>
-      </div>
+    {/* Score readout */}
+    <div class="score-display">
+      <div class="score-card">PLAYER: <span id="player-score">0</span></div>
+      <div class="score-card">CPU: <span id="computer-score">0</span></div>
+    </div>
 
-      <!-- Status Log -->
-      <div class="chalk-status">
-        <div id="game-status" class="status-lbl">DRAW A SHAPECUT MOVE...</div>
-      </div>
+    {/* Tape deck physical buttons */}
+    <div class="deck-buttons">
+      <button class="deck-btn btn-rock" onclick="playGame('rock')">
+        <span class="symbol">✊</span>
+        <span class="lbl">ROCK [▶]</span>
+      </button>
+      <button class="deck-btn btn-paper" onclick="playGame('paper')">
+        <span class="symbol">✋</span>
+        <span class="lbl">PAPER [⏸]</span>
+      </button>
+      <button class="deck-btn btn-scissors" onclick="playGame('scissors')">
+        <span class="symbol">✌️</span>
+        <span class="lbl">SCISSORS [⏹]</span>
+      </button>
+    </div>
 
-      <!-- Crayon Choices Grid -->
-      <div class="crayon-grid">
-        <button class="crayon-btn" onclick="playGame('rock')">
-          <span class="emoji">✊</span>
-          <span class="label">ROCK</span>
-        </button>
-        <button class="crayon-btn" onclick="playGame('paper')">
-          <span class="emoji">✋</span>
-          <span class="label">PAPER</span>
-        </button>
-        <button class="crayon-btn" onclick="playGame('scissors')">
-          <span class="emoji">✌️</span>
-          <span class="label">SCISSORS</span>
-        </button>
-      </div>
-
-      <div style="text-align: center; margin-top: 10px;">
-        <button class="reset-btn" onclick="resetGame()">Clean Board</button>
-      </div>
-    </main>
+    <div style="text-align: center; margin-top: 14px;">
+      <button class="eject-btn" onclick="resetGame()">EJECT TAPE</button>
+    </div>
   </div>
 
   <script>
     let pScore = 0;
     let cScore = 0;
+    let roundCount = 0;
 
     const emojiMap = {
       rock: '✊',
@@ -73,51 +85,57 @@
       scissors: '✌️'
     };
 
+    function triggerVUMeter() {
+      // Flash the VU LEDs dynamically on keypress
+      const leds = document.querySelectorAll('.led');
+      leds.forEach(led => {
+        if (Math.random() > 0.4) {
+          led.classList.add('lit');
+          setTimeout(() => led.classList.remove('lit'), 250);
+        }
+      });
+    }
+
     function playGame(userChoice) {
       const choices = ['rock', 'paper', 'scissors'];
       const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+      roundCount++;
 
-      document.getElementById('player-preview').innerText = emojiMap[userChoice];
-      document.getElementById('computer-preview').innerText = emojiMap[computerChoice];
+      // Update Tape counter
+      const minutes = Math.floor(roundCount / 60).toString().padStart(2, '0');
+      const seconds = (roundCount % 60).toString().padStart(2, '0');
+      document.getElementById('tape-counter').innerText = `${minutes}:${seconds}`;
+
+      triggerVUMeter();
 
       let resultText = '';
-      let statusClass = '';
-
       if (userChoice === computerChoice) {
-        resultText = "Tied round! Sketch again.";
-        statusClass = 'tie';
+        resultText = `TIE: BOTH EXPOSED ${emojiMap[userChoice]}`;
       } else if (
         (userChoice === 'rock' && computerChoice === 'scissors') ||
         (userChoice === 'paper' && computerChoice === 'rock') ||
         (userChoice === 'scissors' && computerChoice === 'paper')
       ) {
-        resultText = "You won! CPU shape erased.";
-        statusClass = 'win';
         pScore++;
         document.getElementById('player-score').innerText = pScore;
+        resultText = `WIN: PLAY ${emojiMap[userChoice]} > CPU ${emojiMap[computerChoice]}`;
       } else {
-        resultText = "CPU won! Your shape erased.";
-        statusClass = 'lose';
         cScore++;
         document.getElementById('computer-score').innerText = cScore;
+        resultText = `LOSE: CPU ${emojiMap[computerChoice]} > PLAY ${emojiMap[userChoice]}`;
       }
 
-      const statusEl = document.getElementById('game-status');
-      statusEl.innerText = resultText;
-      statusEl.className = 'status-lbl ' + statusClass;
+      document.getElementById('game-status').innerText = resultText;
     }
 
     function resetGame() {
       pScore = 0;
       cScore = 0;
+      roundCount = 0;
       document.getElementById('player-score').innerText = '0';
       document.getElementById('computer-score').innerText = '0';
-      document.getElementById('player-preview').innerText = '?';
-      document.getElementById('computer-preview').innerText = '?';
-      
-      const statusEl = document.getElementById('game-status');
-      statusEl.innerText = "Board cleaned. Ready!";
-      statusEl.className = 'status-lbl';
+      document.getElementById('tape-counter').innerText = '00:00';
+      document.getElementById('game-status').innerText = "TAPE INSCRIBED. READY.";
     }
   </script>
 </body>

@@ -138,10 +138,6 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
             <div
               key={proj.id}
               className={`crate-sleeve ${selectedIdx === idx ? 'active' : ''}`}
-              style={{
-                borderColor: proj.themeColor,
-                transform: `translateX(${(idx - selectedIdx) * 12}px) rotate(${(idx - selectedIdx) * 2}deg)`,
-              }}
               onClick={() => handleSelectRecord(idx)}
             >
               <div className="sleeve-artwork" style={{ background: `linear-gradient(135deg, ${proj.themeColor}1a, ${proj.themeColor}88)` }}>
@@ -154,9 +150,6 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
           {/* Guestbook special record */}
           <div
             className={`crate-sleeve guest-sleeve ${selectedIdx === projects.length ? 'active' : ''}`}
-            style={{
-              transform: `translateX(${(projects.length - selectedIdx) * 12}px) rotate(${(projects.length - selectedIdx) * 2}deg)`,
-            }}
             onClick={() => handleSelectRecord(projects.length)}
           >
             <div className="sleeve-artwork guestbook-art">

@@ -153,36 +153,34 @@ body, html {
 
 .crate-rack {
   display: flex;
-  height: 220px;
-  align-items: flex-end;
-  padding-left: 20px;
-  position: relative;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 16px 0;
+  width: 100%;
 }
 
 .crate-sleeve {
-  width: 160px;
-  height: 160px;
+  width: 130px;
+  height: 130px;
   background: white;
   border: 3px solid #111;
   border-radius: 4px;
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
+  position: relative;
+  flex-shrink: 0;
   cursor: pointer;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: all 0.2s ease-out;
   overflow: hidden;
 }
 
 .crate-sleeve:hover {
-  transform: translateY(-20px) scale(1.02) !important;
-  z-index: 50 !important;
+  transform: translateY(-8px);
 }
 
 .crate-sleeve.active {
-  transform: translateY(-35px) scale(1.05) !important;
-  z-index: 100 !important;
   border-color: #b45309;
+  transform: translateY(-12px);
+  box-shadow: 0 8px 16px rgba(180, 83, 9, 0.2);
 }
 
 .sleeve-artwork {

@@ -1,4 +1,4 @@
-/* Cozy Chalkboard / Crayon Sketch Game Stylesheet */
+/* Retro Cassette Deck game styling */
 
 * {
   box-sizing: border-box;
@@ -7,8 +7,8 @@
 }
 
 body {
-  background-color: #fdfbf7;
-  color: #5c4e3c;
+  background: #faf9f5;
+  color: #1f2937;
   font-family: 'Outfit', sans-serif;
   display: flex;
   justify-content: center;
@@ -17,167 +17,197 @@ body {
   overflow: hidden;
 }
 
-.chalk-board {
+.cassette-deck {
   width: 100%;
-  max-width: 440px;
-  background: #252627; /* Dark slate chalkboard background */
-  border: 12px solid #5c4e3c; /* Wood frame */
-  border-radius: 4px;
+  max-width: 420px;
+  background: #1e1e24; /* Dark metal console */
+  border: 10px solid #2e3039; /* Metal casing */
+  border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 15px 35px rgba(92, 78, 60, 0.25);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.chalk-header {
-  text-align: center;
-  border-bottom: 2px dashed rgba(255, 255, 255, 0.15);
-  padding-bottom: 12px;
-}
-
-.chalk-title {
-  font-family: 'Gochi Hand', cursive;
-  font-size: 28px;
-  color: #fef08a; /* Soft chalk yellow */
-  letter-spacing: 1px;
-}
-
-.chalk-subtitle {
-  font-family: 'Caveat', cursive;
-  font-size: 18px;
-  color: #e2e8f0;
-  margin-top: 4px;
-}
-
-.sketch-panel {
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-/* Scoreboard */
-.sketch-score {
+.deck-header {
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding-bottom: 10px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  border: 1.5px dashed rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  padding: 10px;
 }
 
-.score-box {
+.deck-title {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #9ca3af;
+}
+
+.deck-model {
+  font-family: 'Fira Code', monospace;
+  font-size: 9px;
+  color: #6b7280;
+}
+
+/* Tape Window */
+.tape-window {
+  background: #09090b;
+  height: 100px;
+  border-radius: 6px;
+  border: 3px solid #374151;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  overflow: hidden;
+}
+
+.spindle-left, .spindle-right {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 3px dashed #fbbf24;
+  background: #18181b;
+}
+
+.tape-display {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+  padding: 0 90px;
+  z-index: 10;
+}
+
+.status-meta {
+  font-family: 'Fira Code', monospace;
+  font-size: 9px;
+  color: #4b5563;
+}
+
+.outcome-text {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fbbf24;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+/* VU Meter */
+.vu-meter {
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-.score-box .lbl {
-  font-family: 'Caveat', cursive;
-  font-size: 16px;
-  color: #94a3b8;
-}
-
-.score-box .num {
-  font-family: 'Gochi Hand', cursive;
-  font-size: 26px;
-  color: #fff;
-}
-
-.vs-mark {
-  font-family: 'Caveat', cursive;
-  font-size: 18px;
-  color: #fef08a;
-}
-
-/* Arena */
-.sketch-arena {
-  display: flex;
-  justify-content: space-around;
-  padding: 10px 0;
-}
-
-.sketch-box {
-  width: 80px;
-  height: 80px;
-  border: 2px dashed rgba(255, 255, 255, 0.3);
+  gap: 6px;
+  background: #111827;
+  padding: 10px;
   border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.vu-channel {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 36px;
-  color: #fff;
-  transition: border-color 0.2s;
+  gap: 8px;
+  font-family: 'Fira Code', monospace;
+  font-size: 9px;
+  color: #9ca3af;
 }
 
-/* Status panel */
-.chalk-status {
-  min-height: 40px;
+.vu-leds {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  gap: 4px;
+  flex: 1;
 }
 
-.status-lbl {
-  font-family: 'Caveat', cursive;
-  font-size: 22px;
-  color: #cbd5e1;
-  text-align: center;
+.led {
+  height: 8px;
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border-radius: 1px;
+  transition: background 0.15s;
 }
 
-.status-lbl.win { color: #86efac; }
-.status-lbl.lose { color: #fca5a5; }
-.status-lbl.tie { color: #93c5fd; }
+.led.green.lit { background: #10b981; box-shadow: 0 0 6px #10b981; }
+.led.orange.lit { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
+.led.red.lit { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
 
-/* Crayon grid */
-.crayon-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+/* Score */
+.score-display {
+  display: flex;
+  justify-content: space-between;
   gap: 12px;
 }
 
-.crayon-btn {
-  background: transparent;
-  border: 2px solid rgba(255,255,255,0.25);
-  border-radius: 8px;
+.score-card {
+  flex: 1;
+  background: #1f2937;
+  border: 1.5px solid rgba(255,255,255,0.05);
+  border-radius: 6px;
+  padding: 8px;
+  text-align: center;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: white;
+}
+
+.score-card span {
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+/* Buttons */
+.deck-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.deck-btn {
+  background: linear-gradient(180deg, #374151 0%, #1f2937 100%);
+  border: 2px solid #4b5563;
+  border-radius: 4px;
   padding: 10px;
+  color: white;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  color: white;
-  transition: all 0.2s;
+  transition: transform 0.1s, box-shadow 0.1s;
 }
 
-.crayon-btn:hover {
-  border-color: #fef08a;
-  transform: translateY(-2px);
-  background: rgba(254, 240, 138, 0.08);
+.deck-btn:active {
+  transform: translateY(2px);
+  box-shadow: inset 0 3px 5px rgba(0,0,0,0.5);
+  border-color: #fbbf24;
 }
 
-.crayon-btn .emoji {
-  font-size: 24px;
+.deck-btn .symbol {
+  font-size: 20px;
 }
 
-.crayon-btn .label {
-  font-family: 'Gochi Hand', cursive;
-  font-size: 13px;
-  letter-spacing: 0.5px;
+.deck-btn .lbl {
+  font-size: 9px;
+  font-weight: 700;
+  color: #9ca3af;
 }
 
-/* Reset button */
-.reset-btn {
+.eject-btn {
   background: transparent;
   border: none;
-  color: #94a3b8;
-  font-family: 'Caveat', cursive;
-  font-size: 16px;
+  color: #6b7280;
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
   cursor: pointer;
   text-decoration: underline;
-  transition: color 0.15s;
 }
 
-.reset-btn:hover {
-  color: #fff;
+.eject-btn:hover {
+  color: white;
 }
