@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deck Showdown | Retro Cassette Game</title>
+  <title>Earth | Cozy Tape Deck Showdown</title>
   <link rel="stylesheet" href="style/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,8 +13,8 @@
   <div class="cassette-deck">
     <!-- Boombox Header -->
     <header class="deck-header">
-      <h1 class="deck-title">ANALOG DECK</h1>
-      <span class="deck-model">MODEL DS-80 // STEREO</span>
+      <h1 class="deck-title"><i class="fa-solid fa-earth-americas"></i> EARTH</h1>
+      <span class="deck-model">MODEL ER-99 // TAPE FLUTTER</span>
     </header>
 
     <!-- Cassette Window with Vector Tape -->
@@ -39,6 +39,15 @@
         <div class="status-meta">COUNTER: <span id="tape-counter">00:00</span></div>
         <div class="outcome-text" id="game-status">TAPE INSERTED. READY.</div>
       </div>
+    </div>
+
+    <!-- TAPE TILT (Flutter / Cheat) Controls -->
+    <div class="tilt-control-panel">
+      <span class="tilt-label">TAPE TILT (FLUTTER / CHEAT)</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="tilt-toggle">
+        <span class="toggle-slider"></span>
+      </label>
     </div>
 
     <!-- VU Meter (Volume indicators) -->
@@ -104,6 +113,12 @@
       scissors: '✌️'
     };
 
+    // Calculate pitch frequency based on TAPE TILT state
+    function getFrequency(baseFreq) {
+      const isTilted = document.getElementById('tilt-toggle').checked;
+      return isTilted ? baseFreq * 0.65 : baseFreq; // Dropping pitch down 35% on tilt!
+    }
+
     // Synthesize Mechanical Cassette Button Click Sound
     function playClackSound() {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -112,7 +127,7 @@
       const gain = audioCtx.createGain();
       
       osc.type = 'triangle';
-      osc.frequency.setValueAtTime(120, now); // Low thud
+      osc.frequency.setValueAtTime(getFrequency(120), now);
       osc.frequency.exponentialRampToValueAtTime(10, now + 0.08);
 
       gain.gain.setValueAtTime(0.2, now);
@@ -130,13 +145,12 @@
       const now = audioCtx.currentTime;
 
       if (result === 'win') {
-        // Upbeat victory chime (arpeggio)
-        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        const notes = [523.25, 659.25, 783.99, 1046.50];
         notes.forEach((freq, idx) => {
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           osc.type = 'triangle';
-          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          osc.frequency.setValueAtTime(getFrequency(freq), now + idx * 0.08);
           gain.gain.setValueAtTime(0.1, now + idx * 0.08);
           gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.2);
           osc.connect(gain);
@@ -145,16 +159,15 @@
           osc.stop(now + idx * 0.08 + 0.25);
         });
       } else if (result === 'lose') {
-        // Downward sad tone
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(330, now);
-        osc.frequency.linearRampToValueAtTime(180, now + 0.4);
+        osc.frequency.setValueAtTime(getFrequency(330), now);
+        osc.frequency.linearRampToValueAtTime(getFrequency(180), now + 0.4);
         
         const filter = audioCtx.createBiquadFilter();
         filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(250, now);
+        filter.frequency.setValueAtTime(getFrequency(250), now);
 
         gain.gain.setValueAtTime(0.12, now);
         gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
@@ -165,12 +178,10 @@
         osc.start(now);
         osc.stop(now + 0.45);
       } else {
-        // Tie chirp
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(440, now);
-        osc.frequency.setValueAtTime(440, now + 0.06);
+        osc.frequency.setValueAtTime(getFrequency(440), now);
 
         gain.gain.setValueAtTime(0.08, now);
         gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
@@ -186,7 +197,6 @@
       const leds = document.querySelectorAll('.led');
       leds.forEach(led => led.classList.remove('lit'));
 
-      // Flash left and right dynamically based on match result
       if (result === 'win') {
         document.getElementById('l-g1').classList.add('lit');
         document.getElementById('l-g2').classList.add('lit');
@@ -204,7 +214,6 @@
         document.getElementById('r-g2').classList.add('lit');
       }
 
-      // Briefly light up red clipping LEDs for hits
       setTimeout(() => {
         document.getElementById('l-r1').classList.add('lit');
         document.getElementById('r-r1').classList.add('lit');
@@ -219,10 +228,9 @@
       const spindleL = document.getElementById('spindle-l');
       const spindleR = document.getElementById('spindle-r');
       
-      // Force spin animation restart
       spindleL.classList.remove('spinning-spindle');
       spindleR.classList.remove('spinning-spindle');
-      void spindleL.offsetWidth; // Trigger reflow
+      void spindleL.offsetWidth;
       
       spindleL.classList.add('spinning-spindle');
       spindleR.classList.add('spinning-spindle');
@@ -237,8 +245,19 @@
       playClackSound();
       spinSpindles();
 
+      const isCheat = document.getElementById('tilt-toggle').checked;
       const choices = ['rock', 'paper', 'scissors'];
-      const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+      
+      let computerChoice = '';
+      if (isCheat) {
+        // Intercept: Force computer to choose the losing option!
+        if (userChoice === 'rock') computerChoice = 'scissors';
+        if (userChoice === 'paper') computerChoice = 'rock';
+        if (userChoice === 'scissors') computerChoice = 'paper';
+      } else {
+        computerChoice = choices[Math.floor(Math.random() * choices.length)];
+      }
+      
       roundCount++;
 
       // Update Tape counter
@@ -260,7 +279,9 @@
         result = 'win';
         pScore++;
         document.getElementById('player-score').innerText = pScore;
-        resultText = `WIN: PLAY ${emojiMap[userChoice]} > CPU ${emojiMap[computerChoice]}`;
+        resultText = isCheat 
+          ? `TILT WIN: PLAY ${emojiMap[userChoice]} > CPU ${emojiMap[computerChoice]}`
+          : `WIN: PLAY ${emojiMap[userChoice]} > CPU ${emojiMap[computerChoice]}`;
       } else {
         result = 'lose';
         cScore++;

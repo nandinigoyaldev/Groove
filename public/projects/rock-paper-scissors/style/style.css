@@ -23,16 +23,16 @@ body {
   background: #1e1e24; /* Dark metal console */
   border: 10px solid #2e3039; /* Metal casing */
   border-radius: 12px;
-  padding: 20px;
+  padding: 18px;
   box-shadow: 0 15px 35px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .deck-header {
   border-bottom: 1px solid rgba(255,255,255,0.08);
-  padding-bottom: 8px;
+  padding-bottom: 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -54,7 +54,7 @@ body {
 /* Tape Window */
 .tape-window {
   background: #09090b;
-  height: 120px;
+  height: 110px;
   border-radius: 6px;
   border: 3px solid #374151;
   position: relative;
@@ -85,14 +85,13 @@ body {
 }
 
 .spindle-left, .spindle-right {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  border: 4px solid #fbbf24;
+  border: 3px solid #fbbf24;
   background: #111;
   z-index: 20;
   position: relative;
-  transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .spindle-left .teeth, .spindle-right .teeth {
@@ -116,11 +115,11 @@ body {
 
 .tape-roll {
   position: absolute;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: rgba(180, 83, 9, 0.12); /* Brown tape color representation */
-  border: 1px dashed rgba(180, 83, 9, 0.25);
+  background: rgba(180, 83, 9, 0.15);
+  border: 1px dashed rgba(180, 83, 9, 0.3);
   z-index: 10;
 }
 
@@ -142,20 +141,84 @@ body {
 
 .outcome-text {
   font-family: 'Fira Code', monospace;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 700;
   color: #fbbf24;
   text-transform: uppercase;
-  text-shadow: 0 0 6px rgba(251, 191, 36, 0.3);
+}
+
+/* Tilt Switch Control Panel */
+.tilt-control-panel {
+  background: #111827;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 6px;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tilt-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  color: #f59e0b;
+}
+
+/* Toggle switch slider */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 18px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #374151;
+  transition: .2s;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #fff;
+  transition: .2s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: #fbbf24;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(18px);
 }
 
 /* VU Meter */
 .vu-meter {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
   background: #111827;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 6px;
   border: 1px solid rgba(255,255,255,0.05);
 }
@@ -176,11 +239,10 @@ body {
 }
 
 .led {
-  height: 6px;
+  height: 5px;
   flex: 1;
   background: rgba(255,255,255,0.02);
   border-radius: 1px;
-  transition: all 0.15s ease-out;
 }
 
 .led.green.lit { background: #10b981; box-shadow: 0 0 4px #10b981; }
@@ -202,7 +264,7 @@ body {
   padding: 6px;
   text-align: center;
   font-family: 'Fira Code', monospace;
-  font-size: 11px;
+  font-size: 10px;
   color: white;
 }
 
@@ -222,7 +284,7 @@ body {
   background: linear-gradient(180deg, #374151 0%, #1f2937 100%);
   border: 2px solid #4b5563;
   border-radius: 4px;
-  padding: 8px;
+  padding: 6px;
   color: white;
   cursor: pointer;
   display: flex;
@@ -239,11 +301,11 @@ body {
 }
 
 .deck-btn .symbol {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .deck-btn .lbl {
-  font-size: 8px;
+  font-size: 7.5px;
   font-weight: 700;
   color: #9ca3af;
 }
@@ -253,7 +315,7 @@ body {
   border: none;
   color: #6b7280;
   font-family: 'Fira Code', monospace;
-  font-size: 10px;
+  font-size: 9px;
   cursor: pointer;
   text-decoration: underline;
 }

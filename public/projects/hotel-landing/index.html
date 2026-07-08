@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Valentino Alpina Resort | Mountain Luxury</title>
+  <title>Hearth | Cozy Vintage Lodge</title>
   <link rel="stylesheet" href="style/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <!-- Navigation Header -->
   <header class="luxury-nav">
     <div class="nav-container">
-      <div class="logo-gold"><i class="fa-regular fa-gem"></i> VALENTINO</div>
+      <div class="logo-gold"><i class="fa-solid fa-key"></i> HEARTH LODGE</div>
       <nav class="nav-links">
-        <a href="#about">The Resort</a>
-        <a href="#rooms">Suites</a>
-        <a href="#booking">Reservations</a>
+        <a href="#about">THE LODGE</a>
+        <a href="#rooms">KEY CABINET</a>
+        <a href="#booking">REGISTRY LEDGER</a>
       </nav>
     </div>
   </header>
@@ -26,89 +26,127 @@
   <!-- Hero Section -->
   <section class="luxury-hero">
     <div class="hero-overlay">
-      <p class="hero-sub">MOUNTAIN RETREAT & LUXURY SPA</p>
-      <h1 class="hero-title">Experience Serene Alpine Splendor</h1>
-      <p class="hero-desc">Escape to the high peaks and experience unmatched comfort, bespoke gastronomy, and wellness in a glassmorphic sanctuary.</p>
-      <a href="#rooms" class="btn-gold">Explore The Suites</a>
+      <p class="hero-sub">EST. 1912 // ALPINE SANCTUARY</p>
+      <h1 class="hero-title">Step into Cozy Vintage Warmth</h1>
+      <p class="hero-desc">Relax by the crackling open brick hearth. Select a brass room key from the cabinet hooks below to sign our guest registry ledger.</p>
+      <a href="#rooms" class="btn-gold">Open Key Cabinet</a>
     </div>
   </section>
 
-  <!-- Catalog Grid -->
+  <!-- Key Hooks Cabinet Section -->
   <section id="rooms" class="luxury-rooms">
     <div class="section-header">
-      <span class="sub">EXCLUSIVE EXPERIENCE</span>
-      <h2>Our Premium Residences</h2>
+      <span class="sub">VINTAGE RECEPTION</span>
+      <h2>Select Your Key Tag</h2>
       <div class="gold-divider"></div>
     </div>
 
-    <div class="rooms-grid">
-      <!-- Card 1 -->
-      <div class="room-card">
-        <div class="room-img junior"></div>
-        <div class="room-details">
-          <h3>JUNIOR PANORAMA SUITE</h3>
-          <p class="room-desc">Spacious alpine retreat with custom wood accents, open fireplace, and wide balcony overlooking the east peaks.</p>
-          <div class="room-specs">
-            <span><i class="fa-solid fa-maximize"></i> 55 m²</span>
-            <span><i class="fa-solid fa-user-group"></i> 2 Guests</span>
-            <span><i class="fa-solid fa-mountain"></i> Valley view</span>
+    <!-- The physical key cabinet board grid -->
+    <div class="key-cabinet">
+      <!-- Hook 1 -->
+      <div class="key-hook" id="hook-1" onclick="selectKey(1, 'Junior Panorama Room', '$450')">
+        <div class="brass-peg"></div>
+        <div class="brass-key" id="key-1">
+          <div class="key-ring"></div>
+          <div class="key-tag">
+            <span class="room-number">101</span>
+            <span class="room-name">JUNIOR SUITE</span>
+            <span class="room-price">$450 / night</span>
           </div>
-          <div class="room-footer">
-            <span class="price">From $450<small>/night</small></span>
-            <a href="#booking" class="btn-outline">Select Suite</a>
+        </div>
+        <div class="hook-details">
+          <p class="room-desc">Spacious attic retreat with wooden log beams, stone fireplace, and peak view.</p>
+          <div class="room-specs">
+            <span>55 m²</span>
+            <span>2 Guests</span>
           </div>
         </div>
       </div>
 
-      <!-- Card 2 -->
-      <div class="room-card">
-        <div class="room-img grand"></div>
-        <div class="room-details">
-          <h3>GRAND ALPINA SUITE</h3>
-          <p class="room-desc">Featuring a free-standing stone bathtub, separate lounge, and custom glass walls showcasing the peaks.</p>
-          <div class="room-specs">
-            <span><i class="fa-solid fa-maximize"></i> 85 m²</span>
-            <span><i class="fa-solid fa-user-group"></i> 4 Guests</span>
-            <span><i class="fa-solid fa-mountain"></i> Ridge view</span>
+      <!-- Hook 2 -->
+      <div class="key-hook" id="hook-2" onclick="selectKey(2, 'Grand Alpina Suite', '$750')">
+        <div class="brass-peg"></div>
+        <div class="brass-key" id="key-2">
+          <div class="key-ring"></div>
+          <div class="key-tag">
+            <span class="room-number">202</span>
+            <span class="room-name">GRAND SUITE</span>
+            <span class="room-price">$750 / night</span>
           </div>
-          <div class="room-footer">
-            <span class="price">From $750<small>/night</small></span>
-            <a href="#booking" class="btn-outline">Select Suite</a>
+        </div>
+        <div class="hook-details">
+          <p class="room-desc">Luxury stone bath suite, panoramic glass walls, and hot private spring deck.</p>
+          <div class="room-specs">
+            <span>85 m²</span>
+            <span>4 Guests</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Booking Section -->
+  <!-- Booking Registry Ledger Section -->
   <section id="booking" class="luxury-booking">
-    <div class="booking-wrapper glass">
-      <h2>RESERVE YOUR STAY</h2>
-      <form class="booking-form" onsubmit="alert('Booking Inquiry Received!'); return false;">
+    <div class="booking-wrapper">
+      <h2>RECEPTION REGISTRY LEDGER</h2>
+      <p style="font-family: monospace; font-size: 10px; color: #b45309; margin-bottom: 20px;">INSCRIBE DETAILS BELOW</p>
+      
+      <form class="booking-form" onsubmit="alert('Registry ledger updated. Room reserved.'); return false;">
         <div class="form-grid">
           <div class="input-group">
-            <label>Check In</label>
+            <label>Arrival Date</label>
             <input type="date" required>
           </div>
           <div class="input-group">
-            <label>Check Out</label>
+            <label>Departure Date</label>
             <input type="date" required>
           </div>
           <div class="input-group">
-            <label>Suite Type</label>
-            <select>
-              <option>Junior Panorama Suite</option>
-              <option>Grand Alpina Suite</option>
-            </select>
+            <label>Selected Cabinet Key</label>
+            <input type="text" id="selected-room-input" readonly placeholder="Click a key tag above..." required>
           </div>
         </div>
-        <button type="submit" class="btn-gold">Check Availability</button>
+        
+        <div style="margin-top: 24px;">
+          <button type="submit" class="btn-gold">SIGN REGISTRY BOOK</button>
+        </div>
       </form>
     </div>
   </section>
 
   <footer class="luxury-footer">
-    <p>&copy; 2026 VALENTINO ALPINA RESORT. ALL RIGHTS RESERVED.</p>
+    HEARTH SANCTUARY COZY LODGE // ALL RESERVATIONS LOGGED BY HAND
   </footer>
+
+  <script>
+    function selectKey(id, roomName, price) {
+      // Reset animations
+      document.getElementById('key-1').classList.remove('key-taken');
+      document.getElementById('key-2').classList.remove('key-taken');
+      
+      // Animate selection (key swings off hook)
+      document.getElementById(`key-${id}`).classList.add('key-taken');
+      
+      // Populate booking ledger input
+      document.getElementById('selected-room-input').value = `${roomName} (${price})`;
+      
+      // Play a tiny synthesized key bell chime sound!
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1200, now); // High pitch bell chime
+      
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
+      
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.6);
+    }
+  </script>
 </body>
 </html>

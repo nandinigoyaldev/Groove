@@ -18,8 +18,8 @@ Instead of browsing standard directories, visitors swipe through album sleeves i
 ## 🚀 Projects Showcased (Cohesive Analog Redesigns)
 
 1. ☀️ **Cloud (Vintage Weather Radio)**: Redesigned as a bakelite radio receiver with a temperature-controlled analog needle gauge and weather-synthesized audio frequencies (rain hiss for wet cities, warm sine tones for sun, and auto-rickshaw honks for Delhi). Fits on a single screen without vertical scrolling!
-2. ✊ **Rock-Paper-Scissors (Retro Cassette Deck)**: Styled as a physical cassette tape player. Features spindle gears, tape counter readouts, VU volume level meters, and physical tape deck buttons (`[ROCK]`, `[PAPER]`, `[SCISSORS]`).
-3. 🏨 **My Hotels (Reception Key Cabinet)**: Styled as a vintage hotel reception cabinet. Rooms are displayed as heavy brass key tags hanging on hooks, paired with a registration ledger.
+2. ✊ **Earth (Retro Cassette Deck)**: Styled as a physical cassette tape player. Features spindle gears, tape counter readouts, VU volume level meters, and physical tape deck buttons (`[ROCK]`, `[PAPER]`, `[SCISSORS]`). Includes a rare **TAPE TILT** switch that bends pitch down 35% and activates cheat mode!
+3. 🏨 **Hearth (Reception Key Cabinet)**: Styled as a vintage hotel reception cabinet. Rooms are displayed as heavy brass key tags hanging on hooks. Selecting a key tag detaches it with an animation, triggers a bell chime, and auto-fills the registry ledger.
 4. 🧭 **Paradigm Shift (Modular Synthesizer)**: Styled as a modular synthesizer control board with patch jacks, sliders, potentiometer knobs, and signal waves.
 
 ---
