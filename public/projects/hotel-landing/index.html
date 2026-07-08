@@ -3,150 +3,332 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hearth | Cozy Vintage Lodge</title>
+  <title>Earth | Sanctuary Booking Desk</title>
   <link rel="stylesheet" href="style/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body id="earth-body">
   <!-- Navigation Header -->
   <header class="luxury-nav">
     <div class="nav-container">
-      <div class="logo-gold"><i class="fa-solid fa-key"></i> HEARTH LODGE</div>
+      <div class="logo-gold"><i class="fa-solid fa-earth-americas"></i> EARTH SANCTUARY</div>
       <nav class="nav-links">
-        <a href="#about">THE LODGE</a>
-        <a href="#rooms">KEY CABINET</a>
+        <a href="#cabinet">KEY CABINET</a>
         <a href="#booking">REGISTRY LEDGER</a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="luxury-hero">
-    <div class="hero-overlay">
-      <p class="hero-sub">EST. 1912 // ALPINE SANCTUARY</p>
-      <h1 class="hero-title">Step into Cozy Vintage Warmth</h1>
-      <p class="hero-desc">Relax by the crackling open brick hearth. Select a brass room key from the cabinet hooks below to sign our guest registry ledger.</p>
-      <a href="#rooms" class="btn-gold">Open Key Cabinet</a>
-    </div>
-  </section>
-
-  <!-- Key Hooks Cabinet Section -->
-  <section id="rooms" class="luxury-rooms">
-    <div class="section-header">
-      <span class="sub">VINTAGE RECEPTION</span>
-      <h2>Select Your Key Tag</h2>
-      <div class="gold-divider"></div>
-    </div>
-
-    <!-- The physical key cabinet board grid -->
-    <div class="key-cabinet">
-      <!-- Hook 1 -->
-      <div class="key-hook" id="hook-1" onclick="selectKey(1, 'Junior Panorama Room', '$450')">
-        <div class="brass-peg"></div>
-        <div class="brass-key" id="key-1">
-          <div class="key-ring"></div>
-          <div class="key-tag">
-            <span class="room-number">101</span>
-            <span class="room-name">JUNIOR SUITE</span>
-            <span class="room-price">$450 / night</span>
-          </div>
-        </div>
-        <div class="hook-details">
-          <p class="room-desc">Spacious attic retreat with wooden log beams, stone fireplace, and peak view.</p>
-          <div class="room-specs">
-            <span>55 m²</span>
-            <span>2 Guests</span>
-          </div>
+  <!-- Main Console -->
+  <main class="console-layout">
+    <!-- Top Dial Indicators & Lock -->
+    <section class="console-top">
+      <!-- Rotary Biome Compass Dial -->
+      <div class="compass-widget">
+        <div class="compass-label">SANCTUARY COMPASS</div>
+        <div class="compass-face">
+          <div class="compass-needle" id="compass-needle"></div>
+          <span class="lbl-n">RAINFOREST</span>
+          <span class="lbl-e">OCEAN</span>
+          <span class="lbl-s">VOLCANO</span>
+          <span class="lbl-w">STANDBY</span>
         </div>
       </div>
 
-      <!-- Hook 2 -->
-      <div class="key-hook" id="hook-2" onclick="selectKey(2, 'Grand Alpina Suite', '$750')">
-        <div class="brass-peg"></div>
-        <div class="brass-key" id="key-2">
-          <div class="key-ring"></div>
-          <div class="key-tag">
-            <span class="room-number">202</span>
-            <span class="room-name">GRAND SUITE</span>
-            <span class="room-price">$750 / night</span>
+      <!-- Master Cabinet Lock Switch -->
+      <div class="lock-widget">
+        <span class="lock-label">CABINET SECURITY LOCK</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="cabinet-lock" onchange="toggleLockState()">
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="lock-status" id="lock-text">UNLOCKED</span>
+      </div>
+    </section>
+
+    <!-- Key Hooks Cabinet Section -->
+    <section id="cabinet" class="luxury-rooms">
+      <div class="section-header">
+        <span class="sub">VINTAGE KEY CABINET</span>
+        <h2>Sanctuary Access Keys</h2>
+        <div class="gold-divider"></div>
+      </div>
+
+      <div class="key-cabinet">
+        <!-- Key Hook 1: Rainforest -->
+        <div class="key-hook" id="hook-1" onclick="selectKey(1, 'Rainforest Canopy', '$450', 'rainforest')">
+          <div class="brass-peg"></div>
+          <div class="brass-key" id="key-1">
+            <div class="key-ring"></div>
+            <div class="key-tag tag-rainforest">
+              <span class="room-number">101</span>
+              <span class="room-name">FOREST</span>
+              <span class="room-price">$450/n</span>
+            </div>
+          </div>
+          <div class="hook-details">
+            <h3>RAINFOREST CANOPY</h3>
+            <p class="room-desc">Elevated glass pod in the Amazon canopy. Rich green birds and misty jungle breeze.</p>
           </div>
         </div>
-        <div class="hook-details">
-          <p class="room-desc">Luxury stone bath suite, panoramic glass walls, and hot private spring deck.</p>
-          <div class="room-specs">
-            <span>85 m²</span>
-            <span>4 Guests</span>
+
+        <!-- Key Hook 2: Ocean -->
+        <div class="key-hook" id="hook-2" onclick="selectKey(2, 'Deep Ocean', '$750', 'ocean')">
+          <div class="brass-peg"></div>
+          <div class="brass-key" id="key-2">
+            <div class="key-ring"></div>
+            <div class="key-tag tag-ocean">
+              <span class="room-number">202</span>
+              <span class="room-name">OCEAN</span>
+              <span class="room-price">$750/n</span>
+            </div>
+          </div>
+          <div class="hook-details">
+            <h3>OCEAN SANCTUARY</h3>
+            <p class="room-desc">Submerged observatory capsule. Blue reef glow and quiet aquatic soundscapes.</p>
+          </div>
+        </div>
+
+        <!-- Key Hook 3: Volcano -->
+        <div class="key-hook" id="hook-3" onclick="selectKey(3, 'Volcanic Ridge', '$900', 'volcano')">
+          <div class="brass-peg"></div>
+          <div class="brass-key" id="key-3">
+            <div class="key-ring"></div>
+            <div class="key-tag tag-volcano">
+              <span class="room-number">303</span>
+              <span class="room-name">VOLCANO</span>
+              <span class="room-price">$900/n</span>
+            </div>
+          </div>
+          <div class="hook-details">
+            <h3>VOLCANIC RIDGE</h3>
+            <p class="room-desc">Obsidian lodge built on active volcanic vents. Warm geothermal pool and spark embers.</p>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Booking Registry Ledger Section -->
-  <section id="booking" class="luxury-booking">
-    <div class="booking-wrapper">
-      <h2>RECEPTION REGISTRY LEDGER</h2>
-      <p style="font-family: monospace; font-size: 10px; color: #b45309; margin-bottom: 20px;">INSCRIBE DETAILS BELOW</p>
-      
-      <form class="booking-form" onsubmit="alert('Registry ledger updated. Room reserved.'); return false;">
-        <div class="form-grid">
-          <div class="input-group">
-            <label>Arrival Date</label>
-            <input type="date" required>
-          </div>
-          <div class="input-group">
-            <label>Departure Date</label>
-            <input type="date" required>
-          </div>
-          <div class="input-group">
-            <label>Selected Cabinet Key</label>
-            <input type="text" id="selected-room-input" readonly placeholder="Click a key tag above..." required>
-          </div>
+    <!-- Booking Ledger & Guest Registry Dashboard -->
+    <section id="booking" class="luxury-booking">
+      <div class="ledger-desk">
+        <!-- Check-in Form Form -->
+        <div class="booking-wrapper">
+          <h2>INSCRIBE RESERVATION</h2>
+          <form class="booking-form" onsubmit="submitReservation(event)">
+            <div class="form-grid">
+              <div class="input-group">
+                <label>Explorer Name</label>
+                <input type="text" id="guest-name" required placeholder="Enter name...">
+              </div>
+              <div class="input-group">
+                <label>Arrival Date</label>
+                <input type="date" id="arrival-date" required>
+              </div>
+              <div class="input-group">
+                <label>Key Hook Selection</label>
+                <input type="text" id="selected-room-input" readonly placeholder="Click a key tag above..." required>
+              </div>
+            </div>
+            <button type="submit" class="btn-gold" style="margin-top: 18px; width: 100%;">SIGN LEDGER BOOK</button>
+          </form>
         </div>
-        
-        <div style="margin-top: 24px;">
-          <button type="submit" class="btn-gold">SIGN REGISTRY BOOK</button>
-        </div>
-      </form>
-    </div>
-  </section>
 
-  <footer class="luxury-footer">
-    HEARTH SANCTUARY COZY LODGE // ALL RESERVATIONS LOGGED BY HAND
-  </footer>
+        <!-- Active Registry Guestbook Table -->
+        <div class="registry-log">
+          <h2>ACTIVE EXPLORER REGISTRY</h2>
+          <div class="table-scroll">
+            <table class="ledger-table">
+              <thead>
+                <tr>
+                  <th>EXPLORER</th>
+                  <th>SANCTUARY</th>
+                  <th>ARRIVAL</th>
+                </tr>
+              </thead>
+              <tbody id="registry-rows">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+          <button class="clear-ledger-btn" onclick="clearRegistry()">WIPE LEDGER RECORDS</button>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <script>
-    function selectKey(id, roomName, price) {
-      // Reset animations
-      document.getElementById('key-1').classList.remove('key-taken');
-      document.getElementById('key-2').classList.remove('key-taken');
+    let audioCtx = null;
+    let activeBiome = 'standby';
+
+    function toggleLockState() {
+      const isLocked = document.getElementById('cabinet-lock').checked;
+      document.getElementById('lock-text').innerText = isLocked ? "LOCKED" : "UNLOCKED";
       
-      // Animate selection (key swings off hook)
-      document.getElementById(`key-${id}`).classList.add('key-taken');
+      // Play heavy lock clack
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(isLocked ? 90 : 150, now);
       
-      // Populate booking ledger input
-      document.getElementById('selected-room-input').value = `${roomName} (${price})`;
-      
-      // Play a tiny synthesized key bell chime sound!
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(1200, now); // High pitch bell chime
-      
-      gain.gain.setValueAtTime(0.1, now);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
       
       osc.connect(gain);
-      gain.connect(audioCtx.destination);
+      gain.connect(ctx.destination);
       osc.start(now);
-      osc.stop(now + 0.6);
+      osc.stop(now + 0.12);
     }
+
+    function selectKey(id, roomName, price, biome) {
+      const isLocked = document.getElementById('cabinet-lock').checked;
+      if (isLocked) {
+        alert("The cabinet is locked! Flip the security lock switch first.");
+        return;
+      }
+
+      // Reset active key classes
+      for (let i = 1; i <= 3; i++) {
+        document.getElementById(`key-${i}`).classList.remove('key-taken');
+      }
+
+      // Animate swing
+      document.getElementById(`key-${id}`).classList.add('key-taken');
+      
+      // Set input value
+      document.getElementById('selected-room-input').value = `${roomName} (${price})`;
+      activeBiome = biome;
+
+      // Rotate compass dial needle
+      const needle = document.getElementById('compass-needle');
+      const degrees = { rainforest: 0, ocean: 90, volcano: 180 };
+      needle.style.transform = `translate(-50%, -100%) rotate(${degrees[biome]}deg)`;
+
+      // Set biome background glow class
+      document.body.className = `glow-${biome}`;
+
+      // Play Dynamic Biome Audio Synthesizer
+      playBiomeSound(biome);
+    }
+
+    function playBiomeSound(biome) {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const now = audioCtx.currentTime;
+
+      if (biome === 'rainforest') {
+        // High bird chirp bell synth
+        const triggerChirp = (time, freq) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, time);
+          gain.gain.setValueAtTime(0.08, time);
+          gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.15);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(time);
+          osc.stop(time + 0.2);
+        };
+        triggerChirp(now, 1500);
+        triggerChirp(now + 0.08, 1800);
+      } else if (biome === 'ocean') {
+        // Deep resonant ocean wave rumble
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(45, now);
+        osc.frequency.linearRampToValueAtTime(35, now + 0.8);
+        
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.8);
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.85);
+      } else {
+        // Volcano: Geothermal crackling hiss
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(180, now);
+        osc.frequency.exponentialRampToValueAtTime(10, now + 0.4);
+
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 1000;
+
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.45);
+      }
+    }
+
+    // Reservation Ledger Storage logic
+    function submitReservation(e) {
+      e.preventDefault();
+      const name = document.getElementById('guest-name').value;
+      const date = document.getElementById('arrival-date').value;
+      const room = document.getElementById('selected-room-input').value;
+
+      const newEntry = { name, date, room };
+      let bookings = JSON.parse(localStorage.getItem('earth_bookings') || '[]');
+      bookings.push(newEntry);
+      localStorage.setItem('earth_bookings', JSON.stringify(bookings));
+
+      // Reset form
+      document.getElementById('guest-name').value = '';
+      document.getElementById('arrival-date').value = '';
+      document.getElementById('selected-room-input').value = '';
+      document.body.className = '';
+      
+      // Reset keys and compass
+      for (let i = 1; i <= 3; i++) {
+        document.getElementById(`key-${i}`).classList.remove('key-taken');
+      }
+      document.getElementById('compass-needle').style.transform = 'translate(-50%, -100%) rotate(-90deg)';
+
+      renderRegistry();
+    }
+
+    function renderRegistry() {
+      const rows = document.getElementById('registry-rows');
+      rows.innerHTML = '';
+      const bookings = JSON.parse(localStorage.getItem('earth_bookings') || '[]');
+      
+      if (bookings.length === 0) {
+        rows.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#6b7280; font-style:italic;">No explorers registered yet</td></tr>`;
+        return;
+      }
+
+      bookings.forEach(b => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${b.name}</td>
+          <td>${b.room}</td>
+          <td>${b.date}</td>
+        `;
+        rows.appendChild(tr);
+      });
+    }
+
+    function clearRegistry() {
+      localStorage.removeItem('earth_bookings');
+      renderRegistry();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderRegistry();
+    });
   </script>
 </body>
 </html>

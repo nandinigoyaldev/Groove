@@ -19,7 +19,7 @@ const PROJECTS: Project[] = [
   },
   {
     id: 'rock-paper-scissors',
-    title: 'Earth',
+    title: 'Spindle',
     description: 'A classic game built as a vintage cassette deck with pitch-bend TAPE TILT.',
     longDescription: 'Play rock-paper-scissors on a tactile 1980s tape console. Features spinning cassette reels, responsive click sound waves, and a rare TAPE TILT switch that bends pitch down 35% and activates cheat mode.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Local Storage'],
@@ -30,9 +30,9 @@ const PROJECTS: Project[] = [
   },
   {
     id: 'hotel-landing',
-    title: 'Hearth',
-    description: 'A vintage hotel key cabinet landing page with selection chimes.',
-    longDescription: 'Browse rooms as brass key tags hanging on reception pegs. Selecting a key triggers a swing animation and a synthesized bell chime, auto-filling the registry ledger form.',
+    title: 'Earth',
+    description: 'A vintage nature sanctuary key cabinet console with active ledger logs.',
+    longDescription: 'Browse room biomes as brass key tags hanging on pegs. Selecting a key tag detaches it with an animation, shifts the background glow, triggers bird/ocean sound synthesis, and populates a persistent localStorage registry.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Vite'],
     themeColor: '#b45309',
     gradient: '#faf9f5',

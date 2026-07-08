@@ -1,4 +1,4 @@
-/* Cozy Hotel Key Cabinet & Ledger Stylesheet */
+/* Earth Sanctuary Booking Cabinet Console styles */
 
 * {
   margin: 0;
@@ -8,15 +8,22 @@
 
 body {
   background-color: #faf9f5;
-  color: #2b1f1d;
+  color: #d1c2a5;
   font-family: 'Outfit', sans-serif;
-  line-height: 1.6;
+  line-height: 1.5;
+  min-height: 100vh;
+  transition: background 0.8s ease;
 }
 
-/* Nav Header */
+/* Ambient glow overrides for biomes */
+body.glow-rainforest { background-color: #0c1a11; }
+body.glow-ocean { background-color: #0b1528; }
+body.glow-volcano { background-color: #1e110b; }
+
+/* Luxury Nav */
 .luxury-nav {
-  height: 70px;
-  background: #170d0c; /* Mahogany dark brown */
+  height: 60px;
+  background: #170d0c;
   border-bottom: 2px solid #b45309;
   display: flex;
   align-items: center;
@@ -33,23 +40,20 @@ body {
 }
 
 .logo-gold {
-  color: #f59e0b;
+  color: #fbbf24;
   font-family: monospace;
   font-weight: 800;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 2px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .nav-links a {
   color: #d1c2a5;
   text-decoration: none;
   font-family: monospace;
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 1px;
-  margin-left: 20px;
+  margin-left: 18px;
   font-weight: 700;
 }
 
@@ -57,85 +61,163 @@ body {
   color: #fbbf24;
 }
 
-/* Hero Section */
-.luxury-hero {
-  height: 250px;
-  background: linear-gradient(rgba(23,13,12,0.85), rgba(23,13,12,0.95)), url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80');
-  background-size: cover;
-  background-position: center;
+/* Console Layout Grid */
+.console-layout {
+  max-width: 850px;
+  margin: 20px auto;
+  padding: 0 16px;
   display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Top bar with Compass and Lock */
+.console-top {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 0 20px;
+  background: #170d0c;
+  border: 1.5px solid rgba(180, 83, 9, 0.25);
+  border-radius: 8px;
+  padding: 12px 24px;
 }
 
-.hero-overlay {
-  max-width: 600px;
+/* Compass Widget */
+.compass-widget {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.hero-sub {
-  color: #b45309;
+.compass-label {
   font-family: monospace;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  margin-bottom: 8px;
-}
-
-.hero-title {
-  font-size: 24px;
-  font-weight: 800;
-  line-height: 1.2;
-  margin-bottom: 8px;
-  color: #fff;
-}
-
-.hero-desc {
-  font-size: 12px;
-  color: #9ca3af;
-  margin-bottom: 14px;
-}
-
-.btn-gold {
-  display: inline-block;
-  background: #b45309;
-  color: white;
-  text-decoration: none;
-  font-weight: 700;
-  padding: 8px 20px;
-  border-radius: 4px;
-  font-size: 11px;
+  font-size: 8px;
+  color: #b45309;
   letter-spacing: 1px;
-  transition: opacity 0.2s;
 }
 
-.btn-gold:hover {
-  opacity: 0.9;
+.compass-face {
+  width: 70px;
+  height: 70px;
+  border: 2px solid #fbbf24;
+  border-radius: 50%;
+  background: #0f0706;
+  position: relative;
 }
 
-/* Cabinet section */
+.compass-needle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 25px;
+  background: #ef4444;
+  transform: translate(-50%, -100%) rotate(-90deg); /* points to standby initially */
+  transform-origin: bottom center;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 10;
+}
+
+.compass-face span {
+  position: absolute;
+  font-size: 5px;
+  font-weight: 700;
+}
+
+.lbl-n { top: 3px; left: 50%; transform: translateX(-50%); color: #10b981; }
+.lbl-e { right: 3px; top: 50%; transform: translateY(-50%); color: #60a5fa; }
+.lbl-s { bottom: 3px; left: 50%; transform: translateX(-50%); color: #f97316; }
+.lbl-w { left: 3px; top: 50%; transform: translateY(-50%); color: #6b7280; }
+
+/* Lock Widget */
+.lock-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.lock-label {
+  font-family: monospace;
+  font-size: 8px;
+  color: #b45309;
+}
+
+.lock-status {
+  font-family: monospace;
+  font-size: 9px;
+  font-weight: 700;
+  color: #fbbf24;
+  margin-top: 2px;
+}
+
+/* Slider Toggle */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 18px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #374151;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: 0.2s;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+input:checked + .toggle-slider {
+  background-color: #ef4444;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(18px);
+}
+
+/* Key Hooks Cabinet Section */
 .luxury-rooms {
-  max-width: 900px;
-  margin: 30px auto;
-  padding: 0 20px;
+  background: #2b1f1d;
+  border: 6px solid #170d0c;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
 
 .section-header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .section-header .sub {
   font-family: monospace;
   color: #b45309;
-  font-size: 9px;
+  font-size: 8px;
   letter-spacing: 2px;
 }
 
 .section-header h2 {
-  font-size: 22px;
-  margin-top: 4px;
+  font-size: 18px;
   font-weight: 800;
 }
 
@@ -143,29 +225,24 @@ body {
   width: 40px;
   height: 2px;
   background: #b45309;
-  margin: 8px auto 0;
+  margin: 6px auto 0;
 }
 
-/* Key Cabinet Board */
 .key-cabinet {
-  background: #2b1f1d; /* Dark mahogany cabinet backboard */
-  border: 8px solid #170d0c;
-  border-radius: 12px;
-  padding: 24px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
 }
 
 .key-hook {
   background: #170d0c;
-  border: 1.5px solid rgba(180, 83, 9, 0.2);
+  border: 1.5px solid rgba(180, 83, 9, 0.15);
   border-radius: 8px;
-  padding: 16px;
+  padding: 12px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
   cursor: pointer;
   position: relative;
   transition: border-color 0.2s;
@@ -176,157 +253,142 @@ body {
 }
 
 .brass-peg {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background: radial-gradient(circle, #fbbf24 30%, #b45309 90%);
   border-radius: 50%;
   position: absolute;
-  top: 14px;
-  left: 28px;
-  box-shadow: 0 3px 5px rgba(0,0,0,0.5);
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
   z-index: 30;
 }
 
-/* Vintage Tag Key */
+/* Brass Key and Tag */
 .brass-key {
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
-  z-index: 20;
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   transform-origin: top center;
-  padding-top: 8px;
-  width: 50px;
-  flex-shrink: 0;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  padding-top: 6px;
+  width: 44px;
+  z-index: 20;
 }
 
 .key-ring {
-  width: 16px;
-  height: 16px;
-  border: 2.5px solid #fbbf24;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #fbbf24;
   border-radius: 50%;
-  margin-bottom: -4px;
+  margin-bottom: -3px;
 }
 
 .key-tag {
-  background: #b45309; /* Tan leather color */
   border: 2px solid #fbbf24;
-  border-radius: 20px 20px 4px 4px;
-  width: 44px;
-  height: 65px;
+  border-radius: 16px 16px 4px 4px;
+  width: 40px;
+  height: 55px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: white;
-  padding: 4px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  padding: 2px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
 }
+
+.tag-rainforest { background-color: #065f46; } /* forest green */
+.tag-ocean { background-color: #1e3a8a; } /* deep ocean blue */
+.tag-volcano { background-color: #7c2d12; } /* magma red */
 
 .room-number {
   font-family: monospace;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 800;
   color: #fbbf24;
 }
 
 .room-name {
-  font-size: 6px;
-  letter-spacing: 0.5px;
+  font-size: 5px;
   font-weight: 700;
-  text-transform: uppercase;
-  margin-top: 2px;
+  letter-spacing: 0.5px;
 }
 
 .room-price {
-  font-size: 5.5px;
+  font-size: 5px;
   color: #d1c2a5;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
-/* Swing-drop Animation when key is selected */
+/* Key Selected swing-drop animation */
 .brass-key.key-taken {
-  transform: rotate(-15deg) translateY(12px) scale(0.95);
+  transform: rotate(-15deg) translateY(8px) scale(0.95);
   z-index: 40;
 }
 
 .hook-details {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  text-align: center;
   color: #d1c2a5;
-  flex: 1;
 }
 
 .hook-details h3 {
   font-family: monospace;
-  font-size: 13px;
+  font-size: 11px;
   color: #fbbf24;
+  margin-bottom: 2px;
 }
 
 .hook-details .room-desc {
-  font-size: 11px;
-  color: #9ca3af;
-  line-height: 1.4;
-}
-
-.hook-details .room-specs {
-  display: flex;
-  gap: 12px;
-  font-family: monospace;
   font-size: 9.5px;
-  color: #6b7280;
+  color: #9ca3af;
+  line-height: 1.3;
 }
 
-/* Booking Ledger Panel */
-.luxury-booking {
-  max-width: 900px;
-  margin: 30px auto;
-  padding: 0 20px;
-}
-
-.booking-wrapper {
+/* Desk containing Reservation Form and Registry List */
+.ledger-desk {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
   background: #170d0c;
   border: 3px solid #b45309;
   border-radius: 8px;
-  padding: 24px;
-  text-align: center;
+  padding: 20px;
   box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
 }
 
-.booking-wrapper h2 {
+.booking-wrapper h2, .registry-log h2 {
   font-family: monospace;
-  font-size: 16px;
+  font-size: 13px;
   color: #fbbf24;
-  letter-spacing: 2px;
-  margin-bottom: 4px;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  border-bottom: 1px dashed rgba(251, 191, 36, 0.2);
+  padding-bottom: 4px;
 }
 
 .booking-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  text-align: left;
 }
 
 .form-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  width: 100%;
-  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
-  text-align: left;
-  gap: 4px;
+  gap: 3px;
 }
 
 .input-group label {
   font-family: monospace;
-  font-size: 9px;
+  font-size: 8px;
   text-transform: uppercase;
   color: #9ca3af;
 }
@@ -337,7 +399,6 @@ body {
   border-radius: 4px;
   padding: 6px 10px;
   color: white;
-  font-family: inherit;
   font-size: 11px;
   outline: none;
 }
@@ -346,12 +407,62 @@ body {
   border-color: #fbbf24;
 }
 
+/* Registry log guestbook table */
+.registry-log {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-scroll {
+  flex: 1;
+  height: 130px;
+  overflow-y: auto;
+  border: 1px solid rgba(180, 83, 9, 0.2);
+  border-radius: 4px;
+  background: #0f0706;
+}
+
+.ledger-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: monospace;
+  font-size: 9.5px;
+  color: #d1c2a5;
+  text-align: left;
+}
+
+.ledger-table th, .ledger-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.ledger-table th {
+  background: rgba(180, 83, 9, 0.15);
+  color: #fbbf24;
+}
+
+.clear-ledger-btn {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  font-family: monospace;
+  font-size: 8px;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-top: 10px;
+  text-align: right;
+  align-self: flex-end;
+}
+
+.clear-ledger-btn:hover {
+  color: white;
+}
+
 .luxury-footer {
   text-align: center;
-  padding: 24px 0;
-  border-top: 1px solid rgba(0,0,0,0.06);
+  padding: 16px 0;
   font-family: monospace;
-  font-size: 9px;
+  font-size: 8px;
   color: #6b7280;
 }
 
@@ -359,7 +470,7 @@ body {
   .key-cabinet {
     grid-template-columns: 1fr;
   }
-  .form-grid {
+  .ledger-desk {
     grid-template-columns: 1fr;
   }
 }
