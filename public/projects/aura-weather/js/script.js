@@ -18,24 +18,23 @@ let activeTemp = 18;
 class WeatherRadio {
   constructor() {
     this.ctx = null;
-    this.sourceNode = null;
-    this.lfoNode = null;
-    this.gainNode = null;
+    this.audioNodes = [];
     this.isPlaying = false;
+    this.melodyInterval = null;
   }
 
   playRickshawHorn() {
     if (!this.ctx) return;
     const now = this.ctx.currentTime;
     
-    // Quick double beep beep!
-    const triggerBeep = (time) => {
+    // Funny double squeaky horn
+    const triggerBeep = (time, freq) => {
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(850, time); // Rickshaw high pitch horn
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, time);
       gain.gain.setValueAtTime(0, time);
-      gain.gain.linearRampToValueAtTime(0.12, time + 0.01);
+      gain.gain.linearRampToValueAtTime(0.15, time + 0.01);
       gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.12);
       osc.connect(gain);
       gain.connect(this.ctx.destination);
@@ -43,8 +42,8 @@ class WeatherRadio {
       osc.stop(time + 0.15);
     };
 
-    triggerBeep(now);
-    triggerBeep(now + 0.18);
+    triggerBeep(now, 900);
+    triggerBeep(now + 0.12, 950);
   }
 
   start(condition, city) {
@@ -52,79 +51,109 @@ class WeatherRadio {
     this.isPlaying = true;
 
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-    this.gainNode = this.ctx.createGain();
-    this.gainNode.gain.setValueAtTime(0.2, this.ctx.currentTime);
-    this.gainNode.connect(this.ctx.destination);
-
     const isRain = condition.includes("rain") || condition.includes("drizzle") || condition.includes("thunderstorm");
     const isDelhi = city.toLowerCase() === "delhi";
 
     if (isRain) {
-      // Synthesize rain using white noise + low pass filter
+      // 1. Rainy Ambient Sound: Soft white noise rain hiss
       const bufferSize = this.ctx.sampleRate * 2;
       const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
       const output = noiseBuffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) {
         output[i] = Math.random() * 2 - 1;
       }
-      this.sourceNode = this.ctx.createBufferSource();
-      this.sourceNode.buffer = noiseBuffer;
-      this.sourceNode.loop = true;
+      const noiseSource = this.ctx.createBufferSource();
+      noiseSource.buffer = noiseBuffer;
+      noiseSource.loop = true;
 
       const filter = this.ctx.createBiquadFilter();
       filter.type = 'lowpass';
-      filter.frequency.value = 450; // Muffled rain sound
+      filter.frequency.value = 500;
 
-      // Modulate volume slightly to simulate rain waves
-      this.lfoNode = this.ctx.createGain();
-      this.lfoNode.gain.setValueAtTime(0.05, this.ctx.currentTime);
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.06, this.ctx.currentTime);
 
-      this.sourceNode.connect(filter);
-      filter.connect(this.lfoNode);
-      this.lfoNode.connect(this.gainNode);
-      this.sourceNode.start();
-      
-      statusText.innerHTML = "BROADCAST: RAIN WEATHER NOISE";
-    } else {
-      // Synthesize sunny sound: Warm sine major chords
-      const notes = [293.66, 369.99, 440.00]; // D major chord
-      this.sourceNode = [];
-      
-      notes.forEach((freq) => {
+      noiseSource.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(this.ctx.destination);
+      noiseSource.start();
+      this.audioNodes.push(noiseSource);
+
+      // 2. Nostalgic Melancholy Rain Melody: Slow cozy minor progression
+      // Plays a recurring soft chime note every 2 seconds
+      const notes = [220.00, 261.63, 293.66, 329.63]; // A minor progression (A, C, D, E)
+      let noteIdx = 0;
+
+      const playRainChime = () => {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
-        const oscGain = this.ctx.createGain();
+        const gain = this.ctx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        osc.frequency.setValueAtTime(notes[noteIdx], now);
         
-        oscGain.gain.setValueAtTime(0.02, this.ctx.currentTime);
-        osc.connect(oscGain);
-        oscGain.connect(this.gainNode);
-        osc.start();
-        this.sourceNode.push(osc);
-      });
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.08, now + 0.5); // Soft slow attack
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.8); // Long fade
 
-      statusText.innerHTML = "BROADCAST: SUNNY SUMMER CHORD";
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 2);
+
+        noteIdx = (noteIdx + 1) % notes.length;
+      };
+
+      playRainChime();
+      this.melodyInterval = setInterval(playRainChime, 2000);
+      statusText.innerHTML = "TUNE: COZY RAIN MELODY 🌧️🎵";
+    } else {
+      // Sunny Ambient Sound: Bouncy, happy, nostalgic cartoon arpeggio (C Major)
+      const arpeggio = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63]; // C, E, G, C5
+      let step = 0;
+
+      const playSunnyStep = () => {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle'; // Sweet cartoony sound
+        osc.frequency.setValueAtTime(arpeggio[step], now);
+
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.12, now + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.45);
+
+        step = (step + 1) % arpeggio.length;
+      };
+
+      playSunnyStep();
+      this.melodyInterval = setInterval(playSunnyStep, 400); // Quick bouncy tempo
+      statusText.innerHTML = "TUNE: NOSTALGIC SUNSHINE CHIME ☀️✨";
     }
 
     if (isDelhi) {
-      statusText.innerHTML = "TUNE: DELHI AM // AUTO-RICKSHAW DETECTED";
-      // Honk the horn!
+      statusText.innerHTML = "TUNE: DELHI AM // AUTO-RICKSHAW HONK 🛺";
+      // Honk the cartoon rickshaw horn!
       setTimeout(() => this.playRickshawHorn(), 400);
     }
   }
 
   stop() {
     this.isPlaying = false;
-    if (this.sourceNode) {
-      if (Array.isArray(this.sourceNode)) {
-        this.sourceNode.forEach(osc => {
-          try { osc.stop(); } catch(e){}
-        });
-      } else {
-        try { this.sourceNode.stop(); } catch(e){}
-      }
-      this.sourceNode = null;
+    if (this.melodyInterval) {
+      clearInterval(this.melodyInterval);
+      this.melodyInterval = null;
     }
+    this.audioNodes.forEach(node => {
+      try { node.stop(); } catch(e){}
+    });
+    this.audioNodes = [];
     if (this.ctx) {
       this.ctx.close();
       this.ctx = null;
@@ -242,7 +271,7 @@ function useMockWeather(city) {
   let condition = "clear";
   
   if (city.toLowerCase() === "delhi") {
-    temp = 38; // Sunny & Hot in Delhi mock
+    temp = 38;
     condition = "clear";
   } else if (city.toLowerCase() === "london") {
     temp = 12;
