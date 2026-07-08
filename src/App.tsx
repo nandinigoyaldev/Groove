@@ -19,9 +19,9 @@ const PROJECTS: Project[] = [
   },
   {
     id: 'rock-paper-scissors',
-    title: 'Rock Paper Scissors',
-    description: 'Play rock, paper, scissors against the computer with scoreboard tracking.',
-    longDescription: 'A classic game built with beautiful buttons, sound logic, randomized computer choices, and active visual state indicators.',
+    title: 'Deck Showdown',
+    description: 'A classic game built as an interactive vintage cassette tape deck.',
+    longDescription: 'Play rock-paper-scissors on a tactile 1980s tape console. Features spinning cassette reels, responsive click sound waves, and dual VU volume meter graphics.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Local Storage'],
     themeColor: '#ef4444',
     gradient: '#faf9f5',

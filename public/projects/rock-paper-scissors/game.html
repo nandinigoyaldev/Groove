@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Retro Cassette Showdown</title>
+  <title>Deck Showdown | Retro Cassette Game</title>
   <link rel="stylesheet" href="style/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,49 +11,67 @@
 </head>
 <body>
   <div class="cassette-deck">
-    {/* Boombox Header */}
+    <!-- Boombox Header -->
     <header class="deck-header">
-      <h1 class="deck-title">ANALOG TAPE DECK</h1>
-      <span class="deck-model">MODEL RP-88 // STEREO</span>
+      <h1 class="deck-title">ANALOG DECK</h1>
+      <span class="deck-model">MODEL DS-80 // STEREO</span>
     </header>
 
-    {/* Cassette Window */}
+    <!-- Cassette Window with Vector Tape -->
     <div class="tape-window">
-      <div class="spindle-left spinning-spindle"></div>
-      <div class="spindle-right spinning-spindle"></div>
+      <div class="cassette-body">
+        <div class="reel-container">
+          <div class="spindle-left" id="spindle-l">
+            <div class="teeth"></div>
+          </div>
+          <div class="tape-roll" id="roll-l"></div>
+        </div>
+        <div class="reel-container">
+          <div class="spindle-right" id="spindle-r">
+            <div class="teeth"></div>
+          </div>
+          <div class="tape-roll" id="roll-r"></div>
+        </div>
+      </div>
       
-      {/* Tape readout display */}
+      <!-- Tape readout display overlay -->
       <div class="tape-display">
-        <div class="status-meta">TAPE COUNTER: <span id="tape-counter">00:00</span></div>
-        <div class="outcome-text" id="game-status">PRESS A SHAPE KEY...</div>
+        <div class="status-meta">COUNTER: <span id="tape-counter">00:00</span></div>
+        <div class="outcome-text" id="game-status">TAPE INSERTED. READY.</div>
       </div>
     </div>
 
-    {/* VU Meter (Volume indicators) */}
+    <!-- VU Meter (Volume indicators) -->
     <div class="vu-meter">
       <div class="vu-channel">
         <span>L</span>
         <div class="vu-leds" id="vu-l">
-          <div class="led green"></div><div class="led green"></div><div class="led green"></div>
-          <div class="led orange"></div><div class="led red"></div>
+          <div class="led green" id="l-g1"></div>
+          <div class="led green" id="l-g2"></div>
+          <div class="led green" id="l-g3"></div>
+          <div class="led orange" id="l-o1"></div>
+          <div class="led red" id="l-r1"></div>
         </div>
       </div>
       <div class="vu-channel">
         <span>R</span>
         <div class="vu-leds" id="vu-r">
-          <div class="led green"></div><div class="led green"></div><div class="led green"></div>
-          <div class="led orange"></div><div class="led red"></div>
+          <div class="led green" id="r-g1"></div>
+          <div class="led green" id="r-g2"></div>
+          <div class="led green" id="r-g3"></div>
+          <div class="led orange" id="r-o1"></div>
+          <div class="led red" id="r-r1"></div>
         </div>
       </div>
     </div>
 
-    {/* Score readout */}
+    <!-- Score readout -->
     <div class="score-display">
       <div class="score-card">PLAYER: <span id="player-score">0</span></div>
       <div class="score-card">CPU: <span id="computer-score">0</span></div>
     </div>
 
-    {/* Tape deck physical buttons */}
+    <!-- Tape deck physical buttons -->
     <div class="deck-buttons">
       <button class="deck-btn btn-rock" onclick="playGame('rock')">
         <span class="symbol">✊</span>
@@ -70,7 +88,7 @@
     </div>
 
     <div style="text-align: center; margin-top: 14px;">
-      <button class="eject-btn" onclick="resetGame()">EJECT TAPE</button>
+      <button class="eject-btn" onclick="resetGame()">EJECT CASSETTE</button>
     </div>
   </div>
 
@@ -78,6 +96,7 @@
     let pScore = 0;
     let cScore = 0;
     let roundCount = 0;
+    let audioCtx = null;
 
     const emojiMap = {
       rock: '✊',
@@ -85,18 +104,139 @@
       scissors: '✌️'
     };
 
-    function triggerVUMeter() {
-      // Flash the VU LEDs dynamically on keypress
+    // Synthesize Mechanical Cassette Button Click Sound
+    function playClackSound() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(120, now); // Low thud
+      osc.frequency.exponentialRampToValueAtTime(10, now + 0.08);
+
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.1);
+    }
+
+    // Synthesize Win/Loss/Tie Tones
+    function playResultSound(result) {
+      if (!audioCtx) return;
+      const now = audioCtx.currentTime;
+
+      if (result === 'win') {
+        // Upbeat victory chime (arpeggio)
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.1, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.2);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.25);
+        });
+      } else if (result === 'lose') {
+        // Downward sad tone
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(330, now);
+        osc.frequency.linearRampToValueAtTime(180, now + 0.4);
+        
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(250, now);
+
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.45);
+      } else {
+        // Tie chirp
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.setValueAtTime(440, now + 0.06);
+
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.15);
+      }
+    }
+
+    function triggerVUMeters(result) {
       const leds = document.querySelectorAll('.led');
-      leds.forEach(led => {
-        if (Math.random() > 0.4) {
-          led.classList.add('lit');
-          setTimeout(() => led.classList.remove('lit'), 250);
-        }
-      });
+      leds.forEach(led => led.classList.remove('lit'));
+
+      // Flash left and right dynamically based on match result
+      if (result === 'win') {
+        document.getElementById('l-g1').classList.add('lit');
+        document.getElementById('l-g2').classList.add('lit');
+        document.getElementById('l-g3').classList.add('lit');
+        document.getElementById('l-o1').classList.add('lit');
+      } else if (result === 'lose') {
+        document.getElementById('r-g1').classList.add('lit');
+        document.getElementById('r-g2').classList.add('lit');
+        document.getElementById('r-g3').classList.add('lit');
+        document.getElementById('r-o1').classList.add('lit');
+      } else {
+        document.getElementById('l-g1').classList.add('lit');
+        document.getElementById('l-g2').classList.add('lit');
+        document.getElementById('r-g1').classList.add('lit');
+        document.getElementById('r-g2').classList.add('lit');
+      }
+
+      // Briefly light up red clipping LEDs for hits
+      setTimeout(() => {
+        document.getElementById('l-r1').classList.add('lit');
+        document.getElementById('r-r1').classList.add('lit');
+        setTimeout(() => {
+          document.getElementById('l-r1').classList.remove('lit');
+          document.getElementById('r-r1').classList.remove('lit');
+        }, 150);
+      }, 50);
+    }
+
+    function spinSpindles() {
+      const spindleL = document.getElementById('spindle-l');
+      const spindleR = document.getElementById('spindle-r');
+      
+      // Force spin animation restart
+      spindleL.classList.remove('spinning-spindle');
+      spindleR.classList.remove('spinning-spindle');
+      void spindleL.offsetWidth; // Trigger reflow
+      
+      spindleL.classList.add('spinning-spindle');
+      spindleR.classList.add('spinning-spindle');
+
+      setTimeout(() => {
+        spindleL.classList.remove('spinning-spindle');
+        spindleR.classList.remove('spinning-spindle');
+      }, 1000);
     }
 
     function playGame(userChoice) {
+      playClackSound();
+      spinSpindles();
+
       const choices = ['rock', 'paper', 'scissors'];
       const computerChoice = choices[Math.floor(Math.random() * choices.length)];
       roundCount++;
@@ -106,36 +246,45 @@
       const seconds = (roundCount % 60).toString().padStart(2, '0');
       document.getElementById('tape-counter').innerText = `${minutes}:${seconds}`;
 
-      triggerVUMeter();
-
+      let result = '';
       let resultText = '';
+      
       if (userChoice === computerChoice) {
+        result = 'tie';
         resultText = `TIE: BOTH EXPOSED ${emojiMap[userChoice]}`;
       } else if (
         (userChoice === 'rock' && computerChoice === 'scissors') ||
         (userChoice === 'paper' && computerChoice === 'rock') ||
         (userChoice === 'scissors' && computerChoice === 'paper')
       ) {
+        result = 'win';
         pScore++;
         document.getElementById('player-score').innerText = pScore;
         resultText = `WIN: PLAY ${emojiMap[userChoice]} > CPU ${emojiMap[computerChoice]}`;
       } else {
+        result = 'lose';
         cScore++;
         document.getElementById('computer-score').innerText = cScore;
         resultText = `LOSE: CPU ${emojiMap[computerChoice]} > PLAY ${emojiMap[userChoice]}`;
       }
 
+      playResultSound(result);
+      triggerVUMeters(result);
       document.getElementById('game-status').innerText = resultText;
     }
 
     function resetGame() {
+      playClackSound();
       pScore = 0;
       cScore = 0;
       roundCount = 0;
       document.getElementById('player-score').innerText = '0';
       document.getElementById('computer-score').innerText = '0';
       document.getElementById('tape-counter').innerText = '00:00';
-      document.getElementById('game-status').innerText = "TAPE INSCRIBED. READY.";
+      document.getElementById('game-status').innerText = "CASSETTE INITIALIZED. READY.";
+      
+      const leds = document.querySelectorAll('.led');
+      leds.forEach(led => led.classList.remove('lit'));
     }
   </script>
 </body>

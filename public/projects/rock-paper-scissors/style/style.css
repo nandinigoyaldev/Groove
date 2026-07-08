@@ -23,23 +23,23 @@ body {
   background: #1e1e24; /* Dark metal console */
   border: 10px solid #2e3039; /* Metal casing */
   border-radius: 12px;
-  padding: 24px;
+  padding: 20px;
   box-shadow: 0 15px 35px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .deck-header {
   border-bottom: 1px solid rgba(255,255,255,0.08);
-  padding-bottom: 10px;
+  padding-bottom: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .deck-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
   letter-spacing: 1px;
   color: #9ca3af;
@@ -54,58 +54,108 @@ body {
 /* Tape Window */
 .tape-window {
   background: #09090b;
-  height: 100px;
+  height: 120px;
   border-radius: 6px;
   border: 3px solid #374151;
   position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 40px;
   overflow: hidden;
+}
+
+/* Casing & Tape Reels */
+.cassette-body {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  right: 20px;
+  bottom: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.reel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .spindle-left, .spindle-right {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 3px dashed #fbbf24;
-  background: #18181b;
+  border: 4px solid #fbbf24;
+  background: #111;
+  z-index: 20;
+  position: relative;
+  transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+.spindle-left .teeth, .spindle-right .teeth {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-image: 
+    linear-gradient(0deg, transparent 40%, #fbbf24 40%, #fbbf24 60%, transparent 60%),
+    linear-gradient(60deg, transparent 40%, #fbbf24 40%, #fbbf24 60%, transparent 60%),
+    linear-gradient(120deg, transparent 40%, #fbbf24 40%, #fbbf24 60%, transparent 60%);
+}
+
+.spinning-spindle {
+  animation: spindleSpin 1.0s linear infinite;
+}
+
+@keyframes spindleSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.tape-roll {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(180, 83, 9, 0.12); /* Brown tape color representation */
+  border: 1px dashed rgba(180, 83, 9, 0.25);
+  z-index: 10;
+}
+
+/* Tape display readout overlay */
 .tape-display {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
+  bottom: 6px;
+  left: 0;
   width: 100%;
-  padding: 0 90px;
-  z-index: 10;
+  text-align: center;
+  z-index: 30;
 }
 
 .status-meta {
   font-family: 'Fira Code', monospace;
-  font-size: 9px;
+  font-size: 8px;
   color: #4b5563;
 }
 
 .outcome-text {
   font-family: 'Fira Code', monospace;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   color: #fbbf24;
-  margin-top: 4px;
   text-transform: uppercase;
+  text-shadow: 0 0 6px rgba(251, 191, 36, 0.3);
 }
 
 /* VU Meter */
 .vu-meter {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
   background: #111827;
-  padding: 10px;
+  padding: 8px 12px;
   border-radius: 6px;
   border: 1px solid rgba(255,255,255,0.05);
 }
@@ -115,33 +165,33 @@ body {
   align-items: center;
   gap: 8px;
   font-family: 'Fira Code', monospace;
-  font-size: 9px;
+  font-size: 8px;
   color: #9ca3af;
 }
 
 .vu-leds {
   display: flex;
-  gap: 4px;
+  gap: 3px;
   flex: 1;
 }
 
 .led {
-  height: 8px;
+  height: 6px;
   flex: 1;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.02);
   border-radius: 1px;
-  transition: background 0.15s;
+  transition: all 0.15s ease-out;
 }
 
-.led.green.lit { background: #10b981; box-shadow: 0 0 6px #10b981; }
-.led.orange.lit { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
-.led.red.lit { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+.led.green.lit { background: #10b981; box-shadow: 0 0 4px #10b981; }
+.led.orange.lit { background: #f59e0b; box-shadow: 0 0 4px #f59e0b; }
+.led.red.lit { background: #ef4444; box-shadow: 0 0 4px #ef4444; }
 
 /* Score */
 .score-display {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
 }
 
 .score-card {
@@ -149,10 +199,10 @@ body {
   background: #1f2937;
   border: 1.5px solid rgba(255,255,255,0.05);
   border-radius: 6px;
-  padding: 8px;
+  padding: 6px;
   text-align: center;
   font-family: 'Fira Code', monospace;
-  font-size: 12px;
+  font-size: 11px;
   color: white;
 }
 
@@ -165,20 +215,20 @@ body {
 .deck-buttons {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 6px;
 }
 
 .deck-btn {
   background: linear-gradient(180deg, #374151 0%, #1f2937 100%);
   border: 2px solid #4b5563;
   border-radius: 4px;
-  padding: 10px;
+  padding: 8px;
   color: white;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   transition: transform 0.1s, box-shadow 0.1s;
 }
 
@@ -189,11 +239,11 @@ body {
 }
 
 .deck-btn .symbol {
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .deck-btn .lbl {
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 700;
   color: #9ca3af;
 }
@@ -203,7 +253,7 @@ body {
   border: none;
   color: #6b7280;
   font-family: 'Fira Code', monospace;
-  font-size: 11px;
+  font-size: 10px;
   cursor: pointer;
   text-decoration: underline;
 }
