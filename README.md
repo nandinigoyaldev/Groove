@@ -1,6 +1,6 @@
-# Spins // The Vinyl Shelf 📻🌿☕
+# Groove // The Analog Crate 📻🌿☕
 
-Welcome to **Spins**—a tactile, relaxing vinyl record player showcase designed to display web projects as illustrated record albums inside an interactive crate shelf.
+Welcome to **Groove**—a tactile, relaxing vinyl record player showcase designed to display web projects as illustrated record albums inside an interactive crate shelf.
 
 Instead of browsing standard directories, visitors swipe through album sleeves in a wooden crate shelf and place records on a spinning turntable to run code sandboxes.
 
@@ -15,12 +15,12 @@ Instead of browsing standard directories, visitors swipe through album sleeves i
 
 ---
 
-## 🚀 Projects Showcased (Aesthetic Redesigns)
+## 🚀 Projects Showcased (Cohesive Analog Redesigns)
 
-1. ☀️ **AuraWeather**: A premium Apple Weather-style frosted glass widget featuring detailed metrics and search.
-2. ✊ **Rock-Paper-Scissors**: Redesigned into a cozy **pencil sketch/chalkboard** theme with hand-drawn buttons and score indicators.
-3. 🏨 **My Hotels**: A luxury hotel room catalog and reservation landing page showcasing dark gold hues and serif typography.
-4. 🧭 **Paradigm Shift**: A minimal sci-fi grid framework showcase exploring vector lines and status blocks.
+1. ☀️ **AuraWeather (Vintage Weather Radio)**: Redesigned as a bakelite radio receiver with backlit frequency dials, temperature indicators, and weather telemetry.
+2. ✊ **Rock-Paper-Scissors (Retro Cassette Deck)**: Styled as a physical cassette tape player. Features spindle gears, tape counter readouts, VU volume level meters, and physical tape deck buttons (`[ROCK]`, `[PAPER]`, `[SCISSORS]`).
+3. 🏨 **My Hotels (Reception Key Cabinet)**: Styled as a vintage mahogany hotel reception cabinet. Rooms are displayed as heavy brass key tags hanging on hooks, paired with a registration ledger.
+4. 🧭 **Paradigm Shift (Modular Synthesizer)**: Styled as a modular synthesizer control board with patch jacks, sliders, potentiometer knobs, and signal waves.
 
 ---
 

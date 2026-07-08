@@ -1,4 +1,4 @@
-/* Futuristic Minimal Sci-Fi Showcase Style */
+/* Vintage Modular Synthesizer Control Board */
 
 * {
   margin: 0;
@@ -7,8 +7,8 @@
 }
 
 body {
-  background-color: #030712;
-  color: #38bdf8;
+  background-color: #faf9f5;
+  color: #a3a3a3;
   font-family: 'Outfit', sans-serif;
   line-height: 1.6;
   min-height: 100vh;
@@ -20,41 +20,45 @@ body {
 
 .cyber-framework {
   width: 100%;
-  max-width: 620px;
+  max-width: 600px;
+  background: #17181c; /* Carbon steel panel face */
+  border: 8px solid #2d2f36; /* Metal bezel frame */
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
 .framework-header {
-  border-left: 2px solid #38bdf8;
-  padding-left: 20px;
-  margin-bottom: 10px;
+  border-left: 3px solid #f59e0b; /* Amber marker line */
+  padding-left: 16px;
+  margin-bottom: 6px;
 }
 
 .grid-label {
   font-family: 'Fira Code', monospace;
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 2px;
-  color: #0ea5e9;
-  margin-bottom: 6px;
+  color: #f59e0b;
 }
 
 .glow-title {
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 900;
   color: white;
   letter-spacing: -0.5px;
-  text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+  font-family: 'Outfit', sans-serif;
 }
 
 .framework-subtitle {
-  font-size: 14px;
-  color: #64748b;
-  margin-top: 4px;
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
 }
 
-/* Grid Framework */
+/* Grid channels */
 .framework-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -62,105 +66,115 @@ body {
 }
 
 .cyber-module {
-  background: rgba(15, 23, 42, 0.4);
-  border: 1px solid rgba(56, 189, 248, 0.15);
-  border-radius: 12px;
-  padding: 24px;
+  background: #0f1013;
+  border: 1.5px solid #2e3039;
+  border-radius: 8px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  transition: all 0.3s;
+  gap: 12px;
+  transition: border-color 0.2s;
+  position: relative;
+}
+
+.cyber-module::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 10px;
+  height: 10px;
+  background: #111;
+  border-radius: 50%;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.8); /* Potentiometer input jack hole */
 }
 
 .cyber-module:hover {
-  border-color: #38bdf8;
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
-  transform: translateY(-2px);
+  border-color: #f59e0b;
 }
 
 .module-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .module-header .index {
   font-family: 'Fira Code', monospace;
-  font-size: 12px;
-  color: #0ea5e9;
+  font-size: 11px;
+  color: #f59e0b;
 }
 
 .module-header h3 {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   color: white;
   letter-spacing: 0.5px;
 }
 
 .cyber-module p {
-  font-size: 13.5px;
-  color: #94a3b8;
-  line-height: 1.6;
+  font-size: 12.5px;
+  color: #9ca3af;
+  line-height: 1.5;
 }
 
 .status-indicator {
   font-family: 'Fira Code', monospace;
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 1px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #0ea5e9;
+  gap: 6px;
+  color: #f59e0b;
   margin-top: auto;
 }
 
 .pulse-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background-color: #38bdf8;
-  box-shadow: 0 0 8px #38bdf8;
-  animation: pulse 2s infinite;
+  background-color: #f59e0b;
+  box-shadow: 0 0 6px #f59e0b;
+  animation: pulse 1.5s infinite;
 }
 
 @keyframes pulse {
-  0% { transform: scale(0.9); opacity: 0.6; }
-  50% { transform: scale(1.1); opacity: 1; }
-  100% { transform: scale(0.9); opacity: 0.6; }
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
 }
 
-/* Console card */
+/* Console panel */
 .cyber-console {
-  background: rgba(15, 23, 42, 0.2);
-  border: 1px dashed rgba(56, 189, 248, 0.25);
-  border-radius: 12px;
-  padding: 24px;
+  background: #0f1013;
+  border: 1.5px dashed rgba(245, 158, 11, 0.3);
+  border-radius: 8px;
+  padding: 20px;
   text-align: center;
 }
 
 .console-wrapper h3 {
-  font-size: 14px;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
   color: white;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .console-wrapper p {
-  font-size: 12.5px;
-  color: #64748b;
-  margin-bottom: 16px;
+  font-size: 11.5px;
+  color: #6b7280;
+  margin-bottom: 14px;
 }
 
 .btn-cyan {
-  background: #38bdf8;
-  color: #030712;
+  background: #f59e0b;
+  color: black;
   border: none;
-  padding: 10px 24px;
+  padding: 8px 20px;
   font-family: 'Fira Code', monospace;
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 11px;
+  font-weight: 700;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 4px;
   transition: opacity 0.2s;
 }
 
@@ -171,10 +185,10 @@ body {
 .framework-footer {
   text-align: center;
   font-family: 'Fira Code', monospace;
-  font-size: 10px;
-  color: #475569;
+  font-size: 9px;
+  color: #4b5563;
   letter-spacing: 1px;
-  margin-top: 10px;
+  margin-top: 6px;
 }
 
 @media (max-width: 600px) {

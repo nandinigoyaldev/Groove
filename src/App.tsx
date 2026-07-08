@@ -75,9 +75,9 @@ export default function App() {
       <nav className="gallery-nav">
         <div className="nav-left">
           <h1 className="nav-brand">
-            <Icons.Disc size={20} color="#b45309" className="spin-slow" /> Spins // Vinyl Shelf
+            <Icons.Disc size={20} color="#b45309" className="spin-slow" /> Groove
           </h1>
-          <span className="nav-tagline">Analog Showcase</span>
+          <span className="nav-tagline">Analog Crate</span>
         </div>
         <div className="nav-right">
           <span className="nav-credit">Curated by @nandini</span>

@@ -1,4 +1,4 @@
-/* Premium Apple Weather glassmorphic styling */
+/* Vintage Radio Weather Console Styling */
 
 * {
   margin: 0;
@@ -8,65 +8,70 @@
 }
 
 body {
-  background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
-  color: #fff;
+  background: #faf9f5;
+  color: #d1c2a5; /* Warm gold-tinted paper text */
   min-height: 100vh;
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 24px;
 }
 
 .weather-dashboard {
   width: 100%;
-  max-width: 580px;
+  max-width: 500px;
+  background: #2b1f1d; /* Bakelite dark brown chassis */
+  border: 10px solid #1a100f; /* Outer bezel */
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-/* Glass Header Card */
+/* Radio Dial Header */
 .glass-header {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 16px 24px;
+  background: #0f0706;
+  border: 2px solid #b45309;
+  border-radius: 8px;
+  padding: 12px 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .brand-text {
+  font-family: monospace;
   font-weight: 800;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 2px;
-  color: #10b981;
+  color: #f59e0b; /* Amber bulb glow */
+  text-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
 }
 
 .search-box {
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 6px;
   display: flex;
   align-items: center;
-  padding: 4px 6px 4px 14px;
+  padding: 4px 10px;
 }
 
 .search-box input {
   background: transparent;
   border: none;
   outline: none;
-  color: white;
-  font-size: 13px;
-  width: 130px;
+  color: #fff;
+  font-size: 12px;
+  width: 120px;
 }
 
 .search-box button {
   background: transparent;
   border: none;
-  color: #10b981;
-  padding: 6px 10px;
+  color: #f59e0b;
   cursor: pointer;
 }
 
@@ -74,59 +79,61 @@ body {
 .grid-layout {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 12px;
 }
 
 .widget {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  background: #170d0c;
+  border: 1.5px solid rgba(245, 158, 11, 0.15);
+  border-radius: 8px;
+  padding: 16px;
 }
 
-/* Temp panel */
+/* Main Display Receiver */
 .temp-panel {
   grid-column: span 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px;
+  padding: 24px;
   text-align: center;
+  border-color: #b45309;
+  background: radial-gradient(circle, #251210 0%, #0d0605 100%);
 }
 
 .weather-state {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 8px;
+  gap: 12px;
+  margin-bottom: 6px;
 }
 
 .weather-icon {
-  width: 70px;
-  height: 70px;
-  filter: drop-shadow(0 4px 10px rgba(16, 185, 129, 0.3));
+  width: 60px;
+  height: 60px;
+  filter: sepia(0.8) hue-rotate(15deg) saturate(1.5);
 }
 
 .city-name {
-  font-size: 28px;
+  font-family: monospace;
+  font-size: 22px;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  color: #fff;
+  letter-spacing: 1px;
 }
 
 .temperature {
-  font-size: 64px;
-  font-weight: 200;
-  line-height: 1.1;
+  font-family: monospace;
+  font-size: 48px;
+  font-weight: 800;
+  color: #fbbf24; /* Glowing nixie tubes */
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
 }
 
 .weather-desc {
-  font-size: 13px;
-  color: #94a3b8;
-  margin-top: 6px;
-  text-transform: capitalize;
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 4px;
 }
 
 /* Forecast Panel */
@@ -135,29 +142,29 @@ body {
 }
 
 .forecast-panel h3 {
-  font-size: 11px;
-  color: #94a3b8;
+  font-size: 10px;
+  font-family: monospace;
+  color: #b45309;
   letter-spacing: 1px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .hourly-list {
   display: flex;
   justify-content: space-between;
-  overflow-x: auto;
 }
 
 .hour-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  font-size: 13px;
+  gap: 6px;
+  font-size: 11px;
+  color: #9ca3af;
 }
 
 .hour-item i {
-  color: #fbbf24;
-  font-size: 16px;
+  color: #f59e0b;
 }
 
 /* Metric Cards */
@@ -165,12 +172,13 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 130px;
+  height: 100px;
 }
 
 .metric-title {
-  font-size: 11px;
-  color: #94a3b8;
+  font-family: monospace;
+  font-size: 9px;
+  color: #9ca3af;
   letter-spacing: 0.5px;
   display: flex;
   align-items: center;
@@ -178,64 +186,63 @@ body {
 }
 
 .metric-value {
-  font-size: 24px;
-  font-weight: 600;
-  margin-top: 10px;
+  font-family: monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
 }
 
 .metric-sub {
-  font-size: 11px;
-  color: #64748b;
-  margin-top: auto;
+  font-size: 10px;
+  color: #6b7280;
 }
 
 /* Contact form */
 .contact-section {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 24px;
-  margin-top: 8px;
+  background: #170d0c;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 16px;
 }
 
 .contact-section h3 {
-  font-size: 11px;
+  font-family: monospace;
+  font-size: 10px;
+  color: #b45309;
+  margin-bottom: 12px;
   letter-spacing: 1px;
-  color: #94a3b8;
-  margin-bottom: 16px;
 }
 
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .contact-form input, .contact-form textarea {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 8px 12px;
   color: white;
-  font-size: 13px;
+  font-size: 12px;
   outline: none;
 }
 
 .contact-form textarea {
-  height: 60px;
+  height: 50px;
   resize: none;
 }
 
 .contact-form button {
-  background: #10b981;
+  background: #b45309;
   color: white;
   border: none;
-  border-radius: 8px;
-  padding: 12px;
-  font-weight: 600;
+  border-radius: 4px;
+  padding: 10px;
+  font-weight: 700;
   cursor: pointer;
-  font-size: 13px;
-  transition: opacity 0.15s;
+  font-size: 12px;
 }
 
 .contact-form button:hover {
