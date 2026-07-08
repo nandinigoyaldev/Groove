@@ -127,22 +127,41 @@ body {
   transition: all 0.4s ease;
 }
 
-/* Sunny / Clear: Warm golden amber glow */
+/* Sunny / Clear: Warm golden amber glow + Spin */
 #weather-icon-fa.state-clear {
   color: #fbbf24;
   text-shadow: 0 0 10px #f59e0b;
+  animation: spinSlow 12s linear infinite;
 }
 
-/* Rainy / Stormy: Cool deep blue rain glow */
+/* Rainy / Stormy: Cool deep blue rain glow + Bounce */
 #weather-icon-fa.state-rainy, #weather-icon-fa.state-stormy {
   color: #60a5fa;
   text-shadow: 0 0 10px #2563eb;
+  animation: bounceSoft 2.5s ease-in-out infinite;
 }
 
-/* Cloudy / Snowy: Soft, retro slate-grey cloud tone */
+/* Cloudy / Snowy: Soft, retro slate-grey cloud tone + Float */
 #weather-icon-fa.state-cloudy, #weather-icon-fa.state-snowy {
   color: #d1d5db;
   text-shadow: 0 0 8px #9ca3af;
+  animation: floatSoft 4s ease-in-out infinite;
+}
+
+/* Custom Keyframe Animations */
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes floatSoft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes bounceSoft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
 }
 
 .city-name {

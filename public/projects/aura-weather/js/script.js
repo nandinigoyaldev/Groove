@@ -14,7 +14,7 @@ let activeWeather = "clear";
 let activeCity = "San Francisco";
 let activeTemp = 18;
 
-// Custom dynamic sound synthesizer
+// Custom dynamic sound synthesizer (Warm Retro Analog Style)
 class WeatherRadio {
   constructor() {
     this.ctx = null;
@@ -34,7 +34,7 @@ class WeatherRadio {
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(freq, time);
       gain.gain.setValueAtTime(0, time);
-      gain.gain.linearRampToValueAtTime(0.15, time + 0.01);
+      gain.gain.linearRampToValueAtTime(0.12, time + 0.01);
       gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.12);
       osc.connect(gain);
       gain.connect(this.ctx.destination);
@@ -55,7 +55,7 @@ class WeatherRadio {
     const isDelhi = city.toLowerCase() === "delhi";
 
     if (cond === "rainy" || cond === "stormy") {
-      // 1. Rain Static Noise
+      // 1. Rain ambient white noise
       const bufferSize = this.ctx.sampleRate * 2;
       const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
       const output = noiseBuffer.getChannelData(0);
@@ -68,10 +68,10 @@ class WeatherRadio {
 
       const filter = this.ctx.createBiquadFilter();
       filter.type = 'lowpass';
-      filter.frequency.value = cond === "stormy" ? 380 : 500; // Stormy is lower/heavier
+      filter.frequency.value = cond === "stormy" ? 380 : 500;
 
       const noiseGain = this.ctx.createGain();
-      noiseGain.gain.setValueAtTime(cond === "stormy" ? 0.08 : 0.05, this.ctx.currentTime);
+      noiseGain.gain.setValueAtTime(cond === "stormy" ? 0.07 : 0.04, this.ctx.currentTime);
 
       noiseSource.connect(filter);
       filter.connect(noiseGain);
@@ -79,9 +79,19 @@ class WeatherRadio {
       noiseSource.start();
       this.audioNodes.push(noiseSource);
 
-      // 2. Slow cozy minor progression chimes
+      // 2. Rainy Melancholy Chime with Delay/Echo Node
       const notes = cond === "stormy" ? [196.00, 220.00, 246.94] : [220.00, 261.63, 293.66, 329.63]; 
       let noteIdx = 0;
+
+      const delayNode = this.ctx.createDelay();
+      delayNode.delayTime.value = 0.4; // 400ms echo delay
+
+      const feedbackNode = this.ctx.createGain();
+      feedbackNode.gain.value = 0.4; // Soft echoes
+
+      delayNode.connect(feedbackNode);
+      feedbackNode.connect(delayNode);
+      delayNode.connect(this.ctx.destination);
 
       const playRainChime = () => {
         if (!this.ctx) return;
@@ -92,15 +102,16 @@ class WeatherRadio {
         osc.frequency.setValueAtTime(notes[noteIdx], now);
         
         gain.gain.setValueAtTime(0, now);
-        gain.gain.linearRampToValueAtTime(0.08, now + 0.5);
+        gain.gain.linearRampToValueAtTime(0.08, now + 0.4);
         gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.8);
 
         osc.connect(gain);
         gain.connect(this.ctx.destination);
+        gain.connect(delayNode); // Feed chime into echo delay line
+        
         osc.start(now);
-        osc.stop(now + 2);
+        osc.stop(now + 2.0);
 
-        // Rare thunder rumble on storm
         if (cond === "stormy" && Math.random() > 0.6) {
           this.playThunderRumble(now + 0.2);
         }
@@ -109,12 +120,12 @@ class WeatherRadio {
       };
 
       playRainChime();
-      this.melodyInterval = setInterval(playRainChime, 2000);
-      statusText.innerHTML = cond === "stormy" ? "TUNE: HEAVY STORM RUMBLE ⛈️⚡" : "TUNE: COZY RAIN MELODY 🌧️🎵";
+      this.melodyInterval = setInterval(playRainChime, 2200);
+      statusText.innerHTML = cond === "stormy" ? "TUNE: HEAVY STORM RUMBLE ⛈️⚡" : "TUNE: COZY TAPE-DELAY RAIN 🌧️🎵";
 
     } else if (cond === "snowy") {
-      // Sparkling high-pitched winter chimes
-      const snowChimes = [783.99, 880.00, 987.77, 1046.50]; // G5, A5, B5, C6
+      // Sparkling winter chimes
+      const snowChimes = [783.99, 880.00, 987.77, 1046.50];
       let step = 0;
 
       const playSnowStep = () => {
@@ -142,7 +153,7 @@ class WeatherRadio {
       statusText.innerHTML = "TUNE: SPARKLING WINTER CHIME ❄️✨";
 
     } else if (cond === "cloudy") {
-      // Overcast: Deep warm atmospheric low-frequency drone
+      // Overcast: Deep warm atmospheric low-frequency drone (detuned sines)
       const playCloudDrone = () => {
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
@@ -153,7 +164,7 @@ class WeatherRadio {
         osc1.type = 'sine';
         osc1.frequency.value = 110.00; // Low A
         osc2.type = 'sine';
-        osc2.frequency.value = 165.00; // Low E (Fifth interval)
+        osc2.frequency.value = 110.50; // Detuned low A for fat warm chorus effect
 
         gain.gain.setValueAtTime(0.06, now);
 
@@ -167,36 +178,51 @@ class WeatherRadio {
       };
 
       playCloudDrone();
-      statusText.innerHTML = "TUNE: ATMOSPHERIC OVERCAST DRONE ☁️🌫️";
+      statusText.innerHTML = "TUNE: ATMOSPHERIC CHORUS DRONE ☁️🌫️";
 
     } else {
-      // Sunny: Bouncy, happy, nostalgic cartoon arpeggio (C Major)
+      // Sunny: Nostalgic Analog Juno-style warm synth arpeggiator
+      // Uses detuned triangle/sawtooth waves heavily filtered to sound soft, warm, and retro-cartoony
       const arpeggio = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63];
       let step = 0;
 
       const playSunnyStep = () => {
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(arpeggio[step], now);
+        
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(700, now); // Soft cutoff for analog feel
+        
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(arpeggio[step], now);
+        
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(arpeggio[step] + 2, now); // Detuned chorus
 
         gain.gain.setValueAtTime(0, now);
-        gain.gain.linearRampToValueAtTime(0.12, now + 0.05);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
+        gain.gain.linearRampToValueAtTime(0.12, now + 0.06);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.38);
 
-        osc.connect(gain);
+        osc1.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gain);
         gain.connect(this.ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.45);
+        
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.45);
+        osc2.stop(now + 0.45);
 
         step = (step + 1) % arpeggio.length;
       };
 
       playSunnyStep();
-      this.melodyInterval = setInterval(playSunnyStep, 400);
-      statusText.innerHTML = "TUNE: NOSTALGIC SUNSHINE CHIME ☀️✨";
+      this.melodyInterval = setInterval(playSunnyStep, 450);
+      statusText.innerHTML = "TUNE: DETUNED JUNO SUNSHINE ☀️✨";
     }
 
     if (isDelhi) {
@@ -211,7 +237,7 @@ class WeatherRadio {
     const gain = this.ctx.createGain();
     
     osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(45, time); // Very low rumble frequency
+    osc.frequency.setValueAtTime(45, time);
     
     const filter = this.ctx.createBiquadFilter();
     filter.type = 'lowpass';
@@ -330,14 +356,28 @@ async function checkWeather(city) {
   }
 }
 
-// Map WMO weather codes to condition strings and FontAwesome icons
+// Map WMO weather codes in detail
 function mapWMOCode(code) {
-  if (code === 0) return { name: "Clear", iconClass: "fa-sun", class: "state-clear" };
-  if (code >= 1 && code <= 3) return { name: "Cloudy", iconClass: "fa-cloud", class: "state-cloudy" };
-  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return { name: "Rainy", iconClass: "fa-cloud-showers-heavy", class: "state-rainy" };
-  if (code >= 71 && code <= 77) return { name: "Snowy", iconClass: "fa-snowflake", class: "state-snowy" };
-  if (code >= 95) return { name: "Stormy", iconClass: "fa-cloud-bolt", class: "state-stormy" };
-  return { name: "Cloudy", iconClass: "fa-cloud", class: "state-cloudy" };
+  // 0: Clear
+  if (code === 0) return { name: "Clear Sunny Sky", iconClass: "fa-sun", class: "state-clear" };
+  // 1, 2, 3: Cloudy states
+  if (code === 1) return { name: "Mainly Clear", iconClass: "fa-cloud-sun", class: "state-clear" };
+  if (code === 2) return { name: "Partly Cloudy", iconClass: "fa-cloud-sun", class: "state-cloudy" };
+  if (code === 3) return { name: "Overcast Clouds", iconClass: "fa-cloud", class: "state-cloudy" };
+  // 45, 48: Fog
+  if (code === 45 || code === 48) return { name: "Foggy Haze", iconClass: "fa-smog", class: "state-cloudy" };
+  // 51 - 55: Drizzle
+  if (code >= 51 && code <= 55) return { name: "Light Drizzle", iconClass: "fa-cloud-rain", class: "state-rainy" };
+  // 61 - 65: Rain
+  if (code >= 61 && code <= 65) return { name: "Heavy Rain Showers", iconClass: "fa-cloud-showers-heavy", class: "state-rainy" };
+  // 71 - 77: Snow
+  if (code >= 71 && code <= 77) return { name: "Winter Snowfall", iconClass: "fa-snowflake", class: "state-snowy" };
+  // 80 - 82: Showers
+  if (code >= 80 && code <= 82) return { name: "Heavy Rain Showers", iconClass: "fa-cloud-showers-heavy", class: "state-rainy" };
+  // 95+: Thunderstorms
+  if (code >= 95) return { name: "Severe Thunderstorm", iconClass: "fa-cloud-bolt", class: "state-stormy" };
+
+  return { name: "Overcast Clouds", iconClass: "fa-cloud", class: "state-cloudy" };
 }
 
 function updateWeatherUI(cityName, current) {
@@ -349,7 +389,7 @@ function updateWeatherUI(cityName, current) {
 
   activeTemp = Math.round(current.temperature_2m);
   const condition = mapWMOCode(current.weather_code);
-  activeWeather = condition.name.toLowerCase();
+  activeWeather = condition.class.replace("state-", ""); // clear, rainy, cloudy, snowy, stormy
 
   if (cityEl) cityEl.innerHTML = cityName;
   if (tempEl) tempEl.innerHTML = activeTemp + "°C";
@@ -358,7 +398,6 @@ function updateWeatherUI(cityName, current) {
   if (descEl) descEl.innerHTML = condition.name;
   
   if (weatherIconFa) {
-    // Reset classes and set exact FontAwesome weather icon
     weatherIconFa.className = `fa-solid ${condition.iconClass} ${condition.class}`;
   }
 
