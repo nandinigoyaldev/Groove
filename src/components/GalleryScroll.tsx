@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import type { Project } from '../types';
-import { ProjectCard } from './ProjectCard';
+import { PolaroidCard } from './PolaroidCard';
 
 interface GalleryScrollProps {
   projects: Project[];
@@ -102,7 +102,7 @@ export const GalleryScroll: React.FC<GalleryScrollProps> = ({
         
         {projects.map((proj) => (
           <div key={proj.id} className="gallery-card-wrapper">
-            <ProjectCard
+            <PolaroidCard
               project={proj}
               onOpen={() => onOpenProject(proj)}
             />

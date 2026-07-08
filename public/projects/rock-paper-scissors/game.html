@@ -3,69 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cyberpunk Rock Paper Scissors</title>
+  <title>Sketch Paper Scissors</title>
   <link rel="stylesheet" href="style/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Gochi+Hand&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="cyber-container">
-    <header class="game-header">
-      <div class="matrix-glitch">NEON SHOWDOWN</div>
-      <div class="sub-title">ROCK PAPER SCISSORS</div>
+  <div class="chalk-board">
+    <header class="chalk-header">
+      <h1 class="chalk-title">Chalkboard Showdown</h1>
+      <p class="chalk-subtitle">Grab your crayon & select your weapon!</p>
     </header>
 
-    <main class="console-box">
+    <main class="sketch-panel">
       <!-- Scoreboard -->
-      <div class="scoreboard">
-        <div class="score-card player">
-          <div class="label">PLAYER</div>
-          <div class="value" id="player-score">0</div>
+      <div class="sketch-score">
+        <div class="score-box player">
+          <span class="lbl">PLAYER</span>
+          <span class="num" id="player-score">0</span>
         </div>
-        <div class="vs-divider">VS</div>
-        <div class="score-card computer">
-          <div class="label">CPU</div>
-          <div class="value" id="computer-score">0</div>
+        <div class="vs-mark">vs</div>
+        <div class="score-box computer">
+          <span class="lbl">CPU</span>
+          <span class="num" id="computer-score">0</span>
         </div>
       </div>
 
-      <!-- Live Arena -->
-      <div class="arena">
-        <div class="choice-preview" id="player-preview">?</div>
-        <div class="versus-glow">X</div>
-        <div class="choice-preview" id="computer-preview">?</div>
+      <!-- Play Arena -->
+      <div class="sketch-arena">
+        <div class="sketch-box" id="player-preview">?</div>
+        <div class="sketch-box" id="computer-preview">?</div>
       </div>
 
-      <!-- Action Status -->
-      <div class="status-panel">
-        <div class="status-msg" id="game-status">CHOOSE YOUR MOVE WEAPON...</div>
+      <!-- Status Log -->
+      <div class="chalk-status">
+        <div id="game-status" class="status-lbl">DRAW A SHAPECUT MOVE...</div>
       </div>
 
-      <!-- Buttons Grid -->
-      <div class="weapon-grid">
-        <button class="weapon-btn rock" onclick="playGame('rock')">
+      <!-- Crayon Choices Grid -->
+      <div class="crayon-grid">
+        <button class="crayon-btn" onclick="playGame('rock')">
           <span class="emoji">✊</span>
-          <span class="btn-lbl">ROCK</span>
+          <span class="label">ROCK</span>
         </button>
-        <button class="weapon-btn paper" onclick="playGame('paper')">
+        <button class="crayon-btn" onclick="playGame('paper')">
           <span class="emoji">✋</span>
-          <span class="btn-lbl">PAPER</span>
+          <span class="label">PAPER</span>
         </button>
-        <button class="weapon-btn scissors" onclick="playGame('scissors')">
+        <button class="crayon-btn" onclick="playGame('scissors')">
           <span class="emoji">✌️</span>
-          <span class="btn-lbl">SCISSORS</span>
+          <span class="label">SCISSORS</span>
         </button>
       </div>
 
-      <div style="text-align: center; margin-top: 15px;">
-        <button class="reset-btn" onclick="resetGame()">RESET SYSTEM</button>
+      <div style="text-align: center; margin-top: 10px;">
+        <button class="reset-btn" onclick="resetGame()">Clean Board</button>
       </div>
     </main>
-
-    <footer class="cyber-footer">
-      <p>&copy; 2026 CYBERPUNK LABS. ALL RIGHTS SECURED.</p>
-    </footer>
   </div>
 
   <script>
@@ -82,31 +77,26 @@
       const choices = ['rock', 'paper', 'scissors'];
       const computerChoice = choices[Math.floor(Math.random() * choices.length)];
 
-      // Update previews
       document.getElementById('player-preview').innerText = emojiMap[userChoice];
       document.getElementById('computer-preview').innerText = emojiMap[computerChoice];
-
-      // Remove classes
-      document.getElementById('player-preview').className = 'choice-preview active';
-      document.getElementById('computer-preview').className = 'choice-preview active';
 
       let resultText = '';
       let statusClass = '';
 
       if (userChoice === computerChoice) {
-        resultText = "ROUND TIED. NO SYSTEM CHANGES.";
+        resultText = "Tied round! Sketch again.";
         statusClass = 'tie';
       } else if (
         (userChoice === 'rock' && computerChoice === 'scissors') ||
         (userChoice === 'paper' && computerChoice === 'rock') ||
         (userChoice === 'scissors' && computerChoice === 'paper')
       ) {
-        resultText = "YOU HACKED THE SYSTEM! ROUND WON.";
+        resultText = "You won! CPU shape erased.";
         statusClass = 'win';
         pScore++;
         document.getElementById('player-score').innerText = pScore;
       } else {
-        resultText = "CPU PENETRATED SHIELD. ROUND LOST.";
+        resultText = "CPU won! Your shape erased.";
         statusClass = 'lose';
         cScore++;
         document.getElementById('computer-score').innerText = cScore;
@@ -114,7 +104,7 @@
 
       const statusEl = document.getElementById('game-status');
       statusEl.innerText = resultText;
-      statusEl.className = 'status-msg ' + statusClass;
+      statusEl.className = 'status-lbl ' + statusClass;
     }
 
     function resetGame() {
@@ -126,8 +116,8 @@
       document.getElementById('computer-preview').innerText = '?';
       
       const statusEl = document.getElementById('game-status');
-      statusEl.innerText = "SYSTEM REBOOTED. STAND BY...";
-      statusEl.className = 'status-msg';
+      statusEl.innerText = "Board cleaned. Ready!";
+      statusEl.className = 'status-lbl';
     }
   </script>
 </body>

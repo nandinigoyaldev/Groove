@@ -1,30 +1,27 @@
-# Vortex Gallery 🚀🌌
+# Nook & Canvas ☕🎨🍂
 
-Welcome to **Vortex Gallery**—an immersive, 3D horizontal scrolling virtual showcase designed to present web projects in a high-fidelity creative museum track.
+Welcome to **Nook & Canvas**—a cozy, Pinterest-style interactive scrapbook dashboard designed to showcase developer projects as physical memories pinned on a corkboard desk.
 
-Instead of browsing standard directories, visitors scroll through floating glassmorphic panels. As they move, the background environment and particle systems dynamically morph to match the brand of the selected project (e.g., falling rain for a weather app, glowing neon scanlines for arcade games).
-
----
-
-## ✨ Advanced Features
-
-- 🏎️ **Immersive Horizontal Scrollway**: Smooth horizontal navigation that translates vertical scroll wheel inputs and handles mouse-drag panning, accompanied by a bottom glowing progress indicator.
-- 🎭 **Dynamic Background Morphing**: The background colors, gradients, and overlay particle systems adapt smoothly:
-  - **AuraWeather**: Blue-green gradients with rain drops.
-  - **Rock Paper Scissors**: Red neon grids with pixel grids.
-  - **Hotel Landing**: Golden elegant floating sparkles.
-  - **Paradigm Shift**: Futuristic scanning laser lines.
-- 🎛️ **Web Audio API Synth Engine**: Procedurally synthesizes matching background hums and satisfying interface sound effects (clicks, hovers) without downloading external audio files.
-- 🔎 **Cinematic Zoom Expansion**: Clicking a project triggers a zoom-in animation that expands the preview to full-viewport size.
-- 💻 **Live Sandbox & Editor**: Split-screen view inside the preview overlay allows viewing the folder directory structure and editing files live in a text editor to hot-reload changes on the fly!
-- 💬 **Full-Stack Guestbook Drawer**: Sign in and leave messages. Persists comments to a local database when running the backend, or falls back to browser `localStorage` in static environments (making it **GitHub Pages friendly**).
+Instead of navigating simple grids, visitors browse projects as **Polaroid photos** pinned to a warm sandy scrapbook layout (`#faf9f5`). Dynamic coffee steam, a procedural lofi radio, and a snapshot camera make the workspace feel alive and relaxing.
 
 ---
 
-## 🚀 Showcased Projects (Overhauled UIs)
+## 🎨 Creative & Aesthetic Features
+
+- 🍂 **Pinterest Corkboard Grid**: Warm, cozy ivory dashboard decorated with Polaroids, clips, washi tape, and crawling sage leaf vector borders.
+- 📸 **Draggable Polaroid Camera**: A vintage camera widget. Click it to print a Polaroid of the current project. The photo starts black and slowly "develops" (fades in) as a physical draggable object on the desk that visitors can sign with custom captions.
+- 📻 **Lofi Tape Radio**: A retro cassette radio widget. Toggle it on to play warm, procedurally synthesized lofi chord pads and a crackling fireplace vinyl static noise (synthesized via Web Audio API, no files to load).
+- ☕ **Steaming Coffee Cup Widget**: A canvas-based interactive widget simulating realistic rising columns of warm coffee steam.
+- 🪟 **Interactive Polaroid Cards**: 3D mouse hover tilt effects on Polaroid cards, detailing project tech stacks using handwriting-style tags.
+- 📓 **Handwritten Guestbook Diary**: A vintage leather journal with lined paper notebook pages. Open it to write and pin notes to the diary.
+- 💻 **Live Sandbox & Editor**: Double-click any project to zoom into a cozy workspace panel. Open the code inspector to edit project files in real-time and run changes instantly inside the iframe.
+
+---
+
+## 🚀 Projects Showcased (Aesthetic Redesigns)
 
 1. ☀️ **AuraWeather**: A premium Apple Weather-style frosted glass widget featuring detailed metrics and search.
-2. ✊ **Rock-Paper-Scissors**: An 80s cyberpunk retro-arcade cabinet emulator displaying scores and live play outcomes.
+2. ✊ **Rock-Paper-Scissors**: Redesigned into a cozy **pencil sketch/chalkboard** theme with hand-drawn buttons and score indicators.
 3. 🏨 **My Hotels**: A luxury hotel room catalog and reservation landing page showcasing dark gold hues and serif typography.
 4. 🧭 **Paradigm Shift**: A minimal sci-fi grid framework showcase exploring vector lines and status blocks.
 

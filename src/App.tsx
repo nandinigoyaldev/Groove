@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import type { Project } from './types';
 import { GalleryScroll } from './components/GalleryScroll';
-import { ParticleSystem } from './components/ParticleSystem';
+import { CafeWidgets } from './components/CafeWidgets';
 import { CodeInspector } from './components/CodeInspector';
-import { GuestbookDrawer } from './components/GuestbookDrawer';
+import { GuestbookDiary } from './components/GuestbookDiary';
+import { PolaroidCamera } from './components/PolaroidCamera';
 import { synthAudio } from './lib/audio';
 import * as Icons from 'lucide-react';
 
@@ -14,8 +15,8 @@ const PROJECTS: Project[] = [
     description: 'A beautiful real-time weather application showing global forecast details.',
     longDescription: 'Get real-time, accurate weather updates for any city worldwide including temperature, humidity, wind speed & more. Styled with dynamic components.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Weather API'],
-    themeColor: '#10b981',
-    gradient: 'radial-gradient(circle at 50% 50%, #062f21 0%, #031410 100%)',
+    themeColor: '#047857',
+    gradient: '#faf9f5', // Cozy off-white base
     particleType: 'rain',
     url: '/projects/aura-weather/index.html',
   },
@@ -25,8 +26,8 @@ const PROJECTS: Project[] = [
     description: 'Play rock, paper, scissors against the computer with scoreboard tracking.',
     longDescription: 'A classic game built with beautiful buttons, sound logic, randomized computer choices, and active visual state indicators.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Local Storage'],
-    themeColor: '#ef4444',
-    gradient: 'radial-gradient(circle at 50% 50%, #2a080c 0%, #0d0204 100%)',
+    themeColor: '#be123c',
+    gradient: '#fcf6f6', // Cozy soft rose base
     particleType: 'grid',
     url: '/projects/rock-paper-scissors/game.html',
   },
@@ -36,8 +37,8 @@ const PROJECTS: Project[] = [
     description: 'An elegant mountainside luxury hotel showcase and landing page template.',
     longDescription: 'Escape to mountain heights. High-fidelity layouts, smooth responsive scrolling pages, and aesthetic room booking showcase design.',
     tech: ['HTML', 'SASS', 'JavaScript', 'Google Fonts'],
-    themeColor: '#f59e0b',
-    gradient: 'radial-gradient(circle at 50% 50%, #2d1a04 0%, #0f0801 100%)',
+    themeColor: '#b45309',
+    gradient: '#fdfaf2', // Cozy warm wheat base
     particleType: 'sparkles',
     url: '/projects/hotel-landing/index.html',
   },
@@ -47,8 +48,8 @@ const PROJECTS: Project[] = [
     description: 'A futuristic interactive layout shifting standard perspectives.',
     longDescription: 'Modern web layout template inspired by innovative shifts. Integrates sleek variables and dynamic parallax design components.',
     tech: ['HTML', 'SASS', 'JavaScript', 'Responsive Grid'],
-    themeColor: '#3b82f6',
-    gradient: 'radial-gradient(circle at 50% 50%, #0a192f 0%, #020813 100%)',
+    themeColor: '#0369a1',
+    gradient: '#f5fafd', // Cozy soft slate blue base
     particleType: 'lasers',
     url: '/projects/paradigm-shift/index.html',
   },
@@ -58,15 +59,9 @@ export default function App() {
   const [activeProject, setActiveProject] = useState<Project>(PROJECTS[0]);
   const [openProject, setOpenProject] = useState<Project | null>(null);
   const [showCode, setShowCode] = useState(false);
-  const [isGuestbookOpen, setIsGuestbookOpen] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isDiaryOpen, setIsDiaryOpen] = useState(false);
   const [sandboxCode, setSandboxCode] = useState<string | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
-
-  // Set initial audio state and watch active project changes
-  useEffect(() => {
-    synthAudio.setAmbiance(activeProject.particleType);
-  }, [activeProject]);
 
   const handleActiveProjectChange = (proj: Project) => {
     if (activeProject.id !== proj.id) {
@@ -78,23 +73,13 @@ export default function App() {
   const handleOpenProject = (proj: Project) => {
     synthAudio.playClick();
     setOpenProject(proj);
-    setSandboxCode(null); // Reset custom sandbox code
-  };
-
-  const toggleMute = () => {
-    const newState = !isMuted;
-    setIsMuted(newState);
-    synthAudio.toggleMute(newState);
-    if (!newState) {
-      synthAudio.setAmbiance(activeProject.particleType);
-    }
+    setSandboxCode(null);
   };
 
   const handleRunCode = (code: string) => {
     setSandboxCode(code);
   };
 
-  // Tracking horizontal scroll way progress
   useEffect(() => {
     const handleScroll = () => {
       const container = document.querySelector('.gallery-scroll-container');
@@ -118,63 +103,62 @@ export default function App() {
 
   return (
     <div
-      className="gallery-app"
+      className="gallery-app cozy-theme"
       style={{
-        background: activeProject.gradient,
+        backgroundColor: activeProject.gradient,
       }}
     >
-      {/* Dynamic Background Particle System */}
-      <ParticleSystem
-        type={activeProject.particleType}
-        color={activeProject.themeColor}
-      />
+      {/* Dynamic Background Board Overlay */}
+      <div className="board-overlay-grid" />
 
-      {/* Navigation Header */}
+      {/* Cozy Header Nav */}
       <nav className="gallery-nav">
         <h1 className="nav-brand">
-          <Icons.RotateCw size={24} /> Vortex Gallery
+          <Icons.Coffee size={24} color="#b45309" /> Cozy Café Showcase
         </h1>
         <div className="nav-links">
-          <button className="nav-btn" onClick={toggleMute}>
-            {isMuted ? <Icons.VolumeX size={16} /> : <Icons.Volume2 size={16} />}
-            {isMuted ? 'Muted' : 'Sound Synth'}
-          </button>
           <button
             className="nav-btn"
             onClick={() => {
               synthAudio.playClick();
-              setIsGuestbookOpen(true);
+              setIsDiaryOpen(true);
             }}
           >
-            <Icons.BookOpen size={16} /> Guestbook
+            <Icons.BookOpen size={16} /> Guestbook Diary
           </button>
         </div>
       </nav>
 
-      {/* Showcase Scrollway */}
+      {/* Main Board Scrollway */}
       <GalleryScroll
         projects={PROJECTS}
         onActiveProjectChange={handleActiveProjectChange}
         onOpenProject={handleOpenProject}
       />
 
-      {/* Scroll indicator */}
+      {/* Steaming Coffee & Lofi Radio Widget Dock & Snapshot Camera */}
+      <CafeWidgets />
+      <PolaroidCamera activeProject={activeProject} />
+
+      {/* Scroll progress dial/line */}
       <div className="scroll-indicator-container">
         <div
           className="scroll-indicator-bar"
           style={{
             width: `${scrollProgress}%`,
             backgroundColor: activeProject.themeColor,
-            boxShadow: `0 0 8px ${activeProject.themeColor}`,
+            boxShadow: `0 0 8px ${activeProject.themeColor}55`,
           }}
         />
       </div>
 
-      {/* Fullscreen sandboxed app preview frame */}
+      {/* Cinema Overlay */}
       {openProject && (
-        <div className="fullscreen-app-overlay">
+        <div className="fullscreen-app-overlay cozy-layout">
           <div className="overlay-navbar">
-            <span className="overlay-title">{openProject.title} (Live Sandbox)</span>
+            <span className="overlay-title">
+              <Icons.Compass size={18} /> {openProject.title} (Live Sandbox)
+            </span>
             <div className="overlay-controls">
               <button
                 className={`overlay-btn ${showCode ? 'active' : ''}`}
@@ -215,12 +199,12 @@ export default function App() {
         </div>
       )}
 
-      {/* Guestbook Drawer */}
-      <GuestbookDrawer
-        isOpen={isGuestbookOpen}
+      {/* Guestbook Diary */}
+      <GuestbookDiary
+        isOpen={isDiaryOpen}
         onClose={() => {
           synthAudio.playClick();
-          setIsGuestbookOpen(false);
+          setIsDiaryOpen(false);
         }}
       />
     </div>
