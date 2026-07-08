@@ -1,6 +1,3 @@
-const baseURL = "https://api.openweathermap.org/data/2.5/weather?units=metric";
-const apiKey = "ff19c9d8dacd0e5f339bc5f242cd49fe";
-
 // DOM elements
 const searchBox = document.getElementById("city-input");
 const searchBtn = document.getElementById("enter-button");
@@ -51,7 +48,7 @@ class WeatherRadio {
     this.isPlaying = true;
 
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const isRain = condition.includes("rain") || condition.includes("drizzle") || condition.includes("thunderstorm");
+    const isRain = condition.includes("rain") || condition.includes("drizzle") || condition.includes("showers") || condition.includes("snow");
     const isDelhi = city.toLowerCase() === "delhi";
 
     if (isRain) {
@@ -80,7 +77,6 @@ class WeatherRadio {
       this.audioNodes.push(noiseSource);
 
       // 2. Nostalgic Melancholy Rain Melody: Slow cozy minor progression
-      // Plays a recurring soft chime note every 2 seconds
       const notes = [220.00, 261.63, 293.66, 329.63]; // A minor progression (A, C, D, E)
       let noteIdx = 0;
 
@@ -93,8 +89,8 @@ class WeatherRadio {
         osc.frequency.setValueAtTime(notes[noteIdx], now);
         
         gain.gain.setValueAtTime(0, now);
-        gain.gain.linearRampToValueAtTime(0.08, now + 0.5); // Soft slow attack
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.8); // Long fade
+        gain.gain.linearRampToValueAtTime(0.08, now + 0.5);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.8);
 
         osc.connect(gain);
         gain.connect(this.ctx.destination);
@@ -117,7 +113,7 @@ class WeatherRadio {
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.type = 'triangle'; // Sweet cartoony sound
+        osc.type = 'triangle';
         osc.frequency.setValueAtTime(arpeggio[step], now);
 
         gain.gain.setValueAtTime(0, now);
@@ -133,13 +129,12 @@ class WeatherRadio {
       };
 
       playSunnyStep();
-      this.melodyInterval = setInterval(playSunnyStep, 400); // Quick bouncy tempo
+      this.melodyInterval = setInterval(playSunnyStep, 400);
       statusText.innerHTML = "TUNE: NOSTALGIC SUNSHINE CHIME ☀️✨";
     }
 
     if (isDelhi) {
       statusText.innerHTML = "TUNE: DELHI AM // AUTO-RICKSHAW HONK 🛺";
-      // Honk the cartoon rickshaw horn!
       setTimeout(() => this.playRickshawHorn(), 400);
     }
   }
@@ -216,43 +211,63 @@ if (delhiBtn) {
   });
 }
 
+// Geocode and Fetch real weather via Open-Meteo
 async function checkWeather(city) {
   if (!city) return;
   activeCity = city;
 
   try {
-    const response = await fetch(`${baseURL}&q=${city}&appid=${apiKey}`);
-
-    if (!response.ok) {
-      useMockWeather(city);
+    // 1. Geocoding request
+    const geoResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`);
+    if (!geoResponse.ok) throw new Error('Geocoding error');
+    
+    const geoData = await geoResponse.json();
+    if (!geoData.results || geoData.results.length === 0) {
+      alert("City not found!");
       return;
     }
 
-    const data = await response.json();
-    updateWeatherUI(data);
+    const { latitude, longitude, name } = geoData.results[0];
+
+    // 2. Weather forecast request
+    const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m`);
+    if (!weatherResponse.ok) throw new Error('Weather fetching error');
+
+    const weatherData = await weatherResponse.json();
+    updateWeatherUI(name, weatherData.current);
   } catch (err) {
-    console.warn("Weather API unreachable. Falling back to mock data.", err);
-    useMockWeather(city);
+    console.error("Open-Meteo API error:", err);
+    alert("Unable to fetch weather data.");
   }
 }
 
-function updateWeatherUI(data) {
+// Map WMO weather codes to condition strings
+function mapWMOCode(code) {
+  if (code === 0) return { name: "Clear", icon: "assets/sunny.png" };
+  if (code >= 1 && code <= 3) return { name: "Cloudy", icon: "assets/cloudy.png" };
+  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return { name: "Rainy", icon: "assets/heavy-rain.png" };
+  if (code >= 71 && code <= 77) return { name: "Snowy", icon: "assets/snow.png" };
+  if (code >= 95) return { name: "Stormy", icon: "assets/thunderstrom.png" };
+  return { name: "Cloudy", icon: "assets/cloudy.png" };
+}
+
+function updateWeatherUI(cityName, current) {
   const cityEl = document.querySelector(".city-name");
   const tempEl = document.querySelector(".temperature");
   const windEl = document.querySelector(".wind");
   const humidityEl = document.querySelector(".humidity");
   const descEl = document.querySelector(".weather-desc");
 
-  activeTemp = Math.round(data.main.temp);
-  activeWeather = data.weather && data.weather[0] ? data.weather[0].main.toLowerCase() : "clear";
+  activeTemp = Math.round(current.temperature_2m);
+  const condition = mapWMOCode(current.weather_code);
+  activeWeather = condition.name.toLowerCase();
 
-  if (cityEl) cityEl.innerHTML = data.name;
+  if (cityEl) cityEl.innerHTML = cityName;
   if (tempEl) tempEl.innerHTML = activeTemp + "°C";
-  if (windEl) windEl.innerHTML = data.wind.speed + " km/h";
-  if (humidityEl) humidityEl.innerHTML = data.main.humidity + "%";
-  if (descEl && data.weather && data.weather[0]) {
-    descEl.innerHTML = data.weather[0].description;
-  }
+  if (windEl) windEl.innerHTML = Math.round(current.wind_speed_10m) + " km/h";
+  if (humidityEl) humidityEl.innerHTML = current.relative_humidity_2m + "%";
+  if (descEl) descEl.innerHTML = condition.name;
+  if (weatherIcon) weatherIcon.src = condition.icon;
 
   // Update analog needle dial (-10C to 45C mapped to 0-100%)
   if (tempNeedle) {
@@ -264,27 +279,6 @@ function updateWeatherUI(data) {
   if (weatherRadio.isPlaying) {
     weatherRadio.start(activeWeather, activeCity);
   }
-}
-
-function useMockWeather(city) {
-  let temp = 18 + Math.floor(Math.random() * 8);
-  let condition = "clear";
-  
-  if (city.toLowerCase() === "delhi") {
-    temp = 38;
-    condition = "clear";
-  } else if (city.toLowerCase() === "london") {
-    temp = 12;
-    condition = "rain";
-  }
-
-  const mockData = {
-    name: city.charAt(0).toUpperCase() + city.slice(1),
-    main: { temp: temp, humidity: 65 + Math.floor(Math.random() * 10) },
-    wind: { speed: 12 + Math.floor(Math.random() * 6) },
-    weather: [{ main: condition, description: condition === "rain" ? "showers" : "sunny sky" }]
-  };
-  updateWeatherUI(mockData);
 }
 
 // Search interactions
@@ -305,5 +299,5 @@ if (searchBox) {
 
 // Load default city on page load
 document.addEventListener("DOMContentLoaded", () => {
-  checkWeather(searchBox?.value.trim() || "San Francisco");
+  checkWeather("Delhi"); // Set Delhi as default to show off the rickshaw horn immediately!
 });
