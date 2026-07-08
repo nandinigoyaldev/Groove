@@ -48,7 +48,7 @@ class WeatherRadio {
     this.isPlaying = true;
 
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const isRain = condition.includes("rain") || condition.includes("drizzle") || condition.includes("showers") || condition.includes("snow");
+    const isRain = condition.includes("rain") || condition.includes("drizzle") || condition.includes("showers") || condition.includes("snow") || condition.includes("storm");
     const isDelhi = city.toLowerCase() === "delhi";
 
     if (isRain) {
@@ -217,7 +217,6 @@ async function checkWeather(city) {
   activeCity = city;
 
   try {
-    // 1. Geocoding request
     const geoResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`);
     if (!geoResponse.ok) throw new Error('Geocoding error');
     
@@ -229,7 +228,6 @@ async function checkWeather(city) {
 
     const { latitude, longitude, name } = geoData.results[0];
 
-    // 2. Weather forecast request
     const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m`);
     if (!weatherResponse.ok) throw new Error('Weather fetching error');
 
@@ -243,12 +241,12 @@ async function checkWeather(city) {
 
 // Map WMO weather codes to condition strings
 function mapWMOCode(code) {
-  if (code === 0) return { name: "Clear", icon: "assets/sunny.png" };
-  if (code >= 1 && code <= 3) return { name: "Cloudy", icon: "assets/cloudy.png" };
-  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return { name: "Rainy", icon: "assets/heavy-rain.png" };
-  if (code >= 71 && code <= 77) return { name: "Snowy", icon: "assets/snow.png" };
-  if (code >= 95) return { name: "Stormy", icon: "assets/thunderstrom.png" };
-  return { name: "Cloudy", icon: "assets/cloudy.png" };
+  if (code === 0) return { name: "Clear", icon: "assets/sunny.png", class: "state-clear" };
+  if (code >= 1 && code <= 3) return { name: "Cloudy", icon: "assets/cloudy.png", class: "state-cloudy" };
+  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return { name: "Rainy", icon: "assets/heavy-rain.png", class: "state-rainy" };
+  if (code >= 71 && code <= 77) return { name: "Snowy", icon: "assets/snow.png", class: "state-snowy" };
+  if (code >= 95) return { name: "Stormy", icon: "assets/thunderstrom.png", class: "state-stormy" };
+  return { name: "Cloudy", icon: "assets/cloudy.png", class: "state-cloudy" };
 }
 
 function updateWeatherUI(cityName, current) {
@@ -267,7 +265,12 @@ function updateWeatherUI(cityName, current) {
   if (windEl) windEl.innerHTML = Math.round(current.wind_speed_10m) + " km/h";
   if (humidityEl) humidityEl.innerHTML = current.relative_humidity_2m + "%";
   if (descEl) descEl.innerHTML = condition.name;
-  if (weatherIcon) weatherIcon.src = condition.icon;
+  
+  if (weatherIcon) {
+    weatherIcon.src = condition.icon;
+    // Update target class to shift color tone filters in CSS
+    weatherIcon.className = `weather-icon ${condition.class}`;
+  }
 
   // Update analog needle dial (-10C to 45C mapped to 0-100%)
   if (tempNeedle) {
@@ -279,6 +282,27 @@ function updateWeatherUI(cityName, current) {
   if (weatherRadio.isPlaying) {
     weatherRadio.start(activeWeather, activeCity);
   }
+}
+
+function useMockWeather(city) {
+  let temp = 18 + Math.floor(Math.random() * 8);
+  let condition = "clear";
+  
+  if (city.toLowerCase() === "delhi") {
+    temp = 38;
+    condition = "clear";
+  } else if (city.toLowerCase() === "london") {
+    temp = 12;
+    condition = "rain";
+  }
+
+  const mockData = {
+    name: city.charAt(0).toUpperCase() + city.slice(1),
+    main: { temp: temp, humidity: 65 + Math.floor(Math.random() * 10) },
+    wind: { speed: 12 + Math.floor(Math.random() * 6) },
+    weather: [{ main: condition, description: condition === "rain" ? "showers" : "sunny sky" }]
+  };
+  updateWeatherUI(mockData);
 }
 
 // Search interactions
@@ -299,5 +323,5 @@ if (searchBox) {
 
 // Load default city on page load
 document.addEventListener("DOMContentLoaded", () => {
-  checkWeather("Delhi"); // Set Delhi as default to show off the rickshaw horn immediately!
+  checkWeather("Delhi");
 });

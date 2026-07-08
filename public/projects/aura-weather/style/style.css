@@ -113,10 +113,26 @@ body {
   margin-bottom: 2px;
 }
 
+/* Dynamic color-tuned sepia filters for weather icons */
 .weather-icon {
   width: 44px;
   height: 44px;
-  filter: sepia(0.8) hue-rotate(15deg) saturate(1.5);
+  transition: filter 0.4s ease;
+}
+
+/* Sunny / Clear: Warm golden amber glow */
+.weather-icon.state-clear {
+  filter: sepia(0.5) hue-rotate(15deg) saturate(2.5) drop-shadow(0 0 6px #f59e0b);
+}
+
+/* Rainy / Stormy: Cool deep blue rain glow */
+.weather-icon.state-rainy, .weather-icon.state-stormy {
+  filter: invert(0.6) sepia(0.2) hue-rotate(190deg) saturate(3) drop-shadow(0 0 6px #3b82f6);
+}
+
+/* Cloudy / Snowy: Soft, retro slate-grey cloud tone */
+.weather-icon.state-cloudy, .weather-icon.state-snowy {
+  filter: brightness(0.85) contrast(1.1) grayscale(0.5) drop-shadow(0 0 5px #6b7280);
 }
 
 .city-name {
@@ -169,7 +185,7 @@ body {
 .gauge-needle {
   position: absolute;
   top: 0;
-  left: 50%; /* Moves dynamically */
+  left: 50%;
   width: 3px;
   height: 100%;
   background: #ef4444;
