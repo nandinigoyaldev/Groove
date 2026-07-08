@@ -22,7 +22,10 @@
       <!-- Main Temp Panel -->
       <section class="widget temp-panel">
         <div class="weather-state">
-          <img src="assets/cloudy.png" class="weather-icon" alt="weather condition">
+          <!-- FontAwesome icon slot instead of confusing PNG image -->
+          <div class="weather-icon-slot">
+            <i id="weather-icon-fa" class="fa-solid fa-cloud"></i>
+          </div>
           <h2 class="city-name">Loading...</h2>
         </div>
         <h1 class="temperature">--°C</h1>

@@ -1,7 +1,10 @@
+const baseURL = "https://api.openweathermap.org/data/2.5/weather?units=metric";
+const apiKey = "ff19c9d8dacd0e5f339bc5f242cd49fe";
+
 // DOM elements
 const searchBox = document.getElementById("city-input");
 const searchBtn = document.getElementById("enter-button");
-const weatherIcon = document.querySelector(".weather-icon");
+const weatherIconFa = document.getElementById("weather-icon-fa");
 const toggleBtn = document.getElementById("toggle-broadcast");
 const delhiBtn = document.getElementById("delhi-shortcut");
 const tempNeedle = document.getElementById("temp-needle");
@@ -24,7 +27,7 @@ class WeatherRadio {
     if (!this.ctx) return;
     const now = this.ctx.currentTime;
     
-    // Funny double squeaky horn
+    // Squeaky double-squeak auto-rickshaw horn
     const triggerBeep = (time, freq) => {
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
@@ -48,11 +51,11 @@ class WeatherRadio {
     this.isPlaying = true;
 
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const isRain = condition.includes("rain") || condition.includes("drizzle") || condition.includes("showers") || condition.includes("snow") || condition.includes("storm");
+    const cond = condition.toLowerCase();
     const isDelhi = city.toLowerCase() === "delhi";
 
-    if (isRain) {
-      // 1. Rainy Ambient Sound: Soft white noise rain hiss
+    if (cond === "rainy" || cond === "stormy") {
+      // 1. Rain Static Noise
       const bufferSize = this.ctx.sampleRate * 2;
       const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
       const output = noiseBuffer.getChannelData(0);
@@ -65,10 +68,10 @@ class WeatherRadio {
 
       const filter = this.ctx.createBiquadFilter();
       filter.type = 'lowpass';
-      filter.frequency.value = 500;
+      filter.frequency.value = cond === "stormy" ? 380 : 500; // Stormy is lower/heavier
 
       const noiseGain = this.ctx.createGain();
-      noiseGain.gain.setValueAtTime(0.06, this.ctx.currentTime);
+      noiseGain.gain.setValueAtTime(cond === "stormy" ? 0.08 : 0.05, this.ctx.currentTime);
 
       noiseSource.connect(filter);
       filter.connect(noiseGain);
@@ -76,8 +79,8 @@ class WeatherRadio {
       noiseSource.start();
       this.audioNodes.push(noiseSource);
 
-      // 2. Nostalgic Melancholy Rain Melody: Slow cozy minor progression
-      const notes = [220.00, 261.63, 293.66, 329.63]; // A minor progression (A, C, D, E)
+      // 2. Slow cozy minor progression chimes
+      const notes = cond === "stormy" ? [196.00, 220.00, 246.94] : [220.00, 261.63, 293.66, 329.63]; 
       let noteIdx = 0;
 
       const playRainChime = () => {
@@ -97,15 +100,78 @@ class WeatherRadio {
         osc.start(now);
         osc.stop(now + 2);
 
+        // Rare thunder rumble on storm
+        if (cond === "stormy" && Math.random() > 0.6) {
+          this.playThunderRumble(now + 0.2);
+        }
+
         noteIdx = (noteIdx + 1) % notes.length;
       };
 
       playRainChime();
       this.melodyInterval = setInterval(playRainChime, 2000);
-      statusText.innerHTML = "TUNE: COZY RAIN MELODY 🌧️🎵";
+      statusText.innerHTML = cond === "stormy" ? "TUNE: HEAVY STORM RUMBLE ⛈️⚡" : "TUNE: COZY RAIN MELODY 🌧️🎵";
+
+    } else if (cond === "snowy") {
+      // Sparkling high-pitched winter chimes
+      const snowChimes = [783.99, 880.00, 987.77, 1046.50]; // G5, A5, B5, C6
+      let step = 0;
+
+      const playSnowStep = () => {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(snowChimes[step], now);
+
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.04, now + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 1.3);
+
+        step = (step + 1) % snowChimes.length;
+      };
+
+      playSnowStep();
+      this.melodyInterval = setInterval(playSnowStep, 1500);
+      statusText.innerHTML = "TUNE: SPARKLING WINTER CHIME ❄️✨";
+
+    } else if (cond === "cloudy") {
+      // Overcast: Deep warm atmospheric low-frequency drone
+      const playCloudDrone = () => {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        
+        osc1.type = 'sine';
+        osc1.frequency.value = 110.00; // Low A
+        osc2.type = 'sine';
+        osc2.frequency.value = 165.00; // Low E (Fifth interval)
+
+        gain.gain.setValueAtTime(0.06, now);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(this.ctx.destination);
+        
+        osc1.start(now);
+        osc2.start(now);
+        this.audioNodes.push(osc1, osc2);
+      };
+
+      playCloudDrone();
+      statusText.innerHTML = "TUNE: ATMOSPHERIC OVERCAST DRONE ☁️🌫️";
+
     } else {
-      // Sunny Ambient Sound: Bouncy, happy, nostalgic cartoon arpeggio (C Major)
-      const arpeggio = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63]; // C, E, G, C5
+      // Sunny: Bouncy, happy, nostalgic cartoon arpeggio (C Major)
+      const arpeggio = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63];
       let step = 0;
 
       const playSunnyStep = () => {
@@ -137,6 +203,31 @@ class WeatherRadio {
       statusText.innerHTML = "TUNE: DELHI AM // AUTO-RICKSHAW HONK 🛺";
       setTimeout(() => this.playRickshawHorn(), 400);
     }
+  }
+
+  playThunderRumble(time) {
+    if (!this.ctx) return;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(45, time); // Very low rumble frequency
+    
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(70, time);
+
+    gain.gain.setValueAtTime(0, time);
+    gain.gain.linearRampToValueAtTime(0.18, time + 0.1);
+    gain.gain.linearRampToValueAtTime(0.08, time + 0.5);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + 1.8);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    
+    osc.start(time);
+    osc.stop(time + 2);
   }
 
   stop() {
@@ -239,14 +330,14 @@ async function checkWeather(city) {
   }
 }
 
-// Map WMO weather codes to condition strings
+// Map WMO weather codes to condition strings and FontAwesome icons
 function mapWMOCode(code) {
-  if (code === 0) return { name: "Clear", icon: "assets/sunny.png", class: "state-clear" };
-  if (code >= 1 && code <= 3) return { name: "Cloudy", icon: "assets/cloudy.png", class: "state-cloudy" };
-  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return { name: "Rainy", icon: "assets/heavy-rain.png", class: "state-rainy" };
-  if (code >= 71 && code <= 77) return { name: "Snowy", icon: "assets/snow.png", class: "state-snowy" };
-  if (code >= 95) return { name: "Stormy", icon: "assets/thunderstrom.png", class: "state-stormy" };
-  return { name: "Cloudy", icon: "assets/cloudy.png", class: "state-cloudy" };
+  if (code === 0) return { name: "Clear", iconClass: "fa-sun", class: "state-clear" };
+  if (code >= 1 && code <= 3) return { name: "Cloudy", iconClass: "fa-cloud", class: "state-cloudy" };
+  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return { name: "Rainy", iconClass: "fa-cloud-showers-heavy", class: "state-rainy" };
+  if (code >= 71 && code <= 77) return { name: "Snowy", iconClass: "fa-snowflake", class: "state-snowy" };
+  if (code >= 95) return { name: "Stormy", iconClass: "fa-cloud-bolt", class: "state-stormy" };
+  return { name: "Cloudy", iconClass: "fa-cloud", class: "state-cloudy" };
 }
 
 function updateWeatherUI(cityName, current) {
@@ -266,10 +357,9 @@ function updateWeatherUI(cityName, current) {
   if (humidityEl) humidityEl.innerHTML = current.relative_humidity_2m + "%";
   if (descEl) descEl.innerHTML = condition.name;
   
-  if (weatherIcon) {
-    weatherIcon.src = condition.icon;
-    // Update target class to shift color tone filters in CSS
-    weatherIcon.className = `weather-icon ${condition.class}`;
+  if (weatherIconFa) {
+    // Reset classes and set exact FontAwesome weather icon
+    weatherIconFa.className = `fa-solid ${condition.iconClass} ${condition.class}`;
   }
 
   // Update analog needle dial (-10C to 45C mapped to 0-100%)
