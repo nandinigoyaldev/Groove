@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AeroTune | Weather Radio Console</title>
+  <title>Cloud | Weather Radio Console</title>
   <link rel="stylesheet" href="style/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -11,7 +11,7 @@
   <div class="weather-dashboard">
     <!-- Bakelite Radio Header -->
     <header class="glass-header">
-      <div class="brand-text"><i class="fa-solid fa-tower-broadcast"></i> AEROTUNE</div>
+      <div class="brand-text"><i class="fa-solid fa-cloud"></i> CLOUD</div>
       <div class="search-box">
         <input type="text" id="city-input" placeholder="Tune city..." spellcheck="false">
         <button id="enter-button"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -27,6 +27,19 @@
         </div>
         <h1 class="temperature">--°C</h1>
         <p class="weather-desc">Cloudy sky conditions</p>
+      </section>
+
+      <!-- Analog Frequency Dial (Temperature Needle Gauge) -->
+      <section class="widget gauge-panel">
+        <div class="gauge-header">ANALOG DIAL METRIC</div>
+        <div class="gauge-track">
+          <div class="gauge-needle" id="temp-needle"></div>
+          <div class="gauge-labels">
+            <span>COLD</span>
+            <span>WARM</span>
+            <span>HOT</span>
+          </div>
+        </div>
       </section>
 
       <!-- Wind Dial Widget -->
@@ -48,11 +61,14 @@
       </section>
     </main>
 
-    <!-- Radio Tuning Broadcast Panel (Replaces Bulky Form) -->
+    <!-- Radio Tuning Broadcast Panel -->
     <section class="broadcast-panel">
       <div class="broadcast-controls">
         <button class="broadcast-play-btn" id="toggle-broadcast">
-          <i class="fa-solid fa-play" id="play-icon"></i> LISTEN FM 108.0
+          <i class="fa-solid fa-play" id="play-icon"></i> LISTEN BROADCAST
+        </button>
+        <button class="broadcast-delhi-btn" id="delhi-shortcut">
+          <i class="fa-solid fa-map-pin"></i> TUNE DELHI AM
         </button>
         <div class="broadcast-meter">
           <div class="signal-bar" id="signal-bar-1"></div>
@@ -60,7 +76,7 @@
           <div class="signal-bar" id="signal-bar-3"></div>
         </div>
       </div>
-      <div class="broadcast-status">WEATHER REPORT AM STATION</div>
+      <div class="broadcast-status" id="audio-status">SELECT STATION BROADCAST</div>
     </section>
   </div>
 

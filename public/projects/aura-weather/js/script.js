@@ -6,64 +6,124 @@ const searchBox = document.getElementById("city-input");
 const searchBtn = document.getElementById("enter-button");
 const weatherIcon = document.querySelector(".weather-icon");
 const toggleBtn = document.getElementById("toggle-broadcast");
-const playIcon = document.getElementById("play-icon");
+const delhiBtn = document.getElementById("delhi-shortcut");
+const tempNeedle = document.getElementById("temp-needle");
+const statusText = document.getElementById("audio-status");
 
-// Custom Audio Synthesizer for Radio Static/Hum
-class RadioBroadcast {
+let activeWeather = "clear";
+let activeCity = "San Francisco";
+let activeTemp = 18;
+
+// Custom dynamic sound synthesizer
+class WeatherRadio {
   constructor() {
     this.ctx = null;
-    this.staticNode = null;
-    this.humNode = null;
+    this.sourceNode = null;
+    this.lfoNode = null;
     this.gainNode = null;
     this.isPlaying = false;
   }
 
-  start() {
-    if (this.isPlaying) return;
+  playRickshawHorn() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    
+    // Quick double beep beep!
+    const triggerBeep = (time) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(850, time); // Rickshaw high pitch horn
+      gain.gain.setValueAtTime(0, time);
+      gain.gain.linearRampToValueAtTime(0.12, time + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.12);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(time);
+      osc.stop(time + 0.15);
+    };
+
+    triggerBeep(now);
+    triggerBeep(now + 0.18);
+  }
+
+  start(condition, city) {
+    if (this.isPlaying) this.stop();
     this.isPlaying = true;
 
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-    
-    // Create white noise static
-    const bufferSize = this.ctx.sampleRate * 2;
-    const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-    const output = noiseBuffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      output[i] = (Math.random() * 2 - 1) * 0.015; // Soft static hiss
-    }
-    
-    this.staticNode = this.ctx.createBufferSource();
-    this.staticNode.buffer = noiseBuffer;
-    this.staticNode.loop = true;
-
-    // Create 60Hz radio hum oscillator
-    this.humNode = this.ctx.createOscillator();
-    this.humNode.type = 'sine';
-    this.humNode.frequency.setValueAtTime(60, this.ctx.currentTime);
-
-    const filter = this.ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.value = 1000;
-
     this.gainNode = this.ctx.createGain();
-    this.gainNode.gain.setValueAtTime(0.3, this.ctx.currentTime);
-
-    this.staticNode.connect(filter);
-    this.humNode.connect(filter);
-    filter.connect(this.gainNode);
+    this.gainNode.gain.setValueAtTime(0.2, this.ctx.currentTime);
     this.gainNode.connect(this.ctx.destination);
 
-    this.staticNode.start();
-    this.humNode.start();
+    const isRain = condition.includes("rain") || condition.includes("drizzle") || condition.includes("thunderstorm");
+    const isDelhi = city.toLowerCase() === "delhi";
+
+    if (isRain) {
+      // Synthesize rain using white noise + low pass filter
+      const bufferSize = this.ctx.sampleRate * 2;
+      const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+      this.sourceNode = this.ctx.createBufferSource();
+      this.sourceNode.buffer = noiseBuffer;
+      this.sourceNode.loop = true;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 450; // Muffled rain sound
+
+      // Modulate volume slightly to simulate rain waves
+      this.lfoNode = this.ctx.createGain();
+      this.lfoNode.gain.setValueAtTime(0.05, this.ctx.currentTime);
+
+      this.sourceNode.connect(filter);
+      filter.connect(this.lfoNode);
+      this.lfoNode.connect(this.gainNode);
+      this.sourceNode.start();
+      
+      statusText.innerHTML = "BROADCAST: RAIN WEATHER NOISE";
+    } else {
+      // Synthesize sunny sound: Warm sine major chords
+      const notes = [293.66, 369.99, 440.00]; // D major chord
+      this.sourceNode = [];
+      
+      notes.forEach((freq) => {
+        const osc = this.ctx.createOscillator();
+        const oscGain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        
+        oscGain.gain.setValueAtTime(0.02, this.ctx.currentTime);
+        osc.connect(oscGain);
+        oscGain.connect(this.gainNode);
+        osc.start();
+        this.sourceNode.push(osc);
+      });
+
+      statusText.innerHTML = "BROADCAST: SUNNY SUMMER CHORD";
+    }
+
+    if (isDelhi) {
+      statusText.innerHTML = "TUNE: DELHI AM // AUTO-RICKSHAW DETECTED";
+      // Honk the horn!
+      setTimeout(() => this.playRickshawHorn(), 400);
+    }
   }
 
   stop() {
     this.isPlaying = false;
-    if (this.staticNode) {
-      try { this.staticNode.stop(); } catch(e){}
-    }
-    if (this.humNode) {
-      try { this.humNode.stop(); } catch(e){}
+    if (this.sourceNode) {
+      if (Array.isArray(this.sourceNode)) {
+        this.sourceNode.forEach(osc => {
+          try { osc.stop(); } catch(e){}
+        });
+      } else {
+        try { this.sourceNode.stop(); } catch(e){}
+      }
+      this.sourceNode = null;
     }
     if (this.ctx) {
       this.ctx.close();
@@ -72,7 +132,7 @@ class RadioBroadcast {
   }
 }
 
-const radio = new RadioBroadcast();
+const weatherRadio = new WeatherRadio();
 let signalInterval = null;
 
 function animateSignal(active) {
@@ -83,6 +143,7 @@ function animateSignal(active) {
   ];
 
   if (active) {
+    if (signalInterval) clearInterval(signalInterval);
     signalInterval = setInterval(() => {
       bars.forEach(bar => {
         if (bar) {
@@ -100,25 +161,35 @@ function animateSignal(active) {
   }
 }
 
-// Toggle play button
+// Toggle broadcast
 if (toggleBtn) {
   toggleBtn.addEventListener('click', () => {
-    if (radio.isPlaying) {
-      radio.stop();
+    if (weatherRadio.isPlaying) {
+      weatherRadio.stop();
       toggleBtn.classList.remove('playing');
-      toggleBtn.innerHTML = '<i class="fa-solid fa-play" id="play-icon"></i> LISTEN FM 108.0';
+      toggleBtn.innerHTML = '<i class="fa-solid fa-play" id="play-icon"></i> LISTEN BROADCAST';
       animateSignal(false);
+      statusText.innerHTML = "SELECT STATION BROADCAST";
     } else {
-      radio.start();
+      weatherRadio.start(activeWeather, activeCity);
       toggleBtn.classList.add('playing');
-      toggleBtn.innerHTML = '<i class="fa-solid fa-stop" id="play-icon"></i> STATIC PLAYING';
+      toggleBtn.innerHTML = '<i class="fa-solid fa-stop" id="play-icon"></i> STOP BROADCAST';
       animateSignal(true);
     }
   });
 }
 
+// Delhi AM Tuning shortcut
+if (delhiBtn) {
+  delhiBtn.addEventListener('click', () => {
+    if (searchBox) searchBox.value = "Delhi";
+    checkWeather("Delhi");
+  });
+}
+
 async function checkWeather(city) {
   if (!city) return;
+  activeCity = city;
 
   try {
     const response = await fetch(`${baseURL}&q=${city}&appid=${apiKey}`);
@@ -143,26 +214,51 @@ function updateWeatherUI(data) {
   const humidityEl = document.querySelector(".humidity");
   const descEl = document.querySelector(".weather-desc");
 
+  activeTemp = Math.round(data.main.temp);
+  activeWeather = data.weather && data.weather[0] ? data.weather[0].main.toLowerCase() : "clear";
+
   if (cityEl) cityEl.innerHTML = data.name;
-  if (tempEl) tempEl.innerHTML = Math.round(data.main.temp) + "°C";
+  if (tempEl) tempEl.innerHTML = activeTemp + "°C";
   if (windEl) windEl.innerHTML = data.wind.speed + " km/h";
   if (humidityEl) humidityEl.innerHTML = data.main.humidity + "%";
   if (descEl && data.weather && data.weather[0]) {
     descEl.innerHTML = data.weather[0].description;
   }
+
+  // Update analog needle dial (-10C to 45C mapped to 0-100%)
+  if (tempNeedle) {
+    const needleLeft = Math.max(0, Math.min(100, ((activeTemp + 10) / 55) * 100));
+    tempNeedle.style.left = needleLeft + '%';
+  }
+
+  // Restart sound to match new weather if playing
+  if (weatherRadio.isPlaying) {
+    weatherRadio.start(activeWeather, activeCity);
+  }
 }
 
 function useMockWeather(city) {
+  let temp = 18 + Math.floor(Math.random() * 8);
+  let condition = "clear";
+  
+  if (city.toLowerCase() === "delhi") {
+    temp = 38; // Sunny & Hot in Delhi mock
+    condition = "clear";
+  } else if (city.toLowerCase() === "london") {
+    temp = 12;
+    condition = "rain";
+  }
+
   const mockData = {
     name: city.charAt(0).toUpperCase() + city.slice(1),
-    main: { temp: 18 + Math.floor(Math.random() * 8), humidity: 65 + Math.floor(Math.random() * 10) },
+    main: { temp: temp, humidity: 65 + Math.floor(Math.random() * 10) },
     wind: { speed: 12 + Math.floor(Math.random() * 6) },
-    weather: [{ main: "Clouds", description: "scattered clouds" }]
+    weather: [{ main: condition, description: condition === "rain" ? "showers" : "sunny sky" }]
   };
   updateWeatherUI(mockData);
 }
 
-// Event listener for search button
+// Search interactions
 if (searchBtn) {
   searchBtn.addEventListener("click", () => {
     const city = searchBox.value.trim();
