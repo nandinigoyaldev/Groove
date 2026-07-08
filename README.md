@@ -1,20 +1,18 @@
-# Nook & Canvas ☕🎨🍂
+# Aperture Showcase 📸🎞️🌌
 
-Welcome to **Nook & Canvas**—a cozy, Pinterest-style interactive scrapbook dashboard designed to showcase developer projects as physical memories pinned on a corkboard desk.
+Welcome to **Aperture Showcase**—an interactive retro rangefinder camera web environment designed to display developer projects as optical visual focus points.
 
-Instead of navigating simple grids, visitors browse projects as **Polaroid photos** pinned to a warm sandy scrapbook layout (`#faf9f5`). Dynamic coffee steam, a procedural lofi radio, and a snapshot camera make the workspace feel alive and relaxing.
+Instead of navigating standard grids, visitors look through a large circular **viewfinder lens** in the center of a vintage gunmetal camera casing. Scrolling or clicking the dial ring rotates the focus ring to shift between project anomalies, accompanied by dynamic depth-of-field blur transitions.
 
 ---
 
-## 🎨 Creative & Aesthetic Features
+## 📸 Camera Console Features
 
-- 🍂 **Pinterest Corkboard Grid**: Warm, cozy ivory dashboard decorated with Polaroids, clips, washi tape, and crawling sage leaf vector borders.
-- 📸 **Draggable Polaroid Camera**: A vintage camera widget. Click it to print a Polaroid of the current project. The photo starts black and slowly "develops" (fades in) as a physical draggable object on the desk that visitors can sign with custom captions.
-- 📻 **Lofi Tape Radio**: A retro cassette radio widget. Toggle it on to play warm, procedurally synthesized lofi chord pads and a crackling fireplace vinyl static noise (synthesized via Web Audio API, no files to load).
-- ☕ **Steaming Coffee Cup Widget**: A canvas-based interactive widget simulating realistic rising columns of warm coffee steam.
-- 🪟 **Interactive Polaroid Cards**: 3D mouse hover tilt effects on Polaroid cards, detailing project tech stacks using handwriting-style tags.
-- 📓 **Handwritten Guestbook Diary**: A vintage leather journal with lined paper notebook pages. Open it to write and pin notes to the diary.
-- 💻 **Live Sandbox & Editor**: Double-click any project to zoom into a cozy workspace panel. Open the code inspector to edit project files in real-time and run changes instantly inside the iframe.
+- ⚙️ **Circular Viewfinder Lens**: The primary view is a circular camera lens display with crosshairs, recorders, guidelines, and aperture parameters (e.g. `f/1.8` for arcade games, `f/2.8` for hotel cards).
+- 🎚️ **Manual Focus Control Slider**: Drag the slider on the dial pane to adjust the lens blur depth-of-field (`filter: blur(...)`) manually!
+- 🎞️ **Vintage Film Roll Guestbook**: Pinned like a 35mm canister on the left. Click it to expose and pull out a horizontal strip of transparent **film negatives** containing signed visitor logs inside sprocket frames.
+- ⚡ **Shutter Capture Overlay**: Click the blue capture shutter button to trigger a mechanical shutter sound and zoom the viewfinder cleanly into a full-viewport live preview overlay.
+- 💻 **Darkroom Live Code Sandbox**: Split-screen view inside the preview panel allows viewing the folder directories and editing source code live in a darkroom editor to hot-reload changes on the fly.
 
 ---
 

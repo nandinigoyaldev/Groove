@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { Project } from './types';
-import { GalleryScroll } from './components/GalleryScroll';
-import { CafeWidgets } from './components/CafeWidgets';
+import { CameraViewfinder } from './components/CameraViewfinder';
 import { CodeInspector } from './components/CodeInspector';
-import { GuestbookDiary } from './components/GuestbookDiary';
-import { PolaroidCamera } from './components/PolaroidCamera';
+import { FilmGuestbook } from './components/FilmGuestbook';
 import { synthAudio } from './lib/audio';
 import * as Icons from 'lucide-react';
 
@@ -15,8 +13,8 @@ const PROJECTS: Project[] = [
     description: 'A beautiful real-time weather application showing global forecast details.',
     longDescription: 'Get real-time, accurate weather updates for any city worldwide including temperature, humidity, wind speed & more. Styled with dynamic components.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Weather API'],
-    themeColor: '#047857',
-    gradient: '#faf9f5', // Cozy off-white base
+    themeColor: '#10b981',
+    gradient: 'radial-gradient(circle at 50% 50%, #062f21 0%, #031410 100%)',
     particleType: 'rain',
     url: '/projects/aura-weather/index.html',
   },
@@ -26,8 +24,8 @@ const PROJECTS: Project[] = [
     description: 'Play rock, paper, scissors against the computer with scoreboard tracking.',
     longDescription: 'A classic game built with beautiful buttons, sound logic, randomized computer choices, and active visual state indicators.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Local Storage'],
-    themeColor: '#be123c',
-    gradient: '#fcf6f6', // Cozy soft rose base
+    themeColor: '#ef4444',
+    gradient: 'radial-gradient(circle at 50% 50%, #2a080c 0%, #0d0204 100%)',
     particleType: 'grid',
     url: '/projects/rock-paper-scissors/game.html',
   },
@@ -37,8 +35,8 @@ const PROJECTS: Project[] = [
     description: 'An elegant mountainside luxury hotel showcase and landing page template.',
     longDescription: 'Escape to mountain heights. High-fidelity layouts, smooth responsive scrolling pages, and aesthetic room booking showcase design.',
     tech: ['HTML', 'SASS', 'JavaScript', 'Google Fonts'],
-    themeColor: '#b45309',
-    gradient: '#fdfaf2', // Cozy warm wheat base
+    themeColor: '#f59e0b',
+    gradient: 'radial-gradient(circle at 50% 50%, #2d1a04 0%, #0f0801 100%)',
     particleType: 'sparkles',
     url: '/projects/hotel-landing/index.html',
   },
@@ -48,8 +46,8 @@ const PROJECTS: Project[] = [
     description: 'A futuristic interactive layout shifting standard perspectives.',
     longDescription: 'Modern web layout template inspired by innovative shifts. Integrates sleek variables and dynamic parallax design components.',
     tech: ['HTML', 'SASS', 'JavaScript', 'Responsive Grid'],
-    themeColor: '#0369a1',
-    gradient: '#f5fafd', // Cozy soft slate blue base
+    themeColor: '#3b82f6',
+    gradient: 'radial-gradient(circle at 50% 50%, #0a192f 0%, #020813 100%)',
     particleType: 'lasers',
     url: '/projects/paradigm-shift/index.html',
   },
@@ -59,9 +57,8 @@ export default function App() {
   const [activeProject, setActiveProject] = useState<Project>(PROJECTS[0]);
   const [openProject, setOpenProject] = useState<Project | null>(null);
   const [showCode, setShowCode] = useState(false);
-  const [isDiaryOpen, setIsDiaryOpen] = useState(false);
+  const [isFilmOpen, setIsFilmOpen] = useState(false);
   const [sandboxCode, setSandboxCode] = useState<string | null>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
 
   const handleActiveProjectChange = (proj: Project) => {
     if (activeProject.id !== proj.id) {
@@ -80,84 +77,50 @@ export default function App() {
     setSandboxCode(code);
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const container = document.querySelector('.gallery-scroll-container');
-      if (!container) return;
-      
-      const maxScroll = container.scrollWidth - container.clientWidth;
-      if (maxScroll <= 0) return;
-      
-      const percentage = (container.scrollLeft / maxScroll) * 100;
-      setScrollProgress(percentage);
-    };
-
-    const container = document.querySelector('.gallery-scroll-container');
-    if (container) {
-      container.addEventListener('scroll', handleScroll);
-    }
-    return () => {
-      if (container) container.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
   return (
     <div
-      className="gallery-app cozy-theme"
+      className="gallery-app aperture-theme"
       style={{
-        backgroundColor: activeProject.gradient,
+        background: activeProject.gradient,
       }}
     >
-      {/* Dynamic Background Board Overlay */}
+      {/* Background Grid Overlay */}
       <div className="board-overlay-grid" />
 
-      {/* Cozy Header Nav */}
+      {/* Navigation Header */}
       <nav className="gallery-nav">
         <h1 className="nav-brand">
-          <Icons.Coffee size={24} color="#b45309" /> Cozy Café Showcase
+          <Icons.Camera size={24} color="#3b82f6" /> Aperture Showcase
         </h1>
         <div className="nav-links">
           <button
             className="nav-btn"
             onClick={() => {
               synthAudio.playClick();
-              setIsDiaryOpen(true);
+              setIsFilmOpen(true);
             }}
           >
-            <Icons.BookOpen size={16} /> Guestbook Diary
+            <Icons.Film size={16} /> Guest Film Roll
           </button>
         </div>
       </nav>
 
-      {/* Main Board Scrollway */}
-      <GalleryScroll
-        projects={PROJECTS}
-        onActiveProjectChange={handleActiveProjectChange}
-        onOpenProject={handleOpenProject}
-      />
-
-      {/* Steaming Coffee & Lofi Radio Widget Dock & Snapshot Camera */}
-      <CafeWidgets />
-      <PolaroidCamera activeProject={activeProject} />
-
-      {/* Scroll progress dial/line */}
-      <div className="scroll-indicator-container">
-        <div
-          className="scroll-indicator-bar"
-          style={{
-            width: `${scrollProgress}%`,
-            backgroundColor: activeProject.themeColor,
-            boxShadow: `0 0 8px ${activeProject.themeColor}55`,
-          }}
+      {/* Camera Viewfinder System */}
+      <main className="camera-viewfinder-main">
+        <CameraViewfinder
+          projects={PROJECTS}
+          activeProject={activeProject}
+          onActiveProjectChange={handleActiveProjectChange}
+          onOpenProject={handleOpenProject}
         />
-      </div>
+      </main>
 
-      {/* Cinema Overlay */}
+      {/* Fullscreen sandboxed app preview frame */}
       {openProject && (
-        <div className="fullscreen-app-overlay cozy-layout">
+        <div className="fullscreen-app-overlay">
           <div className="overlay-navbar">
             <span className="overlay-title">
-              <Icons.Compass size={18} /> {openProject.title} (Live Sandbox)
+              <Icons.Eye size={16} /> Viewfinder Live // {openProject.title}
             </span>
             <div className="overlay-controls">
               <button
@@ -167,7 +130,7 @@ export default function App() {
                   setShowCode(!showCode);
                 }}
               >
-                <Icons.Code size={16} /> Edit Sandbox Code
+                <Icons.Code size={16} /> Darkroom Editor
               </button>
               <button
                 className="overlay-btn overlay-close"
@@ -199,12 +162,12 @@ export default function App() {
         </div>
       )}
 
-      {/* Guestbook Diary */}
-      <GuestbookDiary
-        isOpen={isDiaryOpen}
+      {/* Film Guestbook */}
+      <FilmGuestbook
+        isOpen={isFilmOpen}
         onClose={() => {
           synthAudio.playClick();
-          setIsDiaryOpen(false);
+          setIsFilmOpen(false);
         }}
       />
     </div>
