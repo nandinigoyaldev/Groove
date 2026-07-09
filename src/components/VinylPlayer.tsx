@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import type { Project, GuestbookEntry } from '../types';
-import { Play } from 'lucide-react';
+import { Play, Volume2, VolumeX } from 'lucide-react';
 import { synthAudio } from '../lib/audio';
 
 interface VinylPlayerProps {
   projects: Project[];
   onOpenProject: (proj: Project) => void;
+  onSelectProject?: (proj: Project | null) => void;
 }
 
-export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProject }) => {
+export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProject, onSelectProject }) => {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showLinerNotes, setShowLinerNotes] = useState(false);
@@ -16,10 +17,14 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+  const [isMuted, setIsMuted] = useState(true);
 
   // Load entries for Guestbook record
   useEffect(() => {
     fetchEntries();
+    if (onSelectProject) {
+      onSelectProject(projects[0]);
+    }
   }, []);
 
   const fetchEntries = async () => {
@@ -88,6 +93,14 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
     setSelectedIdx(idx);
     setIsPlaying(false);
     setShowLinerNotes(false);
+    
+    const proj = idx < projects.length ? projects[idx] : null;
+    if (onSelectProject) {
+      onSelectProject(proj);
+    }
+    if (proj) {
+      synthAudio.setAmbiance(proj.particleType);
+    }
   };
 
   const handlePlayRecord = () => {
@@ -119,6 +132,18 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
       setTimeout(() => {
         onOpenProject(projects[selectedIdx]);
       }, 1200);
+    }
+  };
+
+  const handleToggleMute = () => {
+    const nextMute = !isMuted;
+    setIsMuted(nextMute);
+    synthAudio.toggleMute(nextMute);
+    if (!nextMute) {
+      const proj = selectedIdx < projects.length ? projects[selectedIdx] : null;
+      if (proj) {
+        synthAudio.setAmbiance(proj.particleType);
+      }
     }
   };
 
@@ -210,6 +235,19 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
           <div className="tonearm-base" />
           <div className="tonearm-weight" />
           <div className="tonearm-needle" />
+        </div>
+
+        {/* Vintage Audio Toggle Control */}
+        <div className="turntable-audio-control">
+          <button
+            className={`audio-retro-btn ${isMuted ? 'muted' : 'active'}`}
+            onClick={handleToggleMute}
+            title={isMuted ? "Unmute system audio" : "Mute system audio"}
+          >
+            {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+            <span>{isMuted ? 'AUDIO OFF' : 'AUDIO ON'}</span>
+            <span className={`led-dot ${isMuted ? 'off' : 'on'}`} />
+          </button>
         </div>
 
         <div className="turntable-branding">SPINS // LP-80</div>

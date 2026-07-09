@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { Project } from './types';
 import { VinylPlayer } from './components/VinylPlayer';
 import { CodeInspector } from './components/CodeInspector';
+import { ParticleSystem } from './components/ParticleSystem';
 import { synthAudio } from './lib/audio';
 import * as Icons from 'lucide-react';
 
@@ -19,7 +20,7 @@ const PROJECTS: Project[] = [
   },
   {
     id: 'rock-paper-scissors',
-    title: 'Spindle',
+    title: 'Earth',
     description: 'A classic game built as a vintage cassette deck with pitch-bend TAPE TILT.',
     longDescription: 'Play rock-paper-scissors on a tactile 1980s tape console. Features spinning cassette reels, responsive click sound waves, and a rare TAPE TILT switch that bends pitch down 35% and activates cheat mode.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Local Storage'],
@@ -30,9 +31,9 @@ const PROJECTS: Project[] = [
   },
   {
     id: 'hotel-landing',
-    title: 'Earth',
-    description: 'A vintage nature sanctuary key cabinet console with active ledger logs.',
-    longDescription: 'Browse room biomes as brass key tags hanging on pegs. Selecting a key tag detaches it with an animation, shifts the background glow, triggers bird/ocean sound synthesis, and populates a persistent localStorage registry.',
+    title: 'Hotel',
+    description: 'A luxurious dark-themed hotel desk with interactive room keys and custom access cards.',
+    longDescription: 'Browse boutique rooms as mechanical key tags hanging on hooks. Checking in generates a gorgeous custom digital entry keycard pass with custom typewriter sounds and writes to a live guest registry ledger.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Vite'],
     themeColor: '#b45309',
     gradient: '#faf9f5',
@@ -41,10 +42,10 @@ const PROJECTS: Project[] = [
   },
   {
     id: 'paradigm-shift',
-    title: 'Paradigm Shift',
-    description: 'A futuristic interactive layout shifting standard perspectives.',
-    longDescription: 'Modern web layout template inspired by innovative shifts. Integrates sleek variables and dynamic parallax design components.',
-    tech: ['HTML', 'SASS', 'JavaScript', 'Responsive Grid'],
+    title: 'Wave',
+    description: 'A vintage 8-step analog drum machine and audio sequencer.',
+    longDescription: 'Program beats on an interactive retro synthesizer console. Toggle glowing step LEDs across four sound tracks (Kick, Snare, Hi-hat, Beep), adjust tempo (BPM) dynamically, and hear Web Audio API synthesis.',
+    tech: ['HTML', 'CSS', 'Web Audio API', 'JavaScript'],
     themeColor: '#3b82f6',
     gradient: '#faf9f5',
     particleType: 'lasers',
@@ -54,6 +55,7 @@ const PROJECTS: Project[] = [
 
 export default function App() {
   const [openProject, setOpenProject] = useState<Project | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(PROJECTS[0]);
   const [showCode, setShowCode] = useState(false);
   const [sandboxCode, setSandboxCode] = useState<string | null>(null);
 
@@ -68,6 +70,14 @@ export default function App() {
 
   return (
     <div className="gallery-app spins-theme">
+      {/* Dynamic Background Particle System */}
+      {selectedProject && (
+        <ParticleSystem
+          type={selectedProject.particleType}
+          color={selectedProject.themeColor}
+        />
+      )}
+
       {/* Background Grid Overlay */}
       <div className="board-overlay-grid" />
 
@@ -89,6 +99,7 @@ export default function App() {
         <VinylPlayer
           projects={PROJECTS}
           onOpenProject={handleOpenProject}
+          onSelectProject={setSelectedProject}
         />
       </main>
 

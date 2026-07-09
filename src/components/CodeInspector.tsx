@@ -82,61 +82,20 @@ const fileSystemData: Record<string, FileNode> = {
         content: `<!DOCTYPE html>
 <html>
 <head>
+  <title>Earth | Cozy Tape Deck Showdown</title>
   <style>
-    body {
-      background: #08080f;
-      color: #ff007f;
-      font-family: sans-serif;
-      text-align: center;
-      padding-top: 50px;
-    }
-    .btn {
-      background: transparent;
-      border: 2px solid #ff007f;
-      color: #ff007f;
-      padding: 15px 30px;
-      margin: 10px;
-      border-radius: 10px;
-      font-size: 20px;
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(255,0,127,0.2);
-    }
-    .btn:hover {
-      background: #ff007f;
-      color: #000;
-      box-shadow: 0 0 20px #ff007f;
-    }
-    #result {
-      font-size: 28px;
-      margin-top: 30px;
-      font-weight: bold;
-      color: #00ffff;
-    }
+    body { background: #08080f; color: #ef4444; font-family: sans-serif; text-align: center; }
+    .btn { background: transparent; border: 2px solid #ef4444; color: #ef4444; padding: 10px 20px; }
   </style>
 </head>
 <body>
-  <h1>CYBERPUNK SHOWDOWN</h1>
-  <button class="btn" onclick="play('rock')">✊ Rock</button>
-  <button class="btn" onclick="play('paper')">✋ Paper</button>
-  <button class="btn" onclick="play('scissors')">✌️ Scissors</button>
-  <div id="result">Choose your move weapon!</div>
-
+  <h1>EARTH CASSETTE DECK</h1>
+  <button class="btn" onclick="play('rock')">✊ ROCK</button>
+  <button class="btn" onclick="play('paper')">✋ PAPER</button>
+  <button class="btn" onclick="play('scissors')">✌️ SCISSORS</button>
   <script>
-    function play(userChoice) {
-      const choices = ['rock', 'paper', 'scissors'];
-      const comp = choices[Math.floor(Math.random() * 3)];
-      let res = '';
-      if (userChoice === comp) res = "IT'S A TIE VORTEX";
-      else if (
-        (userChoice === 'rock' && comp === 'scissors') ||
-        (userChoice === 'paper' && comp === 'rock') ||
-        (userChoice === 'scissors' && comp === 'paper')
-      ) {
-        res = "YOU SHATTERED THE COMPUTER!";
-      } else {
-        res = "COMPUTER HACKED YOUR SYSTEM!";
-      }
-      document.getElementById('result').innerText = 'User: ' + userChoice.toUpperCase() + ' vs Comp: ' + comp.toUpperCase() + ' \\n ' + res;
+    function play(choice) {
+      alert("Exposed Choice: " + choice.toUpperCase());
     }
   </script>
 </body>
@@ -154,38 +113,18 @@ const fileSystemData: Record<string, FileNode> = {
         content: `<!DOCTYPE html>
 <html>
 <head>
+  <title>Hotel Grand Horizon</title>
   <style>
-    body {
-      background: #0f0801;
-      color: #f59e0b;
-      font-family: serif;
-      text-align: center;
-      padding: 40px;
-    }
-    .hero {
-      border: 1px solid rgba(245, 158, 11, 0.2);
-      padding: 60px;
-      background: rgba(245, 158, 11, 0.02);
-      border-radius: 8px;
-    }
-    h1 { font-size: 48px; letter-spacing: 2px; }
-    p { font-size: 18px; color: #d97706; }
-    .nav-btn {
-      background: #f59e0b;
-      color: #000;
-      padding: 10px 30px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
+    body { background: #0b0c10; color: #c5a880; font-family: serif; text-align: center; padding: 30px; }
+    .card { border: 1px solid #c5a880; border-radius: 8px; padding: 40px; background: #08080c; }
+    input { background: #020204; border: 1px solid #c5a880; color: white; padding: 8px; }
   </style>
 </head>
 <body>
-  <div class="hero">
-    <h1>VALENTINO LUXURY SUITES</h1>
-    <p>Escape to high mountain luxury and serene heights.</p>
-    <button class="nav-btn" onclick="alert('Booking Suite Request Received!')">Reserve A Suite</button>
+  <div class="card">
+    <h2>HOTEL RECEPTION DESK</h2>
+    <input type="text" placeholder="Guest Name">
+    <button onclick="alert('Access Key Card Generated!')">CHECK IN</button>
   </div>
 </body>
 </html>`,
@@ -202,32 +141,19 @@ const fileSystemData: Record<string, FileNode> = {
         content: `<!DOCTYPE html>
 <html>
 <head>
+  <title>Wave | Step Sequencer</title>
   <style>
-    body {
-      background: #020813;
-      color: #3b82f6;
-      font-family: monospace;
-      padding: 50px;
-    }
-    .grid {
-      border-left: 4px solid #3b82f6;
-      padding-left: 20px;
-    }
-    h1 { font-size: 40px; }
-    .btn {
-      background: #3b82f6;
-      border: none;
-      color: black;
-      padding: 12px;
-      cursor: pointer;
-    }
+    body { background: #0b0c10; color: #3b82f6; font-family: monospace; padding: 40px; }
+    .grid { display: flex; gap: 8px; margin-top: 20px; }
+    .pad { width: 30px; height: 30px; background: #1e2026; border: 1px solid #2d313c; }
   </style>
 </head>
 <body>
+  <h1>WAVE // ANALOG STEP SEQUENCER</h1>
+  <button onclick="alert('Beat loop started!')">START</button>
+  <button onclick="alert('Stopped')">STOP</button>
   <div class="grid">
-    <h1>PARADIGM SHIFT TEMPLATE</h1>
-    <p>Exploring new dimensions in responsive grids.</p>
-    <button class="btn" onclick="alert('Paradigm shift initialized!')">Launch Concept</button>
+    <div class="pad"></div><div class="pad"></div><div class="pad"></div><div class="pad"></div>
   </div>
 </body>
 </html>`,

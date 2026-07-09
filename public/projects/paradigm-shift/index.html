@@ -3,60 +3,431 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Paradigm Shift | Sci-Fi Showcase</title>
+  <title>Wave | Analog step sequencer</title>
   <link rel="stylesheet" href="style/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-  <div class="cyber-framework">
-    <!-- Grid Frame -->
-    <header class="framework-header">
-      <div class="grid-label">SYS.REF // 002</div>
-      <h1 class="glow-title">PARADIGM SHIFT</h1>
-      <p class="framework-subtitle">A digital vector playground exploring grid frameworks.</p>
-    </header>
+<body class="wave-root">
 
-    <main class="framework-grid">
-      <!-- Card 1 -->
-      <section class="cyber-module line-accent">
-        <div class="module-header">
-          <span class="index">01 //</span>
-          <h3>VECTOR STRUCTURE</h3>
+  <div class="sequencer-chassis">
+    <!-- Left Wooden Cheeks -->
+    <div class="wood-cheek left"></div>
+
+    <!-- Main Steel Control Console -->
+    <div class="metal-panel">
+      
+      <!-- Top Branding and Global Controls -->
+      <header class="sequencer-header">
+        <div class="brand-group">
+          <h1 class="console-title"><i class="fa-solid fa-wave-square"></i> WAVE</h1>
+          <span class="console-model">MODEL WV-802 // ANALOG STEP SEQUENCER</span>
         </div>
-        <p>Dynamic CSS grids shifting standard flex layout algorithms. We manipulate vector nodes to morph active elements on client viewport triggers.</p>
-        <div class="status-indicator">
-          <span class="pulse-dot"></span> SYSTEM ONLINE
+        
+        <!-- Audio Playback Controls -->
+        <div class="global-actions">
+          <button class="control-btn play-btn" id="btn-play" onclick="togglePlay(true)">
+            <i class="fa-solid fa-play"></i> START
+          </button>
+          <button class="control-btn stop-btn active" id="btn-stop" onclick="togglePlay(false)">
+            <i class="fa-solid fa-stop"></i> STOP
+          </button>
+          <button class="control-btn clear-btn" onclick="clearSequence()">
+            <i class="fa-solid fa-trash-arrow-up"></i> RESET
+          </button>
+        </div>
+      </header>
+
+      <!-- Dial knobs / Sliders Panel -->
+      <section class="dials-panel">
+        <div class="dial-control">
+          <label class="dial-label">TEMPO (BPM)</label>
+          <div class="slider-wrapper">
+            <input type="range" id="tempo-slider" min="60" max="240" value="120" oninput="updateTempo(this.value)">
+            <span class="value-readout" id="tempo-readout">120 BPM</span>
+          </div>
+        </div>
+
+        <div class="dial-control">
+          <label class="dial-label">SYNTH SHAPE</label>
+          <div class="synth-toggle-group">
+            <button class="synth-shape-btn active" id="shape-sine" onclick="setSynthShape('sine')">SINE</button>
+            <button class="synth-shape-btn" id="shape-triangle" onclick="setSynthShape('triangle')">TRI</button>
+            <button class="synth-shape-btn" id="shape-sawtooth" onclick="setSynthShape('sawtooth')">SAW</button>
+          </div>
         </div>
       </section>
 
-      <!-- Card 2 -->
-      <section class="cyber-module line-accent">
-        <div class="module-header">
-          <span class="index">02 //</span>
-          <h3>NEURAL SYNAPSE</h3>
+      <!-- Main Step Grid -->
+      <section class="sequencer-grid-area">
+        
+        <!-- Playhead Indicator Row -->
+        <div class="playhead-row">
+          <div class="row-label-blank"></div>
+          <div class="steps-indicators">
+            <span class="head-dot" id="dot-0">1</span>
+            <span class="head-dot" id="dot-1">2</span>
+            <span class="head-dot" id="dot-2">3</span>
+            <span class="head-dot" id="dot-3">4</span>
+            <span class="head-dot" id="dot-4">5</span>
+            <span class="head-dot" id="dot-5">6</span>
+            <span class="head-dot" id="dot-6">7</span>
+            <span class="head-dot" id="dot-7">8</span>
+          </div>
         </div>
-        <p>Processing state-level client interactions. Toggling custom particle classes (Space Hum, Space pads, and lasers) inside coordinate spaces.</p>
-        <div class="status-indicator">
-          <span class="pulse-dot"></span> BUFFER CLEAR
+
+        <!-- Track rows -->
+        <div class="grid-rows">
+          <!-- Kick Row -->
+          <div class="track-row" id="row-kick">
+            <div class="track-info">
+              <span class="track-name">KICK</span>
+              <span class="track-sub">LOW BOOM</span>
+            </div>
+            <div class="track-steps">
+              <button class="step-pad" id="kick-0" onclick="toggleStep('kick', 0)"></button>
+              <button class="step-pad" id="kick-1" onclick="toggleStep('kick', 1)"></button>
+              <button class="step-pad" id="kick-2" onclick="toggleStep('kick', 2)"></button>
+              <button class="step-pad" id="kick-3" onclick="toggleStep('kick', 3)"></button>
+              <button class="step-pad" id="kick-4" onclick="toggleStep('kick', 4)"></button>
+              <button class="step-pad" id="kick-5" onclick="toggleStep('kick', 5)"></button>
+              <button class="step-pad" id="kick-6" onclick="toggleStep('kick', 6)"></button>
+              <button class="step-pad" id="kick-7" onclick="toggleStep('kick', 7)"></button>
+            </div>
+          </div>
+
+          <!-- Snare Row -->
+          <div class="track-row" id="row-snare">
+            <div class="track-info">
+              <span class="track-name">SNARE</span>
+              <span class="track-sub">NOISE CUT</span>
+            </div>
+            <div class="track-steps">
+              <button class="step-pad" id="snare-0" onclick="toggleStep('snare', 0)"></button>
+              <button class="step-pad" id="snare-1" onclick="toggleStep('snare', 1)"></button>
+              <button class="step-pad" id="snare-2" onclick="toggleStep('snare', 2)"></button>
+              <button class="step-pad" id="snare-3" onclick="toggleStep('snare', 3)"></button>
+              <button class="step-pad" id="snare-4" onclick="toggleStep('snare', 4)"></button>
+              <button class="step-pad" id="snare-5" onclick="toggleStep('snare', 5)"></button>
+              <button class="step-pad" id="snare-6" onclick="toggleStep('snare', 6)"></button>
+              <button class="step-pad" id="snare-7" onclick="toggleStep('snare', 7)"></button>
+            </div>
+          </div>
+
+          <!-- Hihat Row -->
+          <div class="track-row" id="row-hihat">
+            <div class="track-info">
+              <span class="track-name">HI-HAT</span>
+              <span class="track-sub">HIGH TICK</span>
+            </div>
+            <div class="track-steps">
+              <button class="step-pad" id="hihat-0" onclick="toggleStep('hihat', 0)"></button>
+              <button class="step-pad" id="hihat-1" onclick="toggleStep('hihat', 1)"></button>
+              <button class="step-pad" id="hihat-2" onclick="toggleStep('hihat', 2)"></button>
+              <button class="step-pad" id="hihat-3" onclick="toggleStep('hihat', 3)"></button>
+              <button class="step-pad" id="hihat-4" onclick="toggleStep('hihat', 4)"></button>
+              <button class="step-pad" id="hihat-5" onclick="toggleStep('hihat', 5)"></button>
+              <button class="step-pad" id="hihat-6" onclick="toggleStep('hihat', 6)"></button>
+              <button class="step-pad" id="hihat-7" onclick="toggleStep('hihat', 7)"></button>
+            </div>
+          </div>
+
+          <!-- Synth Beep Row -->
+          <div class="track-row" id="row-synth">
+            <div class="track-info">
+              <span class="track-name">SYNTH</span>
+              <span class="track-sub">MELODY</span>
+            </div>
+            <div class="track-steps">
+              <button class="step-pad" id="synth-0" onclick="toggleStep('synth', 0)"></button>
+              <button class="step-pad" id="synth-1" onclick="toggleStep('synth', 1)"></button>
+              <button class="step-pad" id="synth-2" onclick="toggleStep('synth', 2)"></button>
+              <button class="step-pad" id="synth-3" onclick="toggleStep('synth', 3)"></button>
+              <button class="step-pad" id="synth-4" onclick="toggleStep('synth', 4)"></button>
+              <button class="step-pad" id="synth-5" onclick="toggleStep('synth', 5)"></button>
+              <button class="step-pad" id="synth-6" onclick="toggleStep('synth', 6)"></button>
+              <button class="step-pad" id="synth-7" onclick="toggleStep('synth', 7)"></button>
+            </div>
+          </div>
+
         </div>
       </section>
-    </main>
 
-    <!-- Action panel -->
-    <section class="cyber-console">
-      <div class="console-wrapper">
-        <h3>INITIALIZE MATRIX DIAGNOSTIC</h3>
-        <p>Inject cybernetic diagnostic vectors to run checks on framework nodes.</p>
-        <button class="btn-cyan" onclick="alert('Diagnostic complete. All system frames stable!')">INIT SYSTEM SHIFT</button>
-      </div>
-    </section>
+      <!-- Matrix Help Status Info -->
+      <footer class="wave-footer">
+        <span>INFO // CLICK AND PROGRAM A SEQUENCING PATTERN. UNMUTE AUDIO SYSTEM ON THE PLATTER BEFORE RUNNING.</span>
+      </footer>
 
-    <footer class="framework-footer">
-      <p>DESIGNED BY @GOYAL_CODER // SECURED SHELL v1.2</p>
-    </footer>
+    </div>
+
+    <!-- Right Wooden Cheeks -->
+    <div class="wood-cheek right"></div>
   </div>
+
+  <script>
+    let audioCtx = null;
+    let isPlaying = false;
+    let currentStep = 0;
+    let tempo = 120;
+    let stepInterval = null;
+    let synthShape = 'sine';
+
+    // Matrix sequence storage: rows x 8 steps
+    const matrixState = {
+      kick: [true, false, false, false, true, false, false, false],
+      snare: [false, false, true, false, false, false, true, false],
+      hihat: [true, true, true, true, true, true, true, true],
+      synth: [false, true, false, true, false, true, false, true]
+    };
+
+    // Initialize UI active pads on mount
+    document.addEventListener("DOMContentLoaded", () => {
+      Object.keys(matrixState).forEach(track => {
+        matrixState[track].forEach((isActive, idx) => {
+          if (isActive) {
+            document.getElementById(`${track}-${idx}`).classList.add('active');
+          }
+        });
+      });
+    });
+
+    // Sound synth triggers
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playKick(time) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      osc.frequency.setValueAtTime(140, time);
+      osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.28);
+      
+      gain.gain.setValueAtTime(0.35, time);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.28);
+      
+      osc.start(time);
+      osc.stop(time + 0.3);
+    }
+
+    function playSnare(time) {
+      // White noise synthesis
+      const bufferSize = audioCtx.sampleRate * 0.12;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = buffer;
+      
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.value = 1200;
+      
+      const gain = audioCtx.createGain();
+      
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      gain.gain.setValueAtTime(0.12, time);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.12);
+      
+      noise.start(time);
+      noise.stop(time + 0.14);
+    }
+
+    function playHihat(time) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(9000, time);
+      osc.frequency.exponentialRampToValueAtTime(7000, time + 0.04);
+      
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.value = 8000;
+      
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      gain.gain.setValueAtTime(0.06, time);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.04);
+      
+      osc.start(time);
+      osc.stop(time + 0.05);
+    }
+
+    function playSynth(time, stepIdx) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      
+      osc.type = synthShape;
+      
+      // Resonant notes sweep based on step count
+      const pentatonic = [220.00, 246.94, 277.18, 329.63, 369.99, 440.00, 493.88, 554.37];
+      const freq = pentatonic[stepIdx % pentatonic.length];
+      osc.frequency.setValueAtTime(freq, time);
+      
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 800;
+      
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      gain.gain.setValueAtTime(0.07, time);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.18);
+      
+      osc.start(time);
+      osc.stop(time + 0.2);
+    }
+
+    // Tick play sweep
+    function stepTick() {
+      initAudio();
+      const time = audioCtx.currentTime;
+
+      // Pulse active track notes
+      if (matrixState.kick[currentStep]) playKick(time);
+      if (matrixState.snare[currentStep]) playSnare(time);
+      if (matrixState.hihat[currentStep]) playHihat(time);
+      if (matrixState.synth[currentStep]) playSynth(time, currentStep);
+
+      // UI Playhead updates
+      updatePlayheadUI(currentStep);
+
+      // Advance
+      currentStep = (currentStep + 1) % 8;
+    }
+
+    function updatePlayheadUI(step) {
+      // Clear previous active dots
+      for (let i = 0; i < 8; i++) {
+        document.getElementById(`dot-${i}`).classList.remove('active');
+        // Clear highlights on pad columns
+        ['kick', 'snare', 'hihat', 'synth'].forEach(track => {
+          document.getElementById(`${track}-${i}`).classList.remove('playing-col');
+        });
+      }
+
+      // Set active dot
+      document.getElementById(`dot-${step}`).classList.add('active');
+      // Highlight pad column
+      ['kick', 'snare', 'hihat', 'synth'].forEach(track => {
+        document.getElementById(`${track}-${step}`).classList.add('playing-col');
+      });
+    }
+
+    function resetPlayheadUI() {
+      for (let i = 0; i < 8; i++) {
+        document.getElementById(`dot-${i}`).classList.remove('active');
+        ['kick', 'snare', 'hihat', 'synth'].forEach(track => {
+          document.getElementById(`${track}-${i}`).classList.remove('playing-col');
+        });
+      }
+    }
+
+    // Trigger Play State
+    function togglePlay(start) {
+      if (start) {
+        if (isPlaying) return;
+        initAudio();
+        isPlaying = true;
+        document.getElementById('btn-play').classList.add('active');
+        document.getElementById('btn-stop').classList.remove('active');
+        
+        const intervalTime = (60 / tempo / 2) * 1000; // 8th notes scheduling
+        stepTick();
+        stepInterval = setInterval(stepTick, intervalTime);
+      } else {
+        if (!isPlaying) return;
+        isPlaying = false;
+        document.getElementById('btn-play').classList.remove('active');
+        document.getElementById('btn-stop').classList.add('active');
+        
+        clearInterval(stepInterval);
+        stepInterval = null;
+        currentStep = 0;
+        resetPlayheadUI();
+      }
+    }
+
+    // Toggle Matrix Pad
+    function toggleStep(track, stepIdx) {
+      const pad = document.getElementById(`${track}-${stepIdx}`);
+      const isSet = !matrixState[track][stepIdx];
+      matrixState[track][stepIdx] = isSet;
+      
+      if (isSet) {
+        pad.classList.add('active');
+        // Play short sound check trigger on selection
+        try {
+          initAudio();
+          const t = audioCtx.currentTime;
+          if (track === 'kick') playKick(t);
+          if (track === 'snare') playSnare(t);
+          if (track === 'hihat') playHihat(t);
+          if (track === 'synth') playSynth(t, stepIdx);
+        } catch(e) {}
+      } else {
+        pad.classList.remove('active');
+      }
+    }
+
+    // Clear whole sequencer sequence
+    function clearSequence() {
+      Object.keys(matrixState).forEach(track => {
+        for (let i = 0; i < 8; i++) {
+          matrixState[track][i] = false;
+          document.getElementById(`${track}-${i}`).classList.remove('active');
+        }
+      });
+      if (isPlaying) {
+        togglePlay(false);
+      }
+    }
+
+    // Adjust BPM tempo
+    function updateTempo(val) {
+      tempo = parseInt(val);
+      document.getElementById('tempo-readout').innerText = `${tempo} BPM`;
+      if (isPlaying) {
+        // Restart timer interval with new speed
+        clearInterval(stepInterval);
+        const intervalTime = (60 / tempo / 2) * 1000;
+        stepInterval = setInterval(stepTick, intervalTime);
+      }
+    }
+
+    // Set synthesis osc wave shape
+    function setSynthShape(shape) {
+      synthShape = shape;
+      ['sine', 'triangle', 'sawtooth'].forEach(s => {
+        document.getElementById(`shape-${s}`).classList.remove('active');
+      });
+      document.getElementById(`shape-${shape}`).classList.add('active');
+      
+      // Play brief shape sample chime
+      try {
+        initAudio();
+        playSynth(audioCtx.currentTime, 4);
+      } catch(e) {}
+    }
+  </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-/* Earth Sanctuary Booking Cabinet Console styles */
+/* Luxury Hotel Grand Horizon Reception Desk Stylesheet */
 
 * {
   margin: 0;
@@ -6,471 +6,738 @@
   box-sizing: border-box;
 }
 
-body {
-  background-color: #faf9f5;
-  color: #d1c2a5;
-  font-family: 'Outfit', sans-serif;
-  line-height: 1.5;
+body.hotel-root {
+  background-color: #0b0c10;
+  color: #c5a880;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.6;
   min-height: 100vh;
-  transition: background 0.8s ease;
+  transition: background 1s ease;
+  overflow-x: hidden;
 }
 
-/* Ambient glow overrides for biomes */
-body.glow-rainforest { background-color: #0c1a11; }
-body.glow-ocean { background-color: #0b1528; }
-body.glow-volcano { background-color: #1e110b; }
+/* Biome Ambient Glows */
+body.glow-presidential { background-color: #0d0a07; }
+body.glow-ocean { background-color: #050a14; }
+body.glow-obsidian { background-color: #0a0505; }
 
-/* Luxury Nav */
-.luxury-nav {
-  height: 60px;
-  background: #170d0c;
-  border-bottom: 2px solid #b45309;
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0c10;
+}
+::-webkit-scrollbar-thumb {
+  background: #c5a880;
+  border-radius: 3px;
+}
+
+/* Header */
+.hotel-header {
+  height: 70px;
+  background-color: #08080c;
+  border-bottom: 2px solid #c5a880;
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
 
-.nav-container {
+.nav-wrapper {
   width: 100%;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.logo-gold {
-  color: #fbbf24;
-  font-family: monospace;
-  font-weight: 800;
-  font-size: 13px;
+.hotel-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 18px;
   letter-spacing: 2px;
+  color: #c5a880;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+.brand-icon {
+  font-size: 20px;
 }
 
 .nav-links a {
-  color: #d1c2a5;
+  color: #a3a3ac;
   text-decoration: none;
-  font-family: monospace;
-  font-size: 10px;
-  letter-spacing: 1px;
-  margin-left: 18px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  margin-left: 24px;
+  transition: color 0.3s;
 }
 
 .nav-links a:hover {
-  color: #fbbf24;
+  color: #c5a880;
 }
 
-/* Console Layout Grid */
-.console-layout {
-  max-width: 850px;
-  margin: 20px auto;
-  padding: 0 16px;
+/* Main Content */
+.hotel-main {
+  width: 95%;
+  max-width: 1100px;
+  margin: 30px auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 30px;
 }
 
-/* Top bar with Compass and Lock */
-.console-top {
+/* Top Dial & Security Panel */
+.control-panel {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #170d0c;
-  border: 1.5px solid rgba(180, 83, 9, 0.25);
-  border-radius: 8px;
-  padding: 12px 24px;
+  background: #08080c;
+  border: 1.5px solid rgba(197, 168, 128, 0.2);
+  border-radius: 12px;
+  padding: 16px 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.control-title {
+  font-size: 9px;
+  font-family: 'Fira Code', monospace;
+  color: #c5a880;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
 }
 
 /* Compass Widget */
-.compass-widget {
+.compass-dial {
   display: flex;
   flex-direction: column;
-  gap: 4px;
 }
 
-.compass-label {
-  font-family: monospace;
-  font-size: 8px;
-  color: #b45309;
-  letter-spacing: 1px;
-}
-
-.compass-face {
-  width: 70px;
-  height: 70px;
-  border: 2px solid #fbbf24;
+.compass-body {
+  width: 80px;
+  height: 80px;
+  border: 2px solid #c5a880;
   border-radius: 50%;
-  background: #0f0706;
+  background: #020204;
   position: relative;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
 }
 
-.compass-needle {
+.compass-pointer {
   position: absolute;
   top: 50%;
   left: 50%;
   width: 2px;
-  height: 25px;
+  height: 30px;
   background: #ef4444;
-  transform: translate(-50%, -100%) rotate(-90deg); /* points to standby initially */
+  transform: translate(-50%, -100%) rotate(-90deg); /* standby initial */
   transform-origin: bottom center;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 10;
+  box-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
 }
 
-.compass-face span {
+.compass-pointer::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c5a880;
+}
+
+.loc-label {
   position: absolute;
   font-size: 5px;
   font-weight: 700;
+  font-family: 'Fira Code', monospace;
 }
 
-.lbl-n { top: 3px; left: 50%; transform: translateX(-50%); color: #10b981; }
-.lbl-e { right: 3px; top: 50%; transform: translateY(-50%); color: #60a5fa; }
-.lbl-s { bottom: 3px; left: 50%; transform: translateX(-50%); color: #f97316; }
-.lbl-w { left: 3px; top: 50%; transform: translateY(-50%); color: #6b7280; }
+.loc-label.north { top: 4px; left: 50%; transform: translateX(-50%); color: #d97706; }
+.loc-label.east { right: 4px; top: 50%; transform: translateY(-50%); color: #3b82f6; }
+.loc-label.south { bottom: 4px; left: 50%; transform: translateX(-50%); color: #e4e4e7; }
+.loc-label.west { left: 4px; top: 50%; transform: translateY(-50%); color: #52525b; }
 
-/* Lock Widget */
-.lock-widget {
+/* Security lock */
+.security-lock {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 4px;
 }
 
-.lock-label {
-  font-family: monospace;
-  font-size: 8px;
-  color: #b45309;
+.lock-switch-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.lock-status {
-  font-family: monospace;
-  font-size: 9px;
+.security-status {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
   font-weight: 700;
-  color: #fbbf24;
-  margin-top: 2px;
+  color: #c5a880;
+  min-width: 80px;
+  text-align: right;
 }
 
-/* Slider Toggle */
-.toggle-switch {
+/* Switch styling */
+.switch-container {
   position: relative;
   display: inline-block;
-  width: 36px;
-  height: 18px;
+  width: 44px;
+  height: 22px;
 }
 
-.toggle-switch input {
+.switch-container input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.toggle-slider {
+.slider {
   position: absolute;
   cursor: pointer;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #374151;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: 0.2s;
+  background-color: #27272a;
+  border-radius: 22px;
+  border: 1.5px solid rgba(197, 168, 128, 0.3);
+  transition: 0.3s;
 }
 
-.toggle-slider:before {
+.slider:before {
   position: absolute;
   content: "";
-  height: 12px;
-  width: 12px;
-  left: 2px;
-  bottom: 2px;
-  background-color: #fff;
+  height: 14px;
+  width: 14px;
+  left: 2.5px;
+  bottom: 2.5px;
+  background-color: #c5a880;
   border-radius: 50%;
-  transition: 0.2s;
+  transition: 0.3s;
 }
 
-input:checked + .toggle-slider {
+input:checked + .slider {
+  background-color: #7f1d1d;
+  border-color: #ef4444;
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
   background-color: #ef4444;
 }
 
-input:checked + .toggle-slider:before {
-  transform: translateX(18px);
+/* Key Hangers Section */
+.key-cabinet-section {
+  background: radial-gradient(circle at top, #14161f 0%, #08090d 100%);
+  border: 2px solid #c5a880;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
 }
 
-/* Key Hooks Cabinet Section */
-.luxury-rooms {
-  background: #2b1f1d;
-  border: 6px solid #170d0c;
-  border-radius: 12px;
-  padding: 18px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-}
-
-.section-header {
+.panel-header {
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
-.section-header .sub {
-  font-family: monospace;
-  color: #b45309;
-  font-size: 8px;
-  letter-spacing: 2px;
+.panel-subtitle {
+  font-family: 'Fira Code', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: #c5a880;
 }
 
-.section-header h2 {
-  font-size: 18px;
-  font-weight: 800;
+.panel-title {
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 4px;
 }
 
-.gold-divider {
-  width: 40px;
+.brass-line {
+  width: 60px;
   height: 2px;
-  background: #b45309;
-  margin: 6px auto 0;
+  background: #c5a880;
+  margin: 10px auto 0;
+  border-radius: 1px;
 }
 
-.key-cabinet {
+.key-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 20px;
 }
 
-.key-hook {
-  background: #170d0c;
-  border: 1.5px solid rgba(180, 83, 9, 0.15);
-  border-radius: 8px;
-  padding: 12px;
+.hook-box {
+  background: rgba(0,0,0,0.3);
+  border: 1.5px solid rgba(197, 168, 128, 0.15);
+  border-radius: 12px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
   cursor: pointer;
   position: relative;
-  transition: border-color 0.2s;
+  transition: all 0.3s;
 }
 
-.key-hook:hover {
-  border-color: #fbbf24;
+.hook-box:hover {
+  border-color: #c5a880;
+  background: rgba(197, 168, 128, 0.03);
+  transform: translateY(-2px);
 }
 
 .brass-peg {
-  width: 8px;
-  height: 8px;
-  background: radial-gradient(circle, #fbbf24 30%, #b45309 90%);
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle, #ffe1a8 10%, #8c6d3b 90%);
   border-radius: 50%;
   position: absolute;
-  top: 8px;
+  top: 14px;
   left: 50%;
   transform: translateX(-50%);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-  z-index: 30;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.6);
+  z-index: 25;
 }
 
-/* Brass Key and Tag */
-.brass-key {
+/* Key Visual Tag */
+.hanging-key {
   display: flex;
   flex-direction: column;
   align-items: center;
   transform-origin: top center;
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  padding-top: 6px;
-  width: 44px;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  padding-top: 10px;
   z-index: 20;
 }
 
 .key-ring {
-  width: 14px;
-  height: 14px;
-  border: 2px solid #fbbf24;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #c5a880;
   border-radius: 50%;
-  margin-bottom: -3px;
+  margin-bottom: -4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
 .key-tag {
-  border: 2px solid #fbbf24;
-  border-radius: 16px 16px 4px 4px;
-  width: 40px;
-  height: 55px;
+  border: 2px solid #c5a880;
+  border-radius: 24px 24px 8px 8px;
+  width: 50px;
+  height: 70px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: white;
-  padding: 2px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  padding: 4px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.6);
+  position: relative;
 }
 
-.tag-rainforest { background-color: #065f46; } /* forest green */
-.tag-ocean { background-color: #1e3a8a; } /* deep ocean blue */
-.tag-volcano { background-color: #7c2d12; } /* magma red */
+.key-tag::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #000;
+}
 
-.room-number {
-  font-family: monospace;
-  font-size: 12px;
+.tag-gold { background: linear-gradient(135deg, #44321a 0%, #1e1306 100%); border-color: #d97706; }
+.tag-blue { background: linear-gradient(135deg, #16243d 0%, #09111e 100%); border-color: #3b82f6; }
+.tag-charcoal { background: linear-gradient(135deg, #27272a 0%, #09090b 100%); border-color: #a1a1aa; }
+
+.room-no {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
   font-weight: 800;
-  color: #fbbf24;
+  color: #c5a880;
+  letter-spacing: -0.5px;
 }
 
-.room-name {
-  font-size: 5px;
+.room-type {
+  font-size: 6px;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  color: #a1a1aa;
+  text-transform: uppercase;
 }
 
-.room-price {
-  font-size: 5px;
-  color: #d1c2a5;
-  margin-top: 2px;
+.room-cost {
+  font-size: 6px;
+  color: #c5a880;
+  margin-top: 4px;
+  font-family: 'Fira Code', monospace;
 }
 
-/* Key Selected swing-drop animation */
-.brass-key.key-taken {
-  transform: rotate(-15deg) translateY(8px) scale(0.95);
-  z-index: 40;
+/* Swing Taken Key Animation */
+.hanging-key.swing-taken {
+  transform: rotate(-18deg) translateY(12px) scale(0.92);
+  z-index: 30;
+  animation: minorSwing 3s ease-in-out infinite alternate;
+}
+
+@keyframes minorSwing {
+  0% { transform: rotate(-18deg) translateY(12px) scale(0.92); }
+  100% { transform: rotate(-14deg) translateY(12px) scale(0.92); }
 }
 
 .hook-details {
   text-align: center;
-  color: #d1c2a5;
 }
 
 .hook-details h3 {
-  font-family: monospace;
-  font-size: 11px;
-  color: #fbbf24;
-  margin-bottom: 2px;
-}
-
-.hook-details .room-desc {
-  font-size: 9.5px;
-  color: #9ca3af;
-  line-height: 1.3;
-}
-
-/* Desk containing Reservation Form and Registry List */
-.ledger-desk {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  background: #170d0c;
-  border: 3px solid #b45309;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-}
-
-.booking-wrapper h2, .registry-log h2 {
-  font-family: monospace;
-  font-size: 13px;
-  color: #fbbf24;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  color: #ffffff;
   letter-spacing: 1px;
-  margin-bottom: 12px;
-  border-bottom: 1px dashed rgba(251, 191, 36, 0.2);
-  padding-bottom: 4px;
+  margin-bottom: 6px;
 }
 
-.booking-form {
+.hook-details p {
+  font-size: 10px;
+  color: #8e919a;
+  line-height: 1.4;
+}
+
+/* Ledger & Desk layouts */
+.reception-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 1.9fr;
+  gap: 20px;
+}
+
+.ledger-box {
+  background: #08080c;
+  border: 1.5px solid rgba(197, 168, 128, 0.2);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   display: flex;
   flex-direction: column;
-  text-align: left;
 }
 
-.form-grid {
+.ledger-box h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: #c5a880;
+  margin-bottom: 18px;
+  border-bottom: 1.5px dashed rgba(197, 168, 128, 0.15);
+  padding-bottom: 8px;
+}
+
+/* Forms */
+.hotel-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 }
 
-.input-group {
+.form-group {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 6px;
 }
 
-.input-group label {
-  font-family: monospace;
-  font-size: 8px;
+.form-group label {
+  font-family: 'Fira Code', monospace;
+  font-size: 9px;
+  color: #8e919a;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  color: #9ca3af;
 }
 
-.input-group input {
-  background: #0f0706;
-  border: 1px solid rgba(180, 83, 9, 0.4);
-  border-radius: 4px;
-  padding: 6px 10px;
+.form-group input {
+  background: #020204;
+  border: 1px solid rgba(197, 168, 128, 0.25);
+  border-radius: 6px;
+  padding: 10px 14px;
   color: white;
-  font-size: 11px;
+  font-family: inherit;
+  font-size: 12px;
   outline: none;
+  transition: all 0.3s;
 }
 
-.input-group input:focus {
-  border-color: #fbbf24;
+.form-group input:focus {
+  border-color: #c5a880;
+  box-shadow: 0 0 8px rgba(197, 168, 128, 0.25);
 }
 
-/* Registry log guestbook table */
-.registry-log {
-  display: flex;
-  flex-direction: column;
+.form-group input[readonly] {
+  background: #06060a;
+  color: #c5a880;
+  cursor: not-allowed;
+  font-weight: 600;
 }
 
-.table-scroll {
+.btn-submit {
+  background: #c5a880;
+  color: #0b0c10;
+  border: none;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+.btn-submit:hover {
+  background: #e2cfae;
+  box-shadow: 0 0 15px rgba(197, 168, 128, 0.4);
+}
+
+/* Ledger List Panel */
+.ledger-table-container {
   flex: 1;
-  height: 130px;
+  min-height: 180px;
   overflow-y: auto;
-  border: 1px solid rgba(180, 83, 9, 0.2);
-  border-radius: 4px;
-  background: #0f0706;
+  border: 1px solid rgba(197, 168, 128, 0.1);
+  border-radius: 6px;
+  background: #020204;
 }
 
 .ledger-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: monospace;
-  font-size: 9.5px;
-  color: #d1c2a5;
+  font-size: 11px;
+  color: #a3a3ac;
   text-align: left;
 }
 
 .ledger-table th, .ledger-table td {
-  padding: 6px 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(197, 168, 128, 0.05);
 }
 
 .ledger-table th {
-  background: rgba(180, 83, 9, 0.15);
-  color: #fbbf24;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  color: #c5a880;
+  background: rgba(197, 168, 128, 0.04);
+  letter-spacing: 1px;
+  font-size: 10px;
 }
 
-.clear-ledger-btn {
+.monospaced {
+  font-family: 'Fira Code', monospace;
+  color: #c5a880;
+}
+
+.bold-text {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.btn-checkout {
   background: transparent;
-  border: none;
-  color: #6b7280;
-  font-family: monospace;
+  border: 1px solid #7f1d1d;
+  color: #fca5a5;
+  border-radius: 4px;
   font-size: 8px;
+  font-weight: 700;
+  padding: 4px 8px;
   cursor: pointer;
-  text-decoration: underline;
-  margin-top: 10px;
-  text-align: right;
-  align-self: flex-end;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
 }
 
-.clear-ledger-btn:hover {
+.btn-checkout:hover {
+  background: #7f1d1d;
   color: white;
 }
 
-.luxury-footer {
-  text-align: center;
-  padding: 16px 0;
-  font-family: monospace;
-  font-size: 8px;
-  color: #6b7280;
+.ledger-footer {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
 }
 
+.btn-clear-all {
+  background: transparent;
+  border: none;
+  color: #52525b;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+
+.btn-clear-all:hover {
+  color: #fca5a5;
+}
+
+/* Luxury Keycard Pass Overlay Modal */
+.pass-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(5, 5, 8, 0.95);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.pass-modal.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.pass-card {
+  width: 320px;
+  background: linear-gradient(145deg, #181922 0%, #0d0d12 100%);
+  border: 2px solid #d97706;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 25px 60px rgba(217, 119, 6, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transform: scale(0.9);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.pass-modal.visible .pass-card {
+  transform: scale(1);
+}
+
+.pass-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(217, 119, 6, 0.2);
+  padding-bottom: 12px;
+}
+
+.pass-brand {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pass-status {
+  font-family: 'Fira Code', monospace;
+  font-size: 8px;
+  background: rgba(217, 119, 6, 0.1);
+  color: #d97706;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.pass-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pass-field-row {
+  display: flex;
+  gap: 16px;
+}
+
+.pass-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.pass-field label {
+  font-family: 'Fira Code', monospace;
+  font-size: 8px;
+  color: #71717a;
+  letter-spacing: 0.5px;
+}
+
+.pass-field span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-top: 2px;
+}
+
+/* Barcode */
+.pass-barcode-section {
+  border-top: 1px dashed rgba(217, 119, 6, 0.25);
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.barcode {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.barcode-number {
+  font-family: 'Fira Code', monospace;
+  font-size: 9px;
+  color: #d97706;
+  letter-spacing: 2px;
+}
+
+.btn-dismiss-pass {
+  background: #d97706;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  letter-spacing: 1px;
+  margin-top: 6px;
+}
+
+.btn-dismiss-pass:hover {
+  background: #f59e0b;
+}
+
+/* Responsive details */
 @media (max-width: 768px) {
-  .key-cabinet {
+  .key-grid {
     grid-template-columns: 1fr;
   }
-  .ledger-desk {
+  .reception-layout {
     grid-template-columns: 1fr;
   }
 }
