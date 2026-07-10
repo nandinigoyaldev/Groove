@@ -173,20 +173,20 @@ const fileSystemData: Record<string, FileNode> = {
   <title>Crank | Mechanical Dice Tumbler</title>
   <style>
     body {
-      background: #0f1013;
-      color: #e2e8f0;
+      background: #faf9f5;
+      color: #451a03;
       font-family: 'Outfit', sans-serif;
       text-align: center;
       padding: 20px;
     }
     .cabinet {
       border: 8px solid #451a03;
-      background: #14151a;
+      background: #8c3e15;
       padding: 25px;
       border-radius: 12px;
       max-width: 360px;
       margin: auto;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     }
     .felt-lining {
       background: #064e3b;
@@ -198,7 +198,7 @@ const fileSystemData: Record<string, FileNode> = {
       justify-content: center;
       margin: 20px 0;
       box-shadow: inset 0 6px 12px rgba(0,0,0,0.5);
-      border: 2px solid #d97706;
+      border: 2px solid #b45309;
     }
     .result-txt {
       font-size: 24px;
@@ -208,14 +208,14 @@ const fileSystemData: Record<string, FileNode> = {
     }
     .crank-btn {
       background: linear-gradient(180deg, #d97706, #b45309);
-      border: 1px solid #f59e0b;
-      color: #451a03;
+      border: 1px solid #b45309;
+      color: #ffffff;
       padding: 10px 24px;
       font-weight: 800;
       cursor: pointer;
       border-radius: 4px;
       text-transform: uppercase;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
     }
     .crank-btn:hover {
       background: linear-gradient(180deg, #f59e0b, #d97706);
@@ -227,7 +227,7 @@ const fileSystemData: Record<string, FileNode> = {
 </head>
 <body>
   <div class="cabinet">
-    <h3 style="color:#d97706; letter-spacing:1px; margin:0;">CRANK MODEL T-800</h3>
+    <h3 style="color:#ffffff; letter-spacing:1px; margin:0;">CRANK MODEL T-800</h3>
     <div class="felt-lining">
       <div class="result-txt" id="display">🎲 READY TO SHAKE</div>
     </div>

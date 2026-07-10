@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="dice3d.css">
 </head>
 <body>
-  <!-- Mechanical Background Glow -->
+  <!-- Mechanical Ambient Background Glow -->
   <div class="mechanical-glow" aria-hidden="true"></div>
 
   <div class="tumbler-cabinet">
@@ -74,7 +74,7 @@
             <div class="shaker-intro" id="arena-intro">
               <span class="shaker-icon">🎲</span>
               <h3>Clockwork Tumbler</h3>
-              <p>Load dice into the pool and pull the mechanical Crank handle to shake.</p>
+              <p>Load dice into the cup and pull the mechanical Crank handle to shake.</p>
             </div>
           </div>
         </div>
@@ -100,175 +100,111 @@
               <button type="button" class="brass-btn btn-sm" id="clear-pool-btn" disabled>Empty Cup</button>
             </div>
             <div class="pool-tray-content" id="pool-viewer-content">
-              <span class="pool-empty-msg">Shaker is empty. Click slots on right panel to add dice.</span>
+              <!-- Render tags dynamically here -->
             </div>
           </div>
         </div>
       </section>
 
-      <!-- RIGHT COLUMN: Brass Control Panel with Tabbed Slots -->
+      <!-- RIGHT COLUMN: Brass Control Panel -->
       <section class="controls-panel card-glass" aria-label="Controls Console">
-        <!-- Copper/Brass Tab Navigation -->
-        <nav class="console-tabs" role="tablist">
-          <button type="button" class="tab-btn active" data-tab="dice-slots" role="tab" aria-selected="true" aria-controls="tab-dice-slots">
-            <span>🎲 Dice Slots</span>
-          </button>
-          <button type="button" class="tab-btn" data-tab="custom-decks" role="tab" aria-selected="false" aria-controls="tab-custom-decks">
-            <span>🔧 Custom Decks</span>
-          </button>
-          <button type="button" class="tab-btn" data-tab="ledger-book" role="tab" aria-selected="false" aria-controls="tab-ledger-book">
-            <span>📜 Ledger & Stats</span>
-          </button>
-        </nav>
+        <header class="panel-section-title">
+          <h2>TUMBLER CONSOLE</h2>
+        </header>
 
-        <!-- Tab 1: Standard Dice Slots -->
-        <div class="tab-pane active" id="tab-dice-slots" role="tabpanel">
-          <div class="pane-scrollable">
-            <div class="console-group">
-              <h2>Mechanical Dice Carousel</h2>
-              <p class="group-desc">Select dice shapes to release them into the shaker cup.</p>
-              
-              <div class="carousel-grid">
-                <button type="button" class="slot-btn d4" data-die="d4">
-                  <div class="slot-icon shape-d4"></div>
-                  <span class="slot-lbl">D4 Slot</span>
-                </button>
-                <button type="button" class="slot-btn d6" data-die="d6">
-                  <div class="slot-icon shape-d6"></div>
-                  <span class="slot-lbl">D6 Slot</span>
-                </button>
-                <button type="button" class="slot-btn d8" data-die="d8">
-                  <div class="slot-icon shape-d8"></div>
-                  <span class="slot-lbl">D8 Slot</span>
-                </button>
-                <button type="button" class="slot-btn d10" data-die="d10">
-                  <div class="slot-icon shape-d10"></div>
-                  <span class="slot-lbl">D10 Slot</span>
-                </button>
-                <button type="button" class="slot-btn d12" data-die="d12">
-                  <div class="slot-icon shape-d12"></div>
-                  <span class="slot-lbl">D12 Slot</span>
-                </button>
-                <button type="button" class="slot-btn d20" data-die="d20">
-                  <div class="slot-icon shape-d20"></div>
-                  <span class="slot-lbl">D20 Slot</span>
-                </button>
-                <button type="button" class="slot-btn d100" data-die="d100">
-                  <div class="slot-icon shape-d100"></div>
-                  <span class="slot-lbl">D100 Slot</span>
-                </button>
+        <div class="pane-scrollable">
+          <!-- Stepper & Materials Group -->
+          <div class="console-group">
+            <h2>Standard 3D Dice</h2>
+            <p class="group-desc">Select how many standard 6-sided dice to load into the cup.</p>
+            
+            <div class="stepper-row">
+              <div class="stepper-control">
+                <button type="button" class="brass-btn stepper-btn" id="die-minus-btn">-</button>
+                <span class="stepper-value" id="dice-count-value">1</span>
+                <button type="button" class="brass-btn stepper-btn" id="die-plus-btn">+</button>
               </div>
-            </div>
-
-            <!-- Dice Skin Settings -->
-            <div class="console-group separator-top">
-              <h2>Dice Material & Finish</h2>
-              <p class="group-desc">Select the physical properties of the loaded dice.</p>
-              <div class="skin-selector">
-                <label for="dice-skin-select">MATERIAL:</label>
+              
+              <div class="material-picker">
+                <label for="dice-skin-select">FINISH:</label>
                 <select id="dice-skin-select" class="brass-select font-mono">
-                  <option value="ivory">Classic Bone Ivory</option>
-                  <option value="brass">Polished Antique Brass</option>
-                  <option value="jade">Frosted Green Jade</option>
-                  <option value="charcoal">Matte Charcoal Obsidian</option>
-                  <option value="maroon">Vintage Bakelite Maroon</option>
+                  <option value="ivory">Bone Ivory</option>
+                  <option value="brass">Polished Brass</option>
+                  <option value="jade">Frosted Jade</option>
+                  <option value="charcoal">Charcoal Obsidian</option>
+                  <option value="maroon">Bakelite Maroon</option>
                 </select>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Tab 2: Custom Text Decks Creator -->
-        <div class="tab-pane" id="tab-custom-decks" role="tabpanel">
-          <div class="pane-scrollable">
-            <div class="console-group">
-              <h2>Select Custom Decision Decks</h2>
-              <p class="group-desc">Select a custom choice die you previously constructed.</p>
-              
-              <div class="select-row">
-                <select id="custom-dice-select" class="brass-select">
-                  <option value="">-- No custom deck loaded --</option>
-                </select>
-                <button type="button" class="brass-btn btn-danger" id="delete-deck-btn" title="Scrap Selected Deck" disabled>🗑️</button>
-              </div>
+          <!-- Custom Text Decks Group -->
+          <div class="console-group separator-top">
+            <div class="group-header-flex">
+              <h2>Decision Decks</h2>
+              <button type="button" class="brass-btn btn-sm btn-secondary" id="toggle-creator-btn">Compile New Die</button>
+            </div>
+            <p class="group-desc">Load a custom text-labeled decision deck (disables standard dice).</p>
+            
+            <div class="select-row">
+              <select id="custom-dice-select" class="brass-select">
+                <option value="">-- Standard D6 Dice --</option>
+              </select>
+              <button type="button" class="brass-btn btn-danger" id="delete-deck-btn" title="Scrap Selected Deck" disabled>🗑️</button>
             </div>
 
-            <div class="console-group separator-top">
-              <h2>Construct Choice Deck</h2>
-              <p class="group-desc">Assemble a custom decision-making die with labeled faces.</p>
+            <!-- Expandable compilation form -->
+            <form id="custom-die-form" class="creator-form collapsable-section" style="display: none;" novalidate>
+              <div class="form-group">
+                <label for="new-die-name">DECK NAME IDENTIFIER</label>
+                <input type="text" id="new-die-name" class="brass-input" placeholder="e.g. Lunch Decider" required maxlength="20">
+              </div>
               
-              <form id="custom-die-form" class="creator-form" novalidate>
-                <div class="form-group">
-                  <label for="new-die-name">DECK NAME IDENTIFIER</label>
-                  <input type="text" id="new-die-name" class="brass-input" placeholder="e.g. Lunch Choices" required maxlength="25">
-                </div>
-                
-                <div class="form-group">
-                  <label>FACE LABELS (MIN 2, MAX 6)</label>
-                  <div id="labels-inputs-container" class="labels-inputs-list">
-                    <!-- Dynamic input rows here -->
-                    <div class="label-input-row">
-                      <span class="label-index">I</span>
-                      <input type="text" class="brass-input face-label-input" placeholder="e.g. Pizza" required maxlength="15">
-                    </div>
-                    <div class="label-input-row">
-                      <span class="label-index">II</span>
-                      <input type="text" class="brass-input face-label-input" placeholder="e.g. Salad" required maxlength="15">
-                    </div>
+              <div class="form-group">
+                <label>FACE LABELS (MIN 2, MAX 6)</label>
+                <div id="labels-inputs-container" class="labels-inputs-list">
+                  <div class="label-input-row">
+                    <span class="label-index">I</span>
+                    <input type="text" class="brass-input face-label-input" placeholder="e.g. Pizza" required maxlength="12">
                   </div>
-                  <button type="button" class="brass-btn btn-sm btn-secondary" id="add-label-row-btn">+ Add Face</button>
+                  <div class="label-input-row">
+                    <span class="label-index">II</span>
+                    <input type="text" class="brass-input face-label-input" placeholder="e.g. Salad" required maxlength="12">
+                  </div>
                 </div>
-                
-                <div class="form-actions">
-                  <span id="creator-error-msg" class="error-text" style="display: none;"></span>
-                  <button type="submit" class="brass-btn btn-primary" id="save-custom-die-btn">Create Deck</button>
-                </div>
-              </form>
-            </div>
+                <button type="button" class="brass-btn btn-sm btn-secondary" id="add-label-row-btn" style="margin-top: 6px;">+ Add Option</button>
+              </div>
+              
+              <div class="form-actions">
+                <span id="creator-error-msg" class="error-text" style="display: none;"></span>
+                <button type="submit" class="brass-btn btn-primary">Compile Deck</button>
+              </div>
+            </form>
           </div>
-        </div>
 
-        <!-- Tab 3: Vintage Ledger Book & Live Stats -->
-        <div class="tab-pane" id="tab-ledger-book" role="tabpanel">
-          <div class="pane-scrollable">
-            <!-- SVG Stats Chart -->
-            <div class="console-group">
-              <div class="section-flex-header">
-                <h2>Roll Probabilities (D6)</h2>
-                <button type="button" class="brass-btn btn-sm" id="reset-analytics-btn">Reset</button>
-              </div>
-              <p class="group-desc">Real-time session distribution count for standard D6 throws.</p>
-              
-              <div class="chart-box" id="distribution-chart-wrapper">
-                <!-- Inline SVG rendered dynamically -->
-              </div>
+          <!-- Roll Ledger parchment -->
+          <div class="console-group separator-top flex-grow-ledger">
+            <div class="section-flex-header">
+              <h2>Crank Ledger Book</h2>
+              <button type="button" class="brass-btn btn-sm" id="clear-ledger-btn">Reset Book</button>
             </div>
-
-            <!-- The Roll History Ledger -->
-            <div class="console-group separator-top">
-              <div class="section-flex-header">
-                <h2>Crank Ledger Book</h2>
-                <button type="button" class="brass-btn btn-sm" id="clear-ledger-btn">Reset Book</button>
-              </div>
-              <p class="group-desc">Parchment record of all recent mechanical throws in this session.</p>
-              
-              <div class="ledger-parchment">
-                <table class="parchment-table">
-                  <thead>
-                    <tr>
-                      <th>Time</th>
-                      <th>Deck</th>
-                      <th>Outcomes</th>
-                      <th>Sum</th>
-                    </tr>
-                  </thead>
-                  <tbody id="ledger-rows">
-                    <tr>
-                      <td colspan="4" class="parchment-empty">Ledger is empty. Pull the Crank to record entries.</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            
+            <div class="ledger-parchment">
+              <table class="parchment-table">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Type</th>
+                    <th>Outcomes</th>
+                    <th>Sum</th>
+                  </tr>
+                </thead>
+                <tbody id="ledger-rows">
+                  <tr>
+                    <td colspan="4" class="parchment-empty">Ledger empty. Pull the Crank to record entries.</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -278,8 +214,8 @@
 
     <!-- Brass Trim Status Bar Footer -->
     <footer class="cabinet-footer">
-      <span class="status-gauge-pill">SYSTEM DIAGNOSTIC: READY</span>
-      <span>CLOCKWORK PROBABILISTIC SHAKER • LOCAL MECHANICAL SIMULATOR V2</span>
+      <span class="status-gauge-pill">DIAGNOSTIC: READY</span>
+      <span>CLOCKWORK PROBABILISTIC SHAKER • LOCAL MECHANICAL SIMULATOR V3</span>
     </footer>
   </div>
 
