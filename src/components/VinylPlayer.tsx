@@ -157,7 +157,10 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
     <div className="vinyl-console">
       {/* Crate Slot */}
       <div className="record-crate glass">
-        <h3 className="crate-header">VINYL ARCHIVE</h3>
+        <div className="crate-header-row">
+          <h3 className="crate-header">VINYL ARCHIVE</h3>
+          <span className="crate-scroll-tip">◀ Scroll Crate ▶</span>
+        </div>
         <div className="crate-rack">
           {projects.map((proj, idx) => (
             <div

@@ -146,6 +146,13 @@ body, html {
   border-color: rgba(0,0,0,0.06);
 }
 
+.crate-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 .crate-header {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -153,12 +160,51 @@ body, html {
   color: #b45309;
 }
 
+.crate-scroll-tip {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #b45309;
+  letter-spacing: 0.5px;
+  background: rgba(180, 83, 9, 0.08);
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  animation: pulseTip 2s infinite ease-in-out;
+}
+
+@keyframes pulseTip {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
 .crate-rack {
   display: flex;
   gap: 14px;
   overflow-x: auto;
-  padding: 16px 0;
+  padding: 16px 8px;
   width: 100%;
+}
+
+/* Custom Scrollbar for tactile Crate Rack slider */
+.crate-rack::-webkit-scrollbar {
+  height: 6px;
+}
+
+.crate-rack::-webkit-scrollbar-track {
+  background: rgba(180, 83, 9, 0.03);
+  border-radius: 10px;
+  border: 1px solid rgba(180, 83, 9, 0.06);
+}
+
+.crate-rack::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #b45309, #d97706);
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+.crate-rack::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #d97706, #fbbf24);
 }
 
 .crate-sleeve {
