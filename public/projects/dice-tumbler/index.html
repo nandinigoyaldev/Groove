@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crank | Mechanical Dice Tumbler</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dice3d.css">
+</head>
+<body>
+  <!-- Mechanical Background Glow -->
+  <div class="mechanical-glow" aria-hidden="true"></div>
+
+  <div class="tumbler-cabinet">
+    <!-- Brass Nameplate Header -->
+    <header class="cabinet-header">
+      <div class="nameplate">
+        <span class="screw top-left"></span>
+        <span class="screw top-right"></span>
+        <span class="screw bottom-left"></span>
+        <span class="screw bottom-right"></span>
+        <span class="gear-icon">⚙️</span>
+        <div class="brand-text">
+          <h1>CRANK // MODEL T-800</h1>
+          <span class="brand-sub">TACTILE CLOCKWORK DICE TUMBLER</span>
+        </div>
+      </div>
+      
+      <div class="header-controls">
+        <button type="button" id="sound-toggle-btn" class="brass-btn icon-btn" aria-label="Toggle Sound" title="Toggle Sound">
+          <span class="btn-icon">🔊</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Mechanical Console Layout -->
+    <main class="console-grid">
+      
+      <!-- LEFT COLUMN: The Shaker Felt Arena & Crank Lever -->
+      <section class="shaker-chamber" aria-label="Felt Shaking Arena">
+        <div class="mahogany-frame">
+          <div class="felt-lining" id="roll-arena-viewport">
+            <div class="felt-grid-overlay"></div>
+            
+            <!-- LED readouts on top of felt -->
+            <div class="led-display-panel" id="metrics-display">
+              <div class="led-metric">
+                <span class="led-lbl">SUM</span>
+                <span class="led-val val-cyan" id="metric-total">--</span>
+              </div>
+              <div class="led-metric">
+                <span class="led-lbl">AVG</span>
+                <span class="led-val val-green" id="metric-average">--</span>
+              </div>
+              <div class="led-metric">
+                <span class="led-lbl">MAX</span>
+                <span class="led-val val-amber" id="metric-highest">--</span>
+              </div>
+              <div class="led-metric">
+                <span class="led-lbl">MIN</span>
+                <span class="led-val val-red" id="metric-lowest">--</span>
+              </div>
+            </div>
+
+            <!-- Particle Splash Layer -->
+            <div class="sparkle-layer" id="arena-particle-layer" aria-hidden="true"></div>
+
+            <!-- Shaking Cup / Instruction overlay -->
+            <div class="shaker-intro" id="arena-intro">
+              <span class="shaker-icon">🎲</span>
+              <h3>Clockwork Tumbler</h3>
+              <p>Load dice into the pool and pull the mechanical Crank handle to shake.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mechanical Crank and Activation Row -->
+        <div class="crank-activation-deck">
+          <!-- The Physical CSS Crank Lever -->
+          <div class="crank-mechanism-wrapper">
+            <span class="mechanism-label">PULL LEVER TO ROLL</span>
+            <div class="crank-housing" id="crank-housing">
+              <div class="crank-shaft" id="crank-shaft">
+                <div class="crank-arm" id="crank-arm">
+                  <div class="crank-handle" id="crank-handle-ball"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Pool Dial Overlay -->
+          <div class="active-pool-display card-glass">
+            <div class="pool-header">
+              <span>LOADED POOL</span>
+              <button type="button" class="brass-btn btn-sm" id="clear-pool-btn" disabled>Empty Cup</button>
+            </div>
+            <div class="pool-tray-content" id="pool-viewer-content">
+              <span class="pool-empty-msg">Shaker is empty. Click slots on right panel to add dice.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN: Brass Control Panel with Tabbed Slots -->
+      <section class="controls-panel card-glass" aria-label="Controls Console">
+        <!-- Copper/Brass Tab Navigation -->
+        <nav class="console-tabs" role="tablist">
+          <button type="button" class="tab-btn active" data-tab="dice-slots" role="tab" aria-selected="true" aria-controls="tab-dice-slots">
+            <span>🎲 Dice Slots</span>
+          </button>
+          <button type="button" class="tab-btn" data-tab="custom-decks" role="tab" aria-selected="false" aria-controls="tab-custom-decks">
+            <span>🔧 Custom Decks</span>
+          </button>
+          <button type="button" class="tab-btn" data-tab="ledger-book" role="tab" aria-selected="false" aria-controls="tab-ledger-book">
+            <span>📜 Ledger & Stats</span>
+          </button>
+        </nav>
+
+        <!-- Tab 1: Standard Dice Slots -->
+        <div class="tab-pane active" id="tab-dice-slots" role="tabpanel">
+          <div class="pane-scrollable">
+            <div class="console-group">
+              <h2>Mechanical Dice Carousel</h2>
+              <p class="group-desc">Select dice shapes to release them into the shaker cup.</p>
+              
+              <div class="carousel-grid">
+                <button type="button" class="slot-btn d4" data-die="d4">
+                  <div class="slot-icon shape-d4"></div>
+                  <span class="slot-lbl">D4 Slot</span>
+                </button>
+                <button type="button" class="slot-btn d6" data-die="d6">
+                  <div class="slot-icon shape-d6"></div>
+                  <span class="slot-lbl">D6 Slot</span>
+                </button>
+                <button type="button" class="slot-btn d8" data-die="d8">
+                  <div class="slot-icon shape-d8"></div>
+                  <span class="slot-lbl">D8 Slot</span>
+                </button>
+                <button type="button" class="slot-btn d10" data-die="d10">
+                  <div class="slot-icon shape-d10"></div>
+                  <span class="slot-lbl">D10 Slot</span>
+                </button>
+                <button type="button" class="slot-btn d12" data-die="d12">
+                  <div class="slot-icon shape-d12"></div>
+                  <span class="slot-lbl">D12 Slot</span>
+                </button>
+                <button type="button" class="slot-btn d20" data-die="d20">
+                  <div class="slot-icon shape-d20"></div>
+                  <span class="slot-lbl">D20 Slot</span>
+                </button>
+                <button type="button" class="slot-btn d100" data-die="d100">
+                  <div class="slot-icon shape-d100"></div>
+                  <span class="slot-lbl">D100 Slot</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Dice Skin Settings -->
+            <div class="console-group separator-top">
+              <h2>Dice Material & Finish</h2>
+              <p class="group-desc">Select the physical properties of the loaded dice.</p>
+              <div class="skin-selector">
+                <label for="dice-skin-select">MATERIAL:</label>
+                <select id="dice-skin-select" class="brass-select font-mono">
+                  <option value="ivory">Classic Bone Ivory</option>
+                  <option value="brass">Polished Antique Brass</option>
+                  <option value="jade">Frosted Green Jade</option>
+                  <option value="charcoal">Matte Charcoal Obsidian</option>
+                  <option value="maroon">Vintage Bakelite Maroon</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Custom Text Decks Creator -->
+        <div class="tab-pane" id="tab-custom-decks" role="tabpanel">
+          <div class="pane-scrollable">
+            <div class="console-group">
+              <h2>Select Custom Decision Decks</h2>
+              <p class="group-desc">Select a custom choice die you previously constructed.</p>
+              
+              <div class="select-row">
+                <select id="custom-dice-select" class="brass-select">
+                  <option value="">-- No custom deck loaded --</option>
+                </select>
+                <button type="button" class="brass-btn btn-danger" id="delete-deck-btn" title="Scrap Selected Deck" disabled>🗑️</button>
+              </div>
+            </div>
+
+            <div class="console-group separator-top">
+              <h2>Construct Choice Deck</h2>
+              <p class="group-desc">Assemble a custom decision-making die with labeled faces.</p>
+              
+              <form id="custom-die-form" class="creator-form" novalidate>
+                <div class="form-group">
+                  <label for="new-die-name">DECK NAME IDENTIFIER</label>
+                  <input type="text" id="new-die-name" class="brass-input" placeholder="e.g. Lunch Choices" required maxlength="25">
+                </div>
+                
+                <div class="form-group">
+                  <label>FACE LABELS (MIN 2, MAX 6)</label>
+                  <div id="labels-inputs-container" class="labels-inputs-list">
+                    <!-- Dynamic input rows here -->
+                    <div class="label-input-row">
+                      <span class="label-index">I</span>
+                      <input type="text" class="brass-input face-label-input" placeholder="e.g. Pizza" required maxlength="15">
+                    </div>
+                    <div class="label-input-row">
+                      <span class="label-index">II</span>
+                      <input type="text" class="brass-input face-label-input" placeholder="e.g. Salad" required maxlength="15">
+                    </div>
+                  </div>
+                  <button type="button" class="brass-btn btn-sm btn-secondary" id="add-label-row-btn">+ Add Face</button>
+                </div>
+                
+                <div class="form-actions">
+                  <span id="creator-error-msg" class="error-text" style="display: none;"></span>
+                  <button type="submit" class="brass-btn btn-primary" id="save-custom-die-btn">Create Deck</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Vintage Ledger Book & Live Stats -->
+        <div class="tab-pane" id="tab-ledger-book" role="tabpanel">
+          <div class="pane-scrollable">
+            <!-- SVG Stats Chart -->
+            <div class="console-group">
+              <div class="section-flex-header">
+                <h2>Roll Probabilities (D6)</h2>
+                <button type="button" class="brass-btn btn-sm" id="reset-analytics-btn">Reset</button>
+              </div>
+              <p class="group-desc">Real-time session distribution count for standard D6 throws.</p>
+              
+              <div class="chart-box" id="distribution-chart-wrapper">
+                <!-- Inline SVG rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- The Roll History Ledger -->
+            <div class="console-group separator-top">
+              <div class="section-flex-header">
+                <h2>Crank Ledger Book</h2>
+                <button type="button" class="brass-btn btn-sm" id="clear-ledger-btn">Reset Book</button>
+              </div>
+              <p class="group-desc">Parchment record of all recent mechanical throws in this session.</p>
+              
+              <div class="ledger-parchment">
+                <table class="parchment-table">
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Deck</th>
+                      <th>Outcomes</th>
+                      <th>Sum</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ledger-rows">
+                    <tr>
+                      <td colspan="4" class="parchment-empty">Ledger is empty. Pull the Crank to record entries.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Brass Trim Status Bar Footer -->
+    <footer class="cabinet-footer">
+      <span class="status-gauge-pill">SYSTEM DIAGNOSTIC: READY</span>
+      <span>CLOCKWORK PROBABILISTIC SHAKER • LOCAL MECHANICAL SIMULATOR V2</span>
+    </footer>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

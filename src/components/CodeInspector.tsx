@@ -160,6 +160,97 @@ const fileSystemData: Record<string, FileNode> = {
       },
     ],
   },
+  'dice-tumbler': {
+    name: 'dice-tumbler',
+    type: 'folder',
+    children: [
+      {
+        name: 'index.html',
+        type: 'file',
+        content: `<!DOCTYPE html>
+<html>
+<head>
+  <title>Crank | Mechanical Dice Tumbler</title>
+  <style>
+    body {
+      background: #0f1013;
+      color: #e2e8f0;
+      font-family: 'Outfit', sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .cabinet {
+      border: 8px solid #451a03;
+      background: #14151a;
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 360px;
+      margin: auto;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .felt-lining {
+      background: #064e3b;
+      height: 160px;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 20px 0;
+      box-shadow: inset 0 6px 12px rgba(0,0,0,0.5);
+      border: 2px solid #d97706;
+    }
+    .result-txt {
+      font-size: 24px;
+      font-weight: 800;
+      color: #fbbf24;
+      text-shadow: 0 0 8px rgba(251,191,36,0.4);
+    }
+    .crank-btn {
+      background: linear-gradient(180deg, #d97706, #b45309);
+      border: 1px solid #f59e0b;
+      color: #451a03;
+      padding: 10px 24px;
+      font-weight: 800;
+      cursor: pointer;
+      border-radius: 4px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+    .crank-btn:hover {
+      background: linear-gradient(180deg, #f59e0b, #d97706);
+    }
+    .crank-btn:active {
+      transform: translateY(1px);
+    }
+  </style>
+</head>
+<body>
+  <div class="cabinet">
+    <h3 style="color:#d97706; letter-spacing:1px; margin:0;">CRANK MODEL T-800</h3>
+    <div class="felt-lining">
+      <div class="result-txt" id="display">🎲 READY TO SHAKE</div>
+    </div>
+    <button class="crank-btn" onclick="crankLever()">Crank Lever</button>
+  </div>
+
+  <script>
+    function crankLever() {
+      const display = document.getElementById("display");
+      display.style.opacity = 0.5;
+      display.textContent = "SHAKING...";
+      setTimeout(() => {
+        const val = Math.floor(Math.random() * 6) + 1;
+        display.textContent = "🎲 ROLLED: " + val;
+        display.style.opacity = 1;
+      }, 500);
+    }
+  </script>
+</body>
+</html>`,
+      },
+    ],
+  },
 };
 
 interface CodeInspectorProps {

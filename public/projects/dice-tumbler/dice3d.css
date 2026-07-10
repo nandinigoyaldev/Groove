@@ -1,0 +1,266 @@
+/* ==========================================================================
+   Clockwork Dice Shaker 3D CSS Dice Engine
+   ========================================================================== */
+
+/* 3D Scene Viewport Setup */
+.dice-3d-scene {
+  width: 70px;
+  height: 70px;
+  perspective: 1200px;
+  margin: 10px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* 3D Cube Container */
+.die-3d {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.2, 0.85, 0.25, 1);
+  transform: rotateX(0deg) rotateY(0deg);
+}
+
+/* Base Face Structure */
+.die-3d .face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: visible; /* Required to see opposite faces through transparent skins */
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 3D Translation coordinates (radius = half of 70px = 35px) */
+.face-1 { transform: rotateY(0deg) translateZ(35px); }
+.face-6 { transform: rotateY(180deg) translateZ(35px); }
+.face-3 { transform: rotateY(90deg) translateZ(35px); }
+.face-4 { transform: rotateY(-90deg) translateZ(35px); }
+.face-2 { transform: rotateX(90deg) translateZ(35px); }
+.face-5 { transform: rotateX(-90deg) translateZ(35px); }
+
+/* Pip Grid Layout for D6 Dice */
+.pip-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 75%;
+  height: 75%;
+  padding: 2px;
+}
+
+.pip {
+  background: currentColor;
+  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  justify-self: center;
+  align-self: center;
+}
+
+/* Mapping pips to grid coordinates for each face */
+/* Face 1: Center */
+.face-1 .pip { grid-column: 2; grid-row: 2; }
+
+/* Face 2: Top-left, Bottom-right */
+.face-2 .pip:nth-child(1) { grid-column: 1; grid-row: 1; }
+.face-2 .pip:nth-child(2) { grid-column: 3; grid-row: 3; }
+
+/* Face 3: Top-left, Center, Bottom-right */
+.face-3 .pip:nth-child(1) { grid-column: 1; grid-row: 1; }
+.face-3 .pip:nth-child(2) { grid-column: 2; grid-row: 2; }
+.face-3 .pip:nth-child(3) { grid-column: 3; grid-row: 3; }
+
+/* Face 4: Four Corners */
+.face-4 .pip:nth-child(1) { grid-column: 1; grid-row: 1; }
+.face-4 .pip:nth-child(2) { grid-column: 3; grid-row: 1; }
+.face-4 .pip:nth-child(3) { grid-column: 1; grid-row: 3; }
+.face-4 .pip:nth-child(4) { grid-column: 3; grid-row: 3; }
+
+/* Face 5: Four Corners + Center */
+.face-5 .pip:nth-child(1) { grid-column: 1; grid-row: 1; }
+.face-5 .pip:nth-child(2) { grid-column: 3; grid-row: 1; }
+.face-5 .pip:nth-child(3) { grid-column: 2; grid-row: 2; }
+.face-5 .pip:nth-child(4) { grid-column: 1; grid-row: 3; }
+.face-5 .pip:nth-child(5) { grid-column: 3; grid-row: 3; }
+
+/* Face 6: Left column, Right column */
+.face-6 .pip:nth-child(1) { grid-column: 1; grid-row: 1; }
+.face-6 .pip:nth-child(2) { grid-column: 1; grid-row: 2; }
+.face-6 .pip:nth-child(3) { grid-column: 1; grid-row: 3; }
+.face-6 .pip:nth-child(4) { grid-column: 3; grid-row: 1; }
+.face-6 .pip:nth-child(5) { grid-column: 3; grid-row: 2; }
+.face-6 .pip:nth-child(6) { grid-column: 3; grid-row: 3; }
+
+/* Custom Choice text face label formatting */
+.custom-face-text {
+  font-family: var(--font-primary);
+  font-size: 0.55rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  padding: 4px;
+  word-break: break-word;
+  overflow: hidden;
+  max-height: 100%;
+}
+
+/* ==========================================================================
+   Tactile Material Skins
+   ========================================================================== */
+
+/* 1. Classic Ivory */
+.skin-ivory .face {
+  background: #fdfaf0;
+  border-color: #4a3e3d;
+  color: #2b1f1d;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), inset 0 0 8px rgba(0, 0, 0, 0.1);
+}
+.skin-ivory .face-1 {
+  color: #dc2626; /* Japanese traditional red 1-spot */
+}
+
+/* 2. Polished Antique Brass */
+.skin-brass .face {
+  background: linear-gradient(135deg, #fbbf24 0%, #b45309 100%);
+  border-color: #fca5a5;
+  color: #3b0764;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35), inset 0 0 10px rgba(255, 255, 255, 0.4);
+}
+.skin-brass .custom-face-text {
+  color: #3b0764;
+}
+
+/* 3. Frosted Jade Green */
+.skin-jade .face {
+  background: rgba(16, 185, 129, 0.4);
+  border-color: rgba(16, 185, 129, 0.6);
+  color: #ecfdf5;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 0 8px rgba(255,255,255,0.15);
+}
+
+/* 4. Matte Charcoal Obsidian */
+.skin-charcoal .face {
+  background: linear-gradient(135deg, #374151 0%, #111827 100%);
+  border-color: #4b5563;
+  color: #fbbf24;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 0 8px rgba(0,0,0,0.5);
+}
+.skin-charcoal .custom-face-text {
+  color: #fbbf24;
+}
+
+/* 5. Vintage Bakelite Maroon */
+.skin-maroon .face {
+  background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%);
+  border-color: #b91c1c;
+  color: #fef3c7;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35), inset 0 0 10px rgba(0, 0, 0, 0.4);
+}
+.skin-maroon .custom-face-text {
+  color: #fef3c7;
+}
+
+
+/* ==========================================================================
+   2D Polyhedral Styles with Geometric CSS Clip-Paths
+   ========================================================================== */
+.poly-die-flat {
+  width: 58px;
+  height: 58px;
+  background: #111216;
+  border: 2px solid #2a2b33;
+  border-radius: 8px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 6px;
+  position: relative;
+  vertical-align: middle;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+  animation: flatPop 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+
+@keyframes flatPop {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.poly-shape {
+  width: 28px;
+  height: 28px;
+  background: #4b5563;
+  position: absolute;
+  opacity: 0.15;
+  z-index: 1;
+}
+
+.poly-die-flat.rolled .poly-shape {
+  background: var(--color-brass);
+  opacity: 0.25;
+}
+
+.poly-die-flat.rolled {
+  border-color: var(--color-brass);
+  box-shadow: 0 0 8px var(--color-brass-glow);
+}
+
+/* Natural 20 Critical Hit styling */
+.poly-die-flat.rolled.d20-crit {
+  border-color: #f59e0b;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+}
+.poly-die-flat.rolled.d20-crit .poly-shape {
+  background: #fbbf24;
+  opacity: 0.35;
+}
+.poly-die-flat.rolled.d20-crit .poly-value {
+  color: #fbbf24;
+  text-shadow: 0 0 6px rgba(251,191,36,0.6);
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.poly-value {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 700;
+  z-index: 2;
+  color: #f3f4f6;
+}
+
+.poly-name {
+  font-size: 0.5rem;
+  color: #6b7280;
+  position: absolute;
+  bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 2;
+}
+
+/* Shaking arena animations */
+.felt-lining.is-shaking {
+  animation: shakeArena 0.4s infinite;
+}
+
+@keyframes shakeArena {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-0.5deg); }
+  20% { transform: translate(-2px, 0px) rotate(0.5deg); }
+  30% { transform: translate(0px, 1px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(0.5deg); }
+  50% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+  65% { transform: translate(-2px, 0.5px) rotate(0deg); }
+  80% { transform: translate(1px, 0.5px) rotate(-0.5deg); }
+  90% { transform: translate(-1px, -0.5px) rotate(0.5deg); }
+  100% { transform: translate(1px, 1px) rotate(0deg); }
+}

@@ -51,6 +51,17 @@ const PROJECTS: Project[] = [
     particleType: 'lasers',
     url: '/projects/paradigm-shift/index.html',
   },
+  {
+    id: 'dice-tumbler',
+    title: 'Crank',
+    description: 'A mechanical polyhedral dice shaker and probability ledger.',
+    longDescription: 'Roll polyhedral dice inside an antique mahogany shaker cabinet. Create custom text-decision decks, adjust dice skins, crank the mechanical winding gear, and watch organic gravity physics with full statistical tracking.',
+    tech: ['HTML', 'CSS', 'Web Audio API', 'JavaScript'],
+    themeColor: '#d97706',
+    gradient: '#faf9f5',
+    particleType: 'sparkles',
+    url: '/projects/dice-tumbler/index.html',
+  },
 ];
 
 export default function App() {
