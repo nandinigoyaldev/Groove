@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     headerCoins: document.getElementById("headerCoins"),
     audioBtn: document.getElementById("audioToggleBtn"),
 
-    // Scorebug
+    // Scorebug & Over History
     playerScore: document.getElementById("playerScore"),
     wicketsLost: document.getElementById("wicketsLost"),
     oversVal: document.getElementById("oversVal"),
@@ -42,6 +42,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     runsNeededVal: document.getElementById("runsNeededVal"),
     ballsLeftVal: document.getElementById("ballsLeftVal"),
     rrrVal: document.getElementById("rrrVal"),
+    overHistoryBar: document.getElementById("overHistoryBar"),
+
+    // Bowler Card
+    bowlerName: document.getElementById("bowlerName"),
+    bowlerType: document.getElementById("bowlerType"),
 
     // Commentary
     commentaryText: document.getElementById("commentaryText"),
@@ -210,6 +215,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const res = await window.gameEngine.startNewMatch(currentUser.username, mode);
     if (res) {
       updateScorebugUI(res.matchConfig);
+      updateBowlerCardUI();
       showToast(`Started ${mode.toUpperCase()} Match! Target: ${res.matchConfig.targetScore}`);
     }
   }
@@ -225,6 +231,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (res) {
         pitchVisualizer.triggerDeliveryAnimation(res.delivery, res.outcome, () => {
           updateScorebugUI(res.matchState);
+          updateBowlerCardUI();
           updateCommentaryUI();
 
           if (res.user) {
@@ -270,6 +277,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (elements.headerCoins) elements.headerCoins.textContent = user.coins;
   }
 
+  function updateBowlerCardUI() {
+    const bowler = window.gameEngine.currentBowler;
+    if (bowler) {
+      if (elements.bowlerName) elements.bowlerName.textContent = bowler.name;
+      if (elements.bowlerType) elements.bowlerType.textContent = `(${bowler.type})`;
+    }
+  }
+
   function updateScorebugUI(state) {
     if (elements.playerScore) elements.playerScore.textContent = state.currentRuns;
     if (elements.wicketsLost) elements.wicketsLost.textContent = state.wicketsLost;
@@ -278,6 +293,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (elements.runsNeededVal) elements.runsNeededVal.textContent = state.runsNeeded !== undefined ? state.runsNeeded : window.gameEngine.targetScore;
     if (elements.ballsLeftVal) elements.ballsLeftVal.textContent = state.ballsLeft !== undefined ? state.ballsLeft : window.gameEngine.totalBalls;
     if (elements.rrrVal) elements.rrrVal.textContent = state.rrr || "12.0";
+
+    // Update Over Ball-by-Ball History Chips
+    if (elements.overHistoryBar) {
+      const history = window.gameEngine.overHistory || [];
+      if (history.length === 0) {
+        elements.overHistoryBar.innerHTML = `<span class="ball-chip dot">-</span>`;
+      } else {
+        elements.overHistoryBar.innerHTML = history.map(ball => {
+          let typeClass = "dot";
+          if (ball === "6") typeClass = "six";
+          else if (ball === "4") typeClass = "four";
+          else if (ball === "W") typeClass = "wicket";
+          else if (Number(ball) > 0) typeClass = "run";
+          return `<span class="ball-chip ${typeClass}">${ball}</span>`;
+        }).join("");
+      }
+    }
   }
 
   function updateCommentaryUI() {
@@ -401,9 +433,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         return `<tr>
           <td style="font-weight:800;">${medal}</td>
           <td style="font-weight:700;">${entry.username}</td>
-          <td><span style="color:var(--gold-accent); font-size:0.8rem; font-weight:800;">${(entry.title || "GULLY CHAMP").replace("title_", "").toUpperCase()}</span></td>
+          <td><span style="color:var(--wood-accent); font-size:0.8rem; font-weight:800;">${(entry.title || "GULLY CHAMP").replace("title_", "").toUpperCase()}</span></td>
           <td>Level ${entry.level || 1}</td>
-          <td style="font-weight:800; color:var(--emerald-light);">${entry.totalRuns || 0}</td>
+          <td style="font-weight:800; color:var(--emerald-main);">${entry.totalRuns || 0}</td>
           <td>${entry.matchesWon || 0}</td>
         </tr>`;
       })

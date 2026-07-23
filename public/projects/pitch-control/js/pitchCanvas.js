@@ -1,6 +1,6 @@
 /**
- * Pitch Canvas Visualizer Engine for Pitch (Groove LP // 06)
- * Full-screen responsive HTML5 Canvas stadium, ball trajectories, bounce impact flares, and Wagon Wheel maps.
+ * Compact Pitch Canvas Visualizer Engine for Pitch (Groove LP // 06)
+ * Fits perfectly in compact viewports, mowed grass turf rings, clay pitch, ball trajectories, and Wagon Wheel arcs.
  */
 
 class PitchCanvasVisualizer {
@@ -9,7 +9,7 @@ class PitchCanvasVisualizer {
     if (!this.canvas) return;
     this.ctx = this.canvas.getContext("2d");
     this.width = this.canvas.width = 750;
-    this.height = this.canvas.height = 420;
+    this.height = this.canvas.height = 240;
 
     this.ballAnim = null;
     this.wagonWheelShots = [];
@@ -24,7 +24,7 @@ class PitchCanvasVisualizer {
     const parent = this.canvas.parentElement;
     if (parent) {
       this.canvas.width = parent.clientWidth || 750;
-      this.canvas.height = parent.clientHeight || 420;
+      this.canvas.height = parent.clientHeight || 240;
       this.width = this.canvas.width;
       this.height = this.canvas.height;
     }
@@ -52,30 +52,31 @@ class PitchCanvasVisualizer {
 
   drawStadiumBackground() {
     const grad = this.ctx.createRadialGradient(
-      this.width / 2, this.height / 2, 40,
-      this.width / 2, this.height / 2, this.width / 1.1
+      this.width / 2, this.height / 2, 20,
+      this.width / 2, this.height / 2, this.width / 1.2
     );
-    grad.addColorStop(0, "#0a1611");
-    grad.addColorStop(0.6, "#060e0a");
-    grad.addColorStop(1, "#030705");
+    grad.addColorStop(0, "#092419");
+    grad.addColorStop(0.6, "#041810");
+    grad.addColorStop(1, "#020a06");
 
     this.ctx.fillStyle = grad;
     this.ctx.fillRect(0, 0, this.width, this.height);
 
+    // Subtle Corner Floodlight Halos
     const lights = [
-      { x: 80, y: 50, col: "rgba(16, 185, 129, 0.4)" },
-      { x: this.width - 80, y: 50, col: "rgba(245, 158, 11, 0.4)" },
-      { x: 80, y: this.height - 50, col: "rgba(245, 158, 11, 0.3)" },
-      { x: this.width - 80, y: this.height - 50, col: "rgba(16, 185, 129, 0.4)" }
+      { x: 50, y: 30, col: "rgba(5, 150, 105, 0.3)" },
+      { x: this.width - 50, y: 30, col: "rgba(217, 119, 6, 0.3)" },
+      { x: 50, y: this.height - 30, col: "rgba(217, 119, 6, 0.25)" },
+      { x: this.width - 50, y: this.height - 30, col: "rgba(5, 150, 105, 0.3)" }
     ];
 
     lights.forEach((l) => {
-      const glow = this.ctx.createRadialGradient(l.x, l.y, 2, l.x, l.y, 90);
+      const glow = this.ctx.createRadialGradient(l.x, l.y, 2, l.x, l.y, 70);
       glow.addColorStop(0, l.col);
       glow.addColorStop(1, "rgba(0, 0, 0, 0)");
       this.ctx.fillStyle = glow;
       this.ctx.beginPath();
-      this.ctx.arc(l.x, l.y, 90, 0, Math.PI * 2);
+      this.ctx.arc(l.x, l.y, 70, 0, Math.PI * 2);
       this.ctx.fill();
     });
   }
@@ -83,24 +84,31 @@ class PitchCanvasVisualizer {
   drawOutfield() {
     const cx = this.width / 2;
     const cy = this.height / 2;
-    const rx = Math.min(this.width * 0.44, 380);
-    const ry = Math.min(this.height * 0.42, 180);
+    const rx = Math.min(this.width * 0.44, 350);
+    const ry = Math.min(this.height * 0.42, 105);
 
-    const grassGrad = this.ctx.createRadialGradient(cx, cy, 30, cx, cy, rx);
-    grassGrad.addColorStop(0, "#059669");
-    grassGrad.addColorStop(0.7, "#044e3a");
-    grassGrad.addColorStop(1, "#022c22");
-
+    // Mowed Turf Stripe Pattern
     this.ctx.save();
     this.ctx.beginPath();
     this.ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
-    this.ctx.fillStyle = grassGrad;
-    this.ctx.fill();
+    this.ctx.clip();
 
-    this.ctx.strokeStyle = "#f59e0b";
-    this.ctx.lineWidth = 3;
-    this.ctx.shadowColor = "#f59e0b";
-    this.ctx.shadowBlur = 18;
+    const numRings = 6;
+    for (let i = numRings; i >= 1; i--) {
+      const scale = i / numRings;
+      this.ctx.fillStyle = i % 2 === 0 ? "#059669" : "#047857";
+      this.ctx.beginPath();
+      this.ctx.ellipse(cx, cy, rx * scale, ry * scale, 0, 0, Math.PI * 2);
+      this.ctx.fill();
+    }
+    this.ctx.restore();
+
+    // Boundary Rope
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+    this.ctx.strokeStyle = "#d97706";
+    this.ctx.lineWidth = 2.5;
     this.ctx.stroke();
     this.ctx.restore();
   }
@@ -108,8 +116,8 @@ class PitchCanvasVisualizer {
   drawPitch() {
     const cx = this.width / 2;
     const cy = this.height / 2;
-    const pw = 52;
-    const ph = Math.min(this.height * 0.55, 220);
+    const pw = 42;
+    const ph = Math.min(this.height * 0.65, 140);
 
     const pitchGrad = this.ctx.createLinearGradient(cx - pw / 2, cy - ph / 2, cx + pw / 2, cy + ph / 2);
     pitchGrad.addColorStop(0, "#b45309");
@@ -120,8 +128,8 @@ class PitchCanvasVisualizer {
     this.ctx.fillStyle = pitchGrad;
     this.ctx.fillRect(cx - pw / 2, cy - ph / 2, pw, ph);
 
-    this.ctx.strokeStyle = "rgba(250, 249, 245, 0.4)";
-    this.ctx.lineWidth = 1.5;
+    this.ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+    this.ctx.lineWidth = 1.2;
     this.ctx.strokeRect(cx - pw / 2, cy - ph / 2, pw, ph);
     this.ctx.restore();
   }
@@ -129,50 +137,45 @@ class PitchCanvasVisualizer {
   drawCreaseAndStumps() {
     const cx = this.width / 2;
     const cy = this.height / 2;
-    const pw = 52;
-    const ph = Math.min(this.height * 0.55, 220);
+    const pw = 42;
+    const ph = Math.min(this.height * 0.65, 140);
 
-    const topY = cy - ph / 2 + 18;
-    const botY = cy + ph / 2 - 18;
+    const topY = cy - ph / 2 + 12;
+    const botY = cy + ph / 2 - 12;
 
     this.ctx.save();
-    this.ctx.strokeStyle = "#faf9f5";
-    this.ctx.shadowColor = "#faf9f5";
-    this.ctx.shadowBlur = 6;
-    this.ctx.lineWidth = 2.5;
+    this.ctx.strokeStyle = "#ffffff";
+    this.ctx.lineWidth = 2;
 
+    // Crease lines
     this.ctx.beginPath();
-    this.ctx.moveTo(cx - pw / 2 + 4, topY);
-    this.ctx.lineTo(cx + pw / 2 - 4, topY);
-    this.ctx.moveTo(cx - pw / 2 + 4, botY);
-    this.ctx.lineTo(cx + pw / 2 - 4, botY);
+    this.ctx.moveTo(cx - pw / 2 + 3, topY);
+    this.ctx.lineTo(cx + pw / 2 - 3, topY);
+    this.ctx.moveTo(cx - pw / 2 + 3, botY);
+    this.ctx.lineTo(cx + pw / 2 - 3, botY);
     this.ctx.stroke();
     this.ctx.restore();
 
-    this.drawStumpSet(cx, topY - 5, false);
-    this.drawStumpSet(cx, botY + 5, this.stumpsHitAnim);
+    this.drawStumpSet(cx, topY - 4, false);
+    this.drawStumpSet(cx, botY + 4, this.stumpsHitAnim);
   }
 
   drawStumpSet(x, y, isHit) {
     this.ctx.save();
-    this.ctx.fillStyle = isHit ? "#ef4444" : "#fbbf24";
-    if (isHit) {
-      this.ctx.shadowColor = "#ef4444";
-      this.ctx.shadowBlur = 14;
-    }
-    const gap = 5.5;
+    this.ctx.fillStyle = isHit ? "#dc2626" : "#fbbf24";
+    const gap = 4.5;
 
     for (let i = -1; i <= 1; i++) {
       const sx = x + (i * gap);
-      this.ctx.fillRect(sx - 1.5, y - 7, 3, 11);
+      this.ctx.fillRect(sx - 1, y - 5, 2, 8);
     }
-    this.ctx.fillRect(x - gap - 2, y - 8, (gap * 2) + 4, 2);
+    this.ctx.fillRect(x - gap - 1.5, y - 6, (gap * 2) + 3, 1.5);
     this.ctx.restore();
   }
 
   drawWagonWheel() {
     const cx = this.width / 2;
-    const cy = this.height / 2 + Math.min(this.height * 0.27, 100);
+    const cy = this.height / 2 + Math.min(this.height * 0.25, 60);
 
     this.wagonWheelShots.forEach((shot) => {
       this.ctx.save();
@@ -181,25 +184,21 @@ class PitchCanvasVisualizer {
       this.ctx.lineTo(shot.x, shot.y);
 
       if (shot.runs === 6) {
-        this.ctx.strokeStyle = "#f59e0b"; // Gold 6
-        this.ctx.lineWidth = 3;
-        this.ctx.shadowColor = "#f59e0b";
-        this.ctx.shadowBlur = 12;
-      } else if (shot.runs === 4) {
-        this.ctx.strokeStyle = "#10b981"; // Emerald 4
+        this.ctx.strokeStyle = "#d97706";
         this.ctx.lineWidth = 2.5;
-        this.ctx.shadowColor = "#10b981";
-        this.ctx.shadowBlur = 10;
+      } else if (shot.runs === 4) {
+        this.ctx.strokeStyle = "#059669";
+        this.ctx.lineWidth = 2;
       } else {
-        this.ctx.strokeStyle = "rgba(250, 249, 245, 0.4)";
+        this.ctx.strokeStyle = "rgba(255, 255, 255, 0.35)";
         this.ctx.lineWidth = 1;
       }
 
       this.ctx.stroke();
 
       this.ctx.beginPath();
-      this.ctx.arc(shot.x, shot.y, shot.runs === 6 ? 5 : 4, 0, Math.PI * 2);
-      this.ctx.fillStyle = shot.runs === 6 ? "#f59e0b" : (shot.runs === 4 ? "#10b981" : "#ffffff");
+      this.ctx.arc(shot.x, shot.y, shot.runs === 6 ? 4 : 3, 0, Math.PI * 2);
+      this.ctx.fillStyle = shot.runs === 6 ? "#d97706" : (shot.runs === 4 ? "#059669" : "#ffffff");
       this.ctx.fill();
       this.ctx.restore();
     });
@@ -208,16 +207,16 @@ class PitchCanvasVisualizer {
   triggerDeliveryAnimation(delivery, outcome, onComplete) {
     const cx = this.width / 2;
     const cy = this.height / 2;
-    const ph = Math.min(this.height * 0.55, 220);
-    const startY = cy - ph / 2 + 18;
-    const pitchY = cy + (delivery.pitchY || 0.6) * 35;
-    const batterY = cy + ph / 2 - 18;
+    const ph = Math.min(this.height * 0.65, 140);
+    const startY = cy - ph / 2 + 12;
+    const pitchY = cy + (delivery.pitchY || 0.6) * 20;
+    const batterY = cy + ph / 2 - 12;
 
     let progress = 0;
     this.stumpsHitAnim = outcome.isWicket;
 
     const animate = () => {
-      progress += 0.045;
+      progress += 0.05;
       this.ballAnim = { progress, startY, pitchY, batterY, delivery, outcome };
 
       this.render();
@@ -233,10 +232,11 @@ class PitchCanvasVisualizer {
             drive: -Math.PI / 2 + (Math.random() < 0.5 ? -0.8 : 0.8),
             pull: Math.PI / 4,
             sweep: Math.PI * 0.75,
-            defend: Math.PI / 2
+            defend: Math.PI / 2,
+            helicopter: -Math.PI / 3
           };
           const angle = angles[delivery.shotChoice] || (-Math.PI / 2 + (Math.random() - 0.5));
-          const dist = outcome.runs === 6 ? this.height * 0.4 : (outcome.runs === 4 ? this.height * 0.36 : this.height * 0.18);
+          const dist = outcome.runs === 6 ? this.height * 0.42 : (outcome.runs === 4 ? this.height * 0.38 : this.height * 0.2);
           const shotX = cx + Math.cos(angle) * dist;
           const shotY = batterY + Math.sin(angle) * dist;
 
@@ -244,7 +244,7 @@ class PitchCanvasVisualizer {
         }
 
         if (outcome.runs === 6 || outcome.runs === 4) {
-          this.triggerBoundaryFlash(outcome.runs === 6 ? "#f59e0b" : "#10b981");
+          this.triggerBoundaryFlash(outcome.runs === 6 ? "#d97706" : "#059669");
         }
 
         this.render();
@@ -271,31 +271,28 @@ class PitchCanvasVisualizer {
 
     // Red Leather Ball
     this.ctx.save();
-    this.ctx.fillStyle = "#ef4444";
-    this.ctx.shadowColor = "#f87171";
-    this.ctx.shadowBlur = 15;
+    this.ctx.fillStyle = "#dc2626";
     this.ctx.beginPath();
-    this.ctx.arc(cx, currY, 6.5, 0, Math.PI * 2);
+    this.ctx.arc(cx, currY, 5.5, 0, Math.PI * 2);
     this.ctx.fill();
     this.ctx.restore();
 
-    if (Math.abs(progress - 0.5) < 0.05) {
+    // Impact Bounce Ring
+    if (Math.abs(progress - 0.5) < 0.06) {
       this.ctx.save();
       this.ctx.strokeStyle = "#ffffff";
-      this.ctx.shadowColor = "#ffffff";
-      this.ctx.shadowBlur = 15;
-      this.ctx.lineWidth = 2.5;
+      this.ctx.lineWidth = 2;
       this.ctx.beginPath();
-      this.ctx.arc(cx, pitchY, 15, 0, Math.PI * 2);
+      this.ctx.arc(cx, pitchY, 12, 0, Math.PI * 2);
       this.ctx.stroke();
       this.ctx.restore();
     }
   }
 
   triggerBoundaryFlash(color) {
-    let alpha = 0.85;
+    let alpha = 0.75;
     const flashAnim = () => {
-      alpha -= 0.045;
+      alpha -= 0.05;
       this.boundaryFlash = { color, alpha };
       this.render();
       if (alpha > 0) {
@@ -312,7 +309,7 @@ class PitchCanvasVisualizer {
     if (!this.boundaryFlash) return;
     this.ctx.save();
     this.ctx.fillStyle = this.boundaryFlash.color;
-    this.ctx.globalAlpha = this.boundaryFlash.alpha * 0.45;
+    this.ctx.globalAlpha = this.boundaryFlash.alpha * 0.35;
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.ctx.restore();
   }

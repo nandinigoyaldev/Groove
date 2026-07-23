@@ -1,14 +1,22 @@
 /**
- * Game Engine Controller for Pitch (Groove LP // 06)
- * Manages match state, ball-by-ball progression, timing sweeper gauge, overs, wickets, and commentary.
+ * Authentic Game Engine Controller for Pitch (Groove LP // 06)
+ * Manages match state, ball-by-ball history tracker, bowler delivery generator, overs, wickets, and commentary.
  */
+
+const BOWLERS = [
+  { name: "Bumrah", type: "Slower Yorker" },
+  { name: "Rashid Khan", type: "Leg Spin Wrong'un" },
+  { name: "Shami", type: "Pace Inswing" },
+  { name: "Starc", type: "Left-Arm Bouncer" },
+  { name: "Jadeja", type: "Left-Arm Arm Ball" }
+];
 
 const BROADCAST_COMMENTARY = {
   six: [
     "CLOBBERED INTO THE STANDS! Pure sweet-spot contact for a massive 6!",
     "HIGH AND MIGHTY! Cleared the boundary rope with absolute ease!",
     "POWERFUL TIMING! Dispatched way back over long-on!",
-    "INTO THE CROWD! Clean lofted strike under immense pressure!"
+    "INTO THE CROWD! Clean lofted strike under pressure!"
   ],
   four: [
     "CRACKING DRIVE! Races across the outfield for a brilliant 4!",
@@ -34,12 +42,6 @@ const BROADCAST_COMMENTARY = {
   ]
 };
 
-const TOURNAMENT_TEAMS = [
-  { id: 1, name: "Mumbai Strikers", captain: "Captain Rohit", targetBonus: 0, icon: "🛡️" },
-  { id: 2, name: "Chennai SuperStars", captain: "Captain Dhoni", targetBonus: 4, icon: "⚡" },
-  { id: 3, name: "Bangalore Blitz", captain: "Captain Virat", targetBonus: 8, icon: "🔥" }
-];
-
 class GameEngine {
   constructor() {
     this.gameMode = "classic"; // 'classic', 'superover', 'tournament'
@@ -55,8 +57,11 @@ class GameEngine {
     this.isDelivering = false;
     this.lastDelivery = null;
     this.lastOutcome = null;
-    this.commentary = "Select your shot type and hit the timing sweet-spot to chase the target!";
-    this.commentaryDetail = "Match Ready. Bowler approaching crease...";
+    this.currentBowler = BOWLERS[0];
+    this.overHistory = []; // Array of recent balls: ['4', '6', 'W', '1', '0']
+
+    this.commentary = "Match Ready. Select your shot and press STRIKE!";
+    this.commentaryDetail = `Bowler: ${this.currentBowler.name} (${this.currentBowler.type})`;
   }
 
   async startNewMatch(username = "Player1", mode = "classic") {
@@ -74,11 +79,18 @@ class GameEngine {
       this.isDelivering = false;
       this.lastDelivery = null;
       this.lastOutcome = null;
+      this.overHistory = [];
+      this.currentBowler = this.nextBowler();
+
       this.commentary = `CHASE STARTED! Target: ${this.targetScore} Runs in ${cfg.maxOvers} Overs (${cfg.totalBalls} Balls)`;
-      this.commentaryDetail = `Req. Run Rate: ${((this.targetScore / cfg.totalBalls) * 6).toFixed(1)} RPO. Pick your shot!`;
+      this.commentaryDetail = `Facing ${this.currentBowler.name} (${this.currentBowler.type}). Req Rate: ${((this.targetScore / cfg.totalBalls) * 6).toFixed(1)} RPO`;
       return response;
     }
     return null;
+  }
+
+  nextBowler() {
+    return BOWLERS[Math.floor(Math.random() * BOWLERS.length)];
   }
 
   async playBall(username, shotChoice, timingIndex) {
@@ -110,7 +122,18 @@ class GameEngine {
       this.wicketsLost = res.matchState.wicketsLost;
       this.currentBall = res.matchState.currentBall;
 
-      // Update audio FX
+      // Update Over History Tracker
+      const ballLabel = res.outcome.isWicket ? "W" : String(res.outcome.runs);
+      this.overHistory.push(ballLabel);
+      if (this.overHistory.length > 6) {
+        this.overHistory.shift();
+      }
+
+      // Next bowler delivery
+      this.currentBowler = this.nextBowler();
+      res.delivery.bowler = this.currentBowler;
+
+      // Update Audio FX
       if (res.outcome.isWicket) {
         window.soundEngine.play("stump");
       } else if (res.outcome.runs === 6 || res.outcome.runs === 4) {
@@ -125,9 +148,6 @@ class GameEngine {
       if (res.matchState.isMatchOver) {
         if (res.matchState.matchWinner === "player") {
           window.soundEngine.play("win");
-          if (this.gameMode === "tournament" && this.tournamentStage < TOURNAMENT_TEAMS.length - 1) {
-            this.tournamentStage += 1;
-          }
         } else {
           window.soundEngine.play("lose");
         }
@@ -144,19 +164,19 @@ class GameEngine {
   updateCommentary(outcome, state) {
     if (outcome.isWicket) {
       this.commentary = outcome.wicketType || "WICKET FALLS!";
-      this.commentaryDetail = `Wickets: ${state.wicketsLost}/${this.maxWickets}. Required: ${state.runsNeeded} off ${state.ballsLeft} balls.`;
+      this.commentaryDetail = `Wickets: ${state.wicketsLost}/${this.maxWickets}. Next Bowler: ${this.currentBowler.name} (${this.currentBowler.type})`;
     } else if (outcome.runs === 6) {
       this.commentary = this.getRandomTemplate(BROADCAST_COMMENTARY.six);
-      this.commentaryDetail = `Timing Grade: ${outcome.timingGrade} | RRR: ${state.rrr}`;
+      this.commentaryDetail = `Timing: ${outcome.timingGrade} | Next Bowler: ${this.currentBowler.name} (${this.currentBowler.type})`;
     } else if (outcome.runs === 4) {
       this.commentary = this.getRandomTemplate(BROADCAST_COMMENTARY.four);
-      this.commentaryDetail = `Timing Grade: ${outcome.timingGrade} | RRR: ${state.rrr}`;
+      this.commentaryDetail = `Timing: ${outcome.timingGrade} | Next Bowler: ${this.currentBowler.name} (${this.currentBowler.type})`;
     } else if (outcome.runs > 0) {
       this.commentary = this.getRandomTemplate(BROADCAST_COMMENTARY.runs);
       this.commentaryDetail = `Pushed for ${outcome.runs} run(s). Need ${state.runsNeeded} in ${state.ballsLeft} balls.`;
     } else {
       this.commentary = this.getRandomTemplate(BROADCAST_COMMENTARY.dot);
-      this.commentaryDetail = `Dot ball! Pressure building. RRR rises to ${state.rrr}`;
+      this.commentaryDetail = `Dot ball! Facing ${this.currentBowler.name} (${this.currentBowler.type}). RRR: ${state.rrr}`;
     }
   }
 
@@ -170,4 +190,3 @@ class GameEngine {
 }
 
 window.gameEngine = new GameEngine();
-window.TOURNAMENT_TEAMS = TOURNAMENT_TEAMS;

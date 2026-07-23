@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Pitch - Vintage Analog Stadium Scoreboard & Cricket Pitch Controller for Groove.">
-  <title>PITCH | Analog Stadium Console</title>
+  <meta name="description" content="Pitch - Authentic Cricket Arcade Console for Groove.">
+  <title>PITCH | Authentic Cricket Console</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/main.css">
@@ -18,22 +18,22 @@
 </head>
 <body class="spins-subproject">
 
-  <!-- RETRO STADIUM CONSOLE HEADER -->
+  <!-- CRICKET CONSOLE HEADER -->
   <header class="app-header">
     <div class="header-container">
       <a href="#" class="brand-logo">
         <span class="brand-mark">🏏</span>
-        <span class="brand-name">PITCH <span class="brand-accent">CONSOLE</span></span>
+        <span class="brand-name">PITCH <span class="brand-accent">CRICKET</span></span>
         <span class="catalog-badge">LP // 06</span>
       </a>
 
       <!-- Horizontal Navigation Links -->
       <nav class="app-nav" aria-label="Primary Navigation">
         <button class="nav-link active" data-view="arena">
-          <span class="nav-idx">01</span> Arena
+          <span class="nav-idx">01</span> Match Arena
         </button>
         <button class="nav-link" data-action="toggle-modes">
-          <span class="nav-idx">02</span> Modes
+          <span class="nav-idx">02</span> Game Modes
         </button>
         <button class="nav-link" data-view="shop">
           <span class="nav-idx">03</span> Pro Shop
@@ -51,7 +51,7 @@
         <div class="user-pill">
           <div class="user-info">
             <span id="headerUsername" class="user-name">Player1</span>
-            <span id="headerTitle" class="user-title">PITCH MASTER</span>
+            <span id="headerTitle" class="user-title">GULLY CHAMP</span>
           </div>
           <div class="user-stat xp">⚡ <span id="headerXP">0 XP</span></div>
           <div class="user-stat coins">🪙 <span id="headerCoins">200</span></div>
@@ -61,14 +61,14 @@
     </div>
   </header>
 
-  <!-- MAIN STADIUM VIEWPORT CONTAINER -->
+  <!-- MAIN STADIUM VIEWPORT CONTAINER (Centered 920px width, 100vh no scroll) -->
   <main class="app-main">
 
-    <!-- VIEW 1: MATCH ARENA (RETRO STADIUM CONSOLE) -->
+    <!-- VIEW 1: MATCH ARENA -->
     <section id="view-arena" class="view-section active">
       
       <div class="stadium-stage">
-        <!-- Floating Mechanical Scorebug Overlay -->
+        <!-- Broadcast Scorecard HUD -->
         <div class="broadcast-scorebug">
           <div class="scorebug-section team">
             <span class="scorebug-label">TARGET CHASE</span>
@@ -76,6 +76,14 @@
               <span id="playerScore" class="runs">0</span>
               <span class="divider">/</span>
               <span id="wicketsLost" class="wickets">0</span>
+            </div>
+          </div>
+
+          <!-- Over Ball-by-Ball History Tracker -->
+          <div class="over-history-wrapper">
+            <span class="scorebug-label">THIS OVER</span>
+            <div id="overHistoryBar" class="over-history-bar">
+              <span class="ball-chip dot">-</span>
             </div>
           </div>
 
@@ -91,37 +99,50 @@
           </div>
         </div>
 
-        <!-- HTML5 Stadium Pitch Canvas Visualizer -->
+        <!-- HTML5 Pitch Canvas Visualizer Viewport -->
         <div class="pitch-canvas-wrapper">
           <canvas id="pitchCanvas"></canvas>
           
-          <!-- Live Overlay Commentary Ticker -->
+          <!-- Live Stadium Commentary Ticker -->
           <div class="commentary-ticker">
             <p id="commentaryText" class="comm-heading">MATCH READY. BOWLER APPROACHING CREASE...</p>
-            <p id="commentaryDetail" class="comm-sub">Select your shot and press HIT SHOT when the needle hits the sweet spot!</p>
+            <p id="commentaryDetail" class="comm-sub">Facing Bumrah (Slower Yorker). Pick your shot!</p>
           </div>
         </div>
 
         <!-- BOTTOM INTEGRATED CONTROL DECK -->
         <div class="control-deck">
-          <!-- Shot Selection Bar -->
-          <div class="shot-selector-bar">
-            <button class="shot-btn active" data-shot="drive">
-              <span class="shot-name">Cover Drive</span>
-              <span class="shot-sub">Safe Ground (2-4 Runs)</span>
-            </button>
-            <button class="shot-btn" data-shot="loft">
-              <span class="shot-name">Lofted Six</span>
-              <span class="shot-sub">High Power (6 Runs)</span>
-            </button>
-            <button class="shot-btn" data-shot="pull">
-              <span class="shot-name">Pull / Hook</span>
-              <span class="shot-sub">Short Ball (4-6 Runs)</span>
-            </button>
-            <button class="shot-btn" data-shot="defend">
-              <span class="shot-name">Defensive Push</span>
-              <span class="shot-sub">Block (0-1 Run)</span>
-            </button>
+          <!-- Bowler Delivery Card & Shot Choice Row -->
+          <div class="bowler-bar-row">
+            <div id="bowlerCard" class="bowler-card">
+              <span class="bowler-label">BOWLING:</span>
+              <strong id="bowlerName" class="bowler-name">Bumrah</strong>
+              <span id="bowlerType" class="bowler-type">(Slower Yorker)</span>
+            </div>
+
+            <!-- 4 Clean Cricket Shot Buttons -->
+            <div class="shot-selector-bar">
+              <button class="shot-btn active" data-shot="drive">
+                <span class="shot-name">⚡ Cover Drive</span>
+                <span class="shot-sub">Placement (1-3)</span>
+                <span class="shot-badge safe">SAFE</span>
+              </button>
+              <button class="shot-btn" data-shot="pull">
+                <span class="shot-name">💥 Pull Shot</span>
+                <span class="shot-sub">Boundary (4)</span>
+                <span class="shot-badge power">POWER</span>
+              </button>
+              <button class="shot-btn" data-shot="loft">
+                <span class="shot-name">🚀 Lofted Six</span>
+                <span class="shot-sub">Big Hit (6)</span>
+                <span class="shot-badge power">POWER</span>
+              </button>
+              <button class="shot-btn" data-shot="defend">
+                <span class="shot-name">🛡️ Defensive Push</span>
+                <span class="shot-sub">Block (0-1)</span>
+                <span class="shot-badge safe">SAFE</span>
+              </button>
+            </div>
           </div>
 
           <!-- Embedded Timing Sweeper Gauge & Hit Trigger -->
@@ -134,12 +155,12 @@
             </div>
 
             <button id="hitShotBtn" class="btn-trigger-shot">
-              <span>🏏 STRIKE SHOT</span>
+              <span>🏏 STRIKE</span>
             </button>
           </div>
         </div>
 
-        <!-- Arena Action Buttons Bar -->
+        <!-- Arena Action Pills Bar -->
         <div class="arena-top-actions">
           <button id="btnToggleModes" class="action-pill">🎮 Switch Mode</button>
           <button id="btnResetMatch" class="action-pill">🔄 New Match</button>
@@ -177,7 +198,7 @@
 
       <div class="stats-cards-grid">
         <div class="stat-hero-card">
-          <span class="hero-label">PITCH LEVEL</span>
+          <span class="hero-label">CAREER LEVEL</span>
           <div id="statsLevelVal" class="hero-value">LEVEL 1</div>
           <div class="xp-bar-box">
             <div id="statsXpProgress" class="xp-fill" style="width: 0%;"></div>
