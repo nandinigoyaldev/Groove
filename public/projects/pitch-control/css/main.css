@@ -1,0 +1,290 @@
+/* ==========================================================================
+   PITCH - VINTAGE ANALOG STADIUM SCOREBOARD & PITCH CONTROL CONSOLE
+   Groove LP // 06 Design System
+   ========================================================================== */
+
+:root {
+  /* Vintage Analog Console Palette */
+  --bg-dark: #09120e;
+  --bg-chassis: #121f18;
+  --bg-card: rgba(18, 31, 24, 0.88);
+  --bg-card-hover: rgba(26, 46, 35, 0.95);
+  --bg-glass: rgba(10, 20, 15, 0.92);
+  
+  /* Turf Emerald, Brass Gold, Warm Cream */
+  --emerald-main: #059669;
+  --emerald-light: #10b981;
+  --emerald-glow: rgba(16, 185, 129, 0.35);
+  
+  --wood-dark: #451a03;
+  --wood-mid: #78350f;
+  --wood-accent: #b45309;
+  
+  --gold-accent: #f59e0b;
+  --gold-light: #fbbf24;
+  --gold-glow: rgba(245, 158, 11, 0.35);
+  
+  --red-wicket: #ef4444;
+  
+  --text-main: #faf9f5;
+  --text-muted: #a7f3d0;
+  --text-dim: #6ee7b7;
+  
+  --border-light: rgba(250, 249, 245, 0.12);
+  --border-emerald: rgba(16, 185, 129, 0.4);
+  --border-wood: rgba(180, 83, 9, 0.5);
+  --border-gold: rgba(245, 158, 11, 0.4);
+  
+  --font-sans: 'Outfit', 'Inter', system-ui, sans-serif;
+  --font-display: 'Rajdhani', 'Outfit', sans-serif;
+  
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 9999px;
+  
+  --shadow-main: 0 20px 50px rgba(0, 0, 0, 0.9);
+  --shadow-emerald: 0 0 25px rgba(16, 185, 129, 0.3);
+  --shadow-gold: 0 0 25px rgba(245, 158, 11, 0.3);
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.15) 0%, transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(245, 158, 11, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 0% 50%, rgba(120, 53, 15, 0.1) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+/* Typography */
+h1, h2, h3, h4, .brand-name, .nav-idx, .scorebug-val, .comm-heading, .shot-name, .catalog-badge {
+  font-family: var(--font-display);
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
+}
+
+h1 { font-size: 1.3rem; font-weight: 800; }
+h2 { font-size: 1.5rem; font-weight: 800; color: var(--gold-light); }
+h3 { font-size: 1.2rem; font-weight: 700; }
+
+a { color: inherit; text-decoration: none; }
+
+/* STADIUM HEADER */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 2px solid var(--wood-accent);
+  padding: 0.75rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.header-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--wood-accent), var(--gold-accent));
+  color: #fff;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-gold);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.brand-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.brand-accent {
+  color: var(--emerald-light);
+  margin-left: 2px;
+}
+
+.catalog-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  background: var(--wood-dark);
+  color: var(--gold-light);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--wood-accent);
+}
+
+/* HORIZONTAL NAVIGATION LINKS */
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-wood);
+}
+
+.nav-link {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: var(--transition-fast);
+}
+
+.nav-idx {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--emerald-light);
+}
+
+.nav-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-link.active {
+  color: #042f2e;
+  background: linear-gradient(90deg, var(--gold-light), var(--emerald-light));
+  font-weight: 800;
+  box-shadow: var(--shadow-emerald);
+}
+
+.nav-link.active .nav-idx {
+  color: #042f2e;
+}
+
+/* USER PANEL */
+.header-user-panel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--bg-chassis);
+  border: 1px solid var(--border-wood);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.user-title {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--gold-accent);
+}
+
+.user-stat {
+  font-size: 0.8rem;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+}
+
+.user-stat.xp { color: var(--emerald-light); }
+.user-stat.coins { color: var(--gold-accent); }
+
+.icon-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-wood);
+  color: var(--text-main);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: var(--transition-fast);
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--emerald-light);
+}
+
+/* MAIN VIEWPORT */
+.app-main {
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.view-section {
+  display: none;
+  width: 100%;
+  flex: 1;
+}
+
+.view-section.active {
+  display: flex;
+  flex-direction: column;
+}

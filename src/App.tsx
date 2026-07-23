@@ -62,6 +62,17 @@ const PROJECTS: Project[] = [
     particleType: 'sparkles',
     url: '/projects/dice-tumbler/index.html',
   },
+  {
+    id: 'pitch-control',
+    title: 'Pitch',
+    description: 'An analog stadium scoreboard console & tactical pitch controller.',
+    longDescription: 'Command tactical cricket matches on an interactive vintage stadium score console. Features mechanical score flippers, stadium floodlight bulbs, pitch friction dial, Web Audio synthesizers (bat crack, crowd surge, umpire buzzer), and pro locker room equipment.',
+    tech: ['HTML', 'CSS', 'JavaScript', 'Web Audio API'],
+    themeColor: '#059669',
+    gradient: '#faf9f5',
+    particleType: 'grid',
+    url: '/projects/pitch-control/index.html',
+  },
 ];
 
 export default function App() {

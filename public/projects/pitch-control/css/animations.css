@@ -1,0 +1,26 @@
+/* ==========================================================================
+   PITCH - ANIMATIONS & KEYFRAMES
+   ========================================================================== */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 15px var(--emerald-glow); }
+  50% { box-shadow: 0 0 30px var(--emerald-light); }
+}
+
+@keyframes stadiumLightGlow {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+.stadium-light-glow {
+  animation: stadiumLightGlow 2s ease-in-out infinite;
+}
+
+.pulse-glow {
+  animation: pulseGlow 1.8s ease-in-out infinite;
+}

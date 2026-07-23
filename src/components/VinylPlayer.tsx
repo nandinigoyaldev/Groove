@@ -149,7 +149,7 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
 
   const getRecordColor = (idx: number) => {
     if (idx === projects.length) return '#1f2937'; // Charcoal guestbook vinyl
-    const colors = ['#10b981', '#ef4444', '#f59e0b', '#3b82f6'];
+    const colors = ['#10b981', '#ef4444', '#f59e0b', '#3b82f6', '#d97706', '#059669'];
     return colors[idx % colors.length];
   };
 

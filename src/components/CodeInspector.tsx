@@ -251,6 +251,76 @@ const fileSystemData: Record<string, FileNode> = {
       },
     ],
   },
+  'pitch-control': {
+    name: 'pitch-control',
+    type: 'folder',
+    children: [
+      {
+        name: 'index.html',
+        type: 'file',
+        content: `<!DOCTYPE html>
+<html>
+<head>
+  <title>Pitch | Vintage Analog Stadium Console</title>
+  <style>
+    body {
+      background: #09120e;
+      color: #faf9f5;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .stadium-deck {
+      border: 6px solid #78350f;
+      background: #121f18;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .scorebug {
+      background: #040907;
+      border: 2px solid #b45309;
+      color: #f59e0b;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 20px;
+      font-weight: 800;
+      margin: 15px 0;
+    }
+    .hit-btn {
+      background: linear-gradient(180deg, #059669, #047857);
+      border: 1px solid #10b981;
+      color: white;
+      padding: 10px 24px;
+      font-weight: 800;
+      cursor: pointer;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="stadium-deck">
+    <h3 style="color:#10b981; margin:0;">🏏 PITCH CONSOLE LP // 06</h3>
+    <div class="scorebug" id="scoreDisplay">TARGET: 24 | SCORE: 0/0</div>
+    <button class="hit-btn" onclick="strikeShot()">🏏 STRIKE SHOT</button>
+  </div>
+
+  <script>
+    let runs = 0;
+    function strikeShot() {
+      const hit = Math.random() < 0.7 ? (Math.random() < 0.4 ? 6 : 4) : 0;
+      runs += hit;
+      document.getElementById("scoreDisplay").textContent = "TARGET: 24 | SCORE: " + runs + "/0 " + (hit > 0 ? " (+" + hit + " RUNS!)" : " (DOT)");
+    }
+  </script>
+</body>
+</html>`,
+      },
+    ],
+  },
 };
 
 interface CodeInspectorProps {
