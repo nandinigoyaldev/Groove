@@ -1,5 +1,5 @@
 /**
- * Application Controller for Pitch (Groove LP // 06)
+ * Hype Application Controller for Pitch (Groove LP // 06)
  * Integrates Full-Screen UI, Control Deck, Sweeper Needle, Audio, Shop & Leaderboard.
  */
 
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     headerCoins: document.getElementById("headerCoins"),
     audioBtn: document.getElementById("audioToggleBtn"),
 
-    // Scorebug & Over History
+    // Scorebug, Combo & Super Power
     playerScore: document.getElementById("playerScore"),
     wicketsLost: document.getElementById("wicketsLost"),
     oversVal: document.getElementById("oversVal"),
@@ -43,6 +43,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     ballsLeftVal: document.getElementById("ballsLeftVal"),
     rrrVal: document.getElementById("rrrVal"),
     overHistoryBar: document.getElementById("overHistoryBar"),
+
+    comboBadge: document.getElementById("comboBadge"),
+    powerMeterFill: document.getElementById("powerMeterFill"),
+    btnSuperPower: document.getElementById("btnSuperPower"),
 
     // Bowler Card
     bowlerName: document.getElementById("bowlerName"),
@@ -205,9 +209,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       elements.shotBtns.forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
       selectedShot = btn.dataset.shot;
+      pitchVisualizer.setShotDirection(selectedShot);
       window.soundEngine.play("click");
     });
   });
+
+  // --- SUPER POWER HELICOPTER BUTTON ---
+  if (elements.btnSuperPower) {
+    elements.btnSuperPower.addEventListener("click", () => {
+      const activated = window.gameEngine.activateSuperPower();
+      if (activated) {
+        showToast("🔥 HELICOPTER SLAM POWER ACTIVATED!");
+        updateScorebugUI(window.gameEngine);
+      }
+    });
+  }
 
   // --- START NEW MATCH SESSION ---
   async function startNewMatchSession(mode = "classic") {
@@ -259,7 +275,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       let html = `<div style="font-size:0.9rem;">
         <p style="margin-bottom:0.5rem; color:var(--text-muted);">Shot distribution map across boundary zones:</p>
         <p>🎯 <strong>Total Shots Played:</strong> ${shots.length}</p>
-        <p>🚀 <strong>Sixes Hit:</strong> ${shots.filter((s) => s.runs === 6).length}</p>
+        <p>🚀 <strong>Sixes Hit:</strong> ${shots.filter((s) => s.runs >= 6).length}</p>
         <p>⚡ <strong>Fours Hit:</strong> ${shots.filter((s) => s.runs === 4).length}</p>
       </div>`;
       showModal("🎯", "Wagon Wheel Summary", html);
@@ -286,24 +302,51 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function updateScorebugUI(state) {
-    if (elements.playerScore) elements.playerScore.textContent = state.currentRuns;
-    if (elements.wicketsLost) elements.wicketsLost.textContent = state.wicketsLost;
-    if (elements.oversVal) elements.oversVal.textContent = `${state.oversFormatted || "0.0"} / ${window.gameEngine.totalBalls / 6}.0`;
-    if (elements.targetScoreVal) elements.targetScoreVal.textContent = window.gameEngine.targetScore;
-    if (elements.runsNeededVal) elements.runsNeededVal.textContent = state.runsNeeded !== undefined ? state.runsNeeded : window.gameEngine.targetScore;
-    if (elements.ballsLeftVal) elements.ballsLeftVal.textContent = state.ballsLeft !== undefined ? state.ballsLeft : window.gameEngine.totalBalls;
-    if (elements.rrrVal) elements.rrrVal.textContent = state.rrr || "12.0";
+    const ge = window.gameEngine;
+    if (elements.playerScore) elements.playerScore.textContent = ge.currentRuns;
+    if (elements.wicketsLost) elements.wicketsLost.textContent = ge.wicketsLost;
+    if (elements.oversVal) elements.oversVal.textContent = `${ge.getOversFormatted()} / ${ge.totalBalls / 6}.0`;
+    if (elements.targetScoreVal) elements.targetScoreVal.textContent = ge.targetScore;
 
-    // Update Over Ball-by-Ball History Chips
+    const ballsLeft = Math.max(0, ge.totalBalls - ge.currentBall);
+    const runsNeeded = Math.max(0, ge.targetScore - ge.currentRuns);
+    if (elements.runsNeededVal) elements.runsNeededVal.textContent = runsNeeded;
+    if (elements.ballsLeftVal) elements.ballsLeftVal.textContent = ballsLeft;
+    if (elements.rrrVal) elements.rrrVal.textContent = ballsLeft > 0 ? ((runsNeeded / ballsLeft) * 6).toFixed(1) : "0.0";
+
+    // Combo Streak Badge
+    if (elements.comboBadge) {
+      const mult = ge.comboStreak >= 5 ? "3.0" : (ge.comboStreak >= 3 ? "2.0" : (ge.comboStreak >= 2 ? "1.5" : "1.0"));
+      elements.comboBadge.textContent = `🔥 STREAK x${mult}`;
+    }
+
+    // Power Meter Fill & Super Power Button
+    if (elements.powerMeterFill) {
+      elements.powerMeterFill.style.width = `${ge.powerMeter}%`;
+    }
+
+    if (elements.btnSuperPower) {
+      if (ge.powerMeter >= 100 || ge.isSuperPowerActive) {
+        elements.btnSuperPower.classList.add("ready");
+        elements.btnSuperPower.disabled = false;
+        elements.btnSuperPower.innerHTML = ge.isSuperPowerActive ? "<span>⚡ SLAM READY!</span>" : "<span>🔥 UNLEASH SLAM</span>";
+      } else {
+        elements.btnSuperPower.classList.remove("ready");
+        elements.btnSuperPower.disabled = true;
+        elements.btnSuperPower.innerHTML = "<span>🔥 HELICOPTER SLAM</span>";
+      }
+    }
+
+    // Over Ball History Chips
     if (elements.overHistoryBar) {
-      const history = window.gameEngine.overHistory || [];
+      const history = ge.overHistory || [];
       if (history.length === 0) {
         elements.overHistoryBar.innerHTML = `<span class="ball-chip dot">-</span>`;
       } else {
         elements.overHistoryBar.innerHTML = history.map(ball => {
           let typeClass = "dot";
-          if (ball === "6") typeClass = "six";
-          else if (ball === "4") typeClass = "four";
+          if (Number(ball) >= 6) typeClass = "six";
+          else if (Number(ball) >= 4) typeClass = "four";
           else if (ball === "W") typeClass = "wicket";
           else if (Number(ball) > 0) typeClass = "run";
           return `<span class="ball-chip ${typeClass}">${ball}</span>`;

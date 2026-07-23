@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Pitch - Authentic Cricket Arcade Console for Groove.">
-  <title>PITCH | Authentic Cricket Console</title>
+  <meta name="description" content="Pitch - High-Octane Fire & Precision Cricket Arcade for Groove.">
+  <title>PITCH | Fire & Precision Cricket Arcade</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +23,7 @@
     <div class="header-container">
       <a href="#" class="brand-logo">
         <span class="brand-mark">🏏</span>
-        <span class="brand-name">PITCH <span class="brand-accent">CRICKET</span></span>
+        <span class="brand-name">PITCH <span class="brand-accent">FIRE</span></span>
         <span class="catalog-badge">LP // 06</span>
       </a>
 
@@ -87,6 +87,17 @@
             </div>
           </div>
 
+          <!-- Fire Combo Streak & Super Power Meter -->
+          <div class="combo-power-section">
+            <span id="comboBadge" class="combo-badge">🔥 STREAK x1.0</span>
+            <div class="power-bar-wrapper">
+              <span class="power-label">POWER</span>
+              <div class="power-bar-box">
+                <div id="powerMeterFill" class="power-bar-fill" style="width: 30%;"></div>
+              </div>
+            </div>
+          </div>
+
           <div class="scorebug-section overs">
             <span class="scorebug-label">OVERS</span>
             <span id="oversVal" class="overs-text">0.0 / 2.0</span>
@@ -106,13 +117,13 @@
           <!-- Live Stadium Commentary Ticker -->
           <div class="commentary-ticker">
             <p id="commentaryText" class="comm-heading">MATCH READY. BOWLER APPROACHING CREASE...</p>
-            <p id="commentaryDetail" class="comm-sub">Facing Bumrah (Slower Yorker). Pick your shot!</p>
+            <p id="commentaryDetail" class="comm-sub">Aim into field gaps and press STRIKE!</p>
           </div>
         </div>
 
         <!-- BOTTOM INTEGRATED CONTROL DECK -->
         <div class="control-deck">
-          <!-- Bowler Delivery Card & Shot Choice Row -->
+          <!-- Bowler Delivery Card & Directional Shot Selector Row -->
           <div class="bowler-bar-row">
             <div id="bowlerCard" class="bowler-card">
               <span class="bowler-label">BOWLING:</span>
@@ -120,29 +131,33 @@
               <span id="bowlerType" class="bowler-type">(Slower Yorker)</span>
             </div>
 
-            <!-- 4 Clean Cricket Shot Buttons -->
+            <!-- 4 Directional Shot Pads -->
             <div class="shot-selector-bar">
-              <button class="shot-btn active" data-shot="drive">
-                <span class="shot-name">⚡ Cover Drive</span>
+              <button class="shot-btn active" data-shot="offside">
+                <span class="shot-name">📐 Offside Cover</span>
                 <span class="shot-sub">Placement (1-3)</span>
-                <span class="shot-badge safe">SAFE</span>
+                <span class="shot-badge safe">GAP AIM</span>
               </button>
-              <button class="shot-btn" data-shot="pull">
-                <span class="shot-name">💥 Pull Shot</span>
-                <span class="shot-sub">Boundary (4)</span>
+              <button class="shot-btn" data-shot="straight">
+                <span class="shot-name">📐 Straight Drive</span>
+                <span class="shot-sub">Ground (2-4)</span>
+                <span class="shot-badge safe">GAP AIM</span>
+              </button>
+              <button class="shot-btn" data-shot="onside">
+                <span class="shot-name">📐 Onside Pull</span>
+                <span class="shot-sub">Power (4-6)</span>
                 <span class="shot-badge power">POWER</span>
               </button>
-              <button class="shot-btn" data-shot="loft">
-                <span class="shot-name">🚀 Lofted Six</span>
-                <span class="shot-sub">Big Hit (6)</span>
-                <span class="shot-badge power">POWER</span>
-              </button>
-              <button class="shot-btn" data-shot="defend">
-                <span class="shot-name">🛡️ Defensive Push</span>
-                <span class="shot-sub">Block (0-1)</span>
-                <span class="shot-badge safe">SAFE</span>
+              <button class="shot-btn" data-shot="scoop">
+                <span class="shot-name">📐 Ramp Scoop</span>
+                <span class="shot-sub">360 Trick (4-6)</span>
+                <span class="shot-badge smart">TRICK</span>
               </button>
             </div>
+
+            <button id="btnSuperPower" class="btn-super-power" title="Unleash Helicopter Slam Power Six!">
+              <span>🔥 HELICOPTER SLAM</span>
+            </button>
           </div>
 
           <!-- Embedded Timing Sweeper Gauge & Hit Trigger -->
@@ -268,16 +283,22 @@
           <p>Chase 24 Runs in 12 Balls (2 Overs) vs Tactical AI.</p>
         </div>
 
+        <div class="mode-item" data-mode="thriller">
+          <span class="mode-tag super">🔥 CLUTCH SPRINT</span>
+          <h4>Last-Over Thriller</h4>
+          <p>Chase 18 Runs off 6 Balls in Sudden Death Sprint!</p>
+        </div>
+
+        <div class="mode-item" data-mode="derby">
+          <span class="mode-tag trophy">🎯 DERBY MODE</span>
+          <h4>Sixes Derby</h4>
+          <p>Hit max Sixes in 10 balls for massive coin rewards!</p>
+        </div>
+
         <div class="mode-item" data-mode="superover">
           <span class="mode-tag super">HIGH STAKES</span>
           <h4>Super Over</h4>
           <p>Sudden Death 6-Ball Chase with Double XP Rewards!</p>
-        </div>
-
-        <div class="mode-item" data-mode="tournament">
-          <span class="mode-tag trophy">TROPHY LEAGUE</span>
-          <h4>T20 Championship</h4>
-          <p>Defeat 3 Elite Teams in 3-Over Championship Clashes!</p>
         </div>
       </div>
     </div>

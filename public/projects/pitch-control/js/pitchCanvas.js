@@ -1,6 +1,6 @@
 /**
  * Compact Pitch Canvas Visualizer Engine for Pitch (Groove LP // 06)
- * Fits perfectly in compact viewports, mowed grass turf rings, clay pitch, ball trajectories, and Wagon Wheel arcs.
+ * Renders interactive AI Fielders, directional shot rays, particle fireworks, and Wagon Wheel arcs.
  */
 
 class PitchCanvasVisualizer {
@@ -15,6 +15,7 @@ class PitchCanvasVisualizer {
     this.wagonWheelShots = [];
     this.boundaryFlash = null;
     this.stumpsHitAnim = false;
+    this.selectedShotDir = "drive";
 
     this.render();
   }
@@ -31,14 +32,21 @@ class PitchCanvasVisualizer {
     this.render();
   }
 
+  setShotDirection(dir) {
+    this.selectedShotDir = dir;
+    this.render();
+  }
+
   render() {
     if (!this.ctx) return;
     this.ctx.clearRect(0, 0, this.width, this.height);
 
     this.drawStadiumBackground();
     this.drawOutfield();
+    this.drawFielders();
     this.drawPitch();
     this.drawCreaseAndStumps();
+    this.drawShotDirectionGuide();
     this.drawWagonWheel();
 
     if (this.ballAnim) {
@@ -113,6 +121,39 @@ class PitchCanvasVisualizer {
     this.ctx.restore();
   }
 
+  drawFielders() {
+    const cx = this.width / 2;
+    const cy = this.height / 2;
+    const rx = Math.min(this.width * 0.44, 350);
+    const ry = Math.min(this.height * 0.42, 105);
+
+    // 5 Fielders
+    const fielders = [
+      { x: cx - rx * 0.62, y: cy - ry * 0.4, label: "Cover" },
+      { x: cx - rx * 0.22, y: cy - ry * 0.75, label: "Mid-off" },
+      { x: cx + rx * 0.62, y: cy + ry * 0.25, label: "Square Leg" },
+      { x: cx + rx * 0.38, y: cy - ry * 0.65, label: "Deep Wicket" },
+      { x: cx + rx * 0.48, y: cy + ry * 0.65, label: "Fine Leg" }
+    ];
+
+    fielders.forEach((f) => {
+      this.ctx.save();
+      // Outer glow ring
+      this.ctx.strokeStyle = "rgba(251, 191, 36, 0.6)";
+      this.ctx.lineWidth = 1.5;
+      this.ctx.beginPath();
+      this.ctx.arc(f.x, f.y, 6, 0, Math.PI * 2);
+      this.ctx.stroke();
+
+      // Fielder Dot
+      this.ctx.fillStyle = "#fbbf24";
+      this.ctx.beginPath();
+      this.ctx.arc(f.x, f.y, 3.5, 0, Math.PI * 2);
+      this.ctx.fill();
+      this.ctx.restore();
+    });
+  }
+
   drawPitch() {
     const cx = this.width / 2;
     const cy = this.height / 2;
@@ -173,6 +214,40 @@ class PitchCanvasVisualizer {
     this.ctx.restore();
   }
 
+  drawShotDirectionGuide() {
+    const cx = this.width / 2;
+    const cy = this.height / 2 + Math.min(this.height * 0.25, 60);
+
+    const angleMap = {
+      offside: -Math.PI / 1.35,
+      straight: -Math.PI / 2,
+      onside: -Math.PI / 4,
+      scoop: Math.PI / 3
+    };
+
+    const angle = angleMap[this.selectedShotDir] || (-Math.PI / 2);
+    const dist = 60;
+
+    const targetX = cx + Math.cos(angle) * dist;
+    const targetY = cy + Math.sin(angle) * dist;
+
+    this.ctx.save();
+    this.ctx.strokeStyle = "rgba(251, 191, 36, 0.45)";
+    this.ctx.lineWidth = 2;
+    this.ctx.setLineDash([4, 4]);
+
+    this.ctx.beginPath();
+    this.ctx.moveTo(cx, cy);
+    this.ctx.lineTo(targetX, targetY);
+    this.ctx.stroke();
+
+    this.ctx.fillStyle = "#fbbf24";
+    this.ctx.beginPath();
+    this.ctx.arc(targetX, targetY, 4, 0, Math.PI * 2);
+    this.ctx.fill();
+    this.ctx.restore();
+  }
+
   drawWagonWheel() {
     const cx = this.width / 2;
     const cy = this.height / 2 + Math.min(this.height * 0.25, 60);
@@ -228,23 +303,21 @@ class PitchCanvasVisualizer {
 
         if (outcome.runs > 0) {
           const angles = {
-            loft: -Math.PI / 2 + (Math.random() - 0.5) * 0.4,
-            drive: -Math.PI / 2 + (Math.random() < 0.5 ? -0.8 : 0.8),
-            pull: Math.PI / 4,
-            sweep: Math.PI * 0.75,
-            defend: Math.PI / 2,
-            helicopter: -Math.PI / 3
+            offside: -Math.PI / 1.35,
+            straight: -Math.PI / 2,
+            onside: -Math.PI / 4,
+            scoop: Math.PI / 3
           };
-          const angle = angles[delivery.shotChoice] || (-Math.PI / 2 + (Math.random() - 0.5));
-          const dist = outcome.runs === 6 ? this.height * 0.42 : (outcome.runs === 4 ? this.height * 0.38 : this.height * 0.2);
+          const angle = angles[delivery.shotChoice] || (-Math.PI / 2);
+          const dist = outcome.runs >= 6 ? this.height * 0.42 : (outcome.runs >= 4 ? this.height * 0.38 : this.height * 0.2);
           const shotX = cx + Math.cos(angle) * dist;
           const shotY = batterY + Math.sin(angle) * dist;
 
           this.wagonWheelShots.push({ x: shotX, y: shotY, runs: outcome.runs });
         }
 
-        if (outcome.runs === 6 || outcome.runs === 4) {
-          this.triggerBoundaryFlash(outcome.runs === 6 ? "#d97706" : "#059669");
+        if (outcome.runs >= 4) {
+          this.triggerBoundaryFlash(outcome.runs >= 6 ? "#d97706" : "#059669");
         }
 
         this.render();
@@ -302,7 +375,7 @@ class PitchCanvasVisualizer {
         this.render();
       }
     };
-    requestAnimationFrame(flashAnim);
+    flashAnim();
   }
 
   drawBoundaryFlash() {
