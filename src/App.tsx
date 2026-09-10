@@ -58,6 +58,7 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(PROJECTS[0]);
   const [showCode, setShowCode] = useState(false);
   const [sandboxCode, setSandboxCode] = useState<string | null>(null);
+  const [isLofiActive, setIsLofiActive] = useState(false);
 
   const handleOpenProject = (proj: Project) => {
     setOpenProject(proj);
@@ -66,6 +67,13 @@ export default function App() {
 
   const handleRunCode = (code: string) => {
     setSandboxCode(code);
+  };
+
+  const handleToggleLofi = () => {
+    synthAudio.playClick();
+    const nextState = !isLofiActive;
+    setIsLofiActive(nextState);
+    synthAudio.toggleLofiMode(nextState);
   };
 
   return (
@@ -90,6 +98,15 @@ export default function App() {
           <span className="nav-tagline">Analog Crate</span>
         </div>
         <div className="nav-right">
+          <button 
+            className={`nav-lofi-btn ${isLofiActive ? 'active' : ''}`}
+            onClick={handleToggleLofi}
+            title="Toggle Lofi Vinyl Crackle Audio"
+          >
+            <Icons.Radio size={14} />
+            <span>LOFI CRACKLE</span>
+            <span className={`led-dot ${isLofiActive ? 'on' : 'off'}`} />
+          </button>
           <span className="nav-credit">Curated by @nandini</span>
         </div>
       </nav>

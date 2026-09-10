@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { Project, GuestbookEntry } from '../types';
-import { Play, Volume2, VolumeX } from 'lucide-react';
+import { Play, Volume2, VolumeX, Palette } from 'lucide-react';
 import { synthAudio } from '../lib/audio';
 
 interface VinylPlayerProps {
@@ -8,6 +8,15 @@ interface VinylPlayerProps {
   onOpenProject: (proj: Project) => void;
   onSelectProject?: (proj: Project | null) => void;
 }
+
+const VINYL_COLORS = [
+  { id: 'default', label: 'Default Vinyl', bg: '' },
+  { id: 'black', label: 'Midnight Black', bg: '#18181b' },
+  { id: 'amber', label: 'Amber Gold', bg: '#d97706' },
+  { id: 'emerald', label: 'Neon Emerald', bg: '#059669' },
+  { id: 'ruby', label: 'Translucent Ruby', bg: '#be123c' },
+  { id: 'violet', label: 'Electric Violet', bg: '#7c3aed' },
+];
 
 export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProject, onSelectProject }) => {
   const [selectedIdx, setSelectedIdx] = useState(0);
@@ -18,6 +27,7 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
   const [isMuted, setIsMuted] = useState(true);
+  const [discColor, setDiscColor] = useState<string>('');
 
   // Load entries for Guestbook record
   useEffect(() => {
@@ -107,7 +117,6 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
     synthAudio.playClick();
     setIsPlaying(true);
     
-    // Play a vinyl scratch sound trigger
     const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
     const now = ctx.currentTime;
     const osc = ctx.createOscillator();
@@ -122,13 +131,11 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
     osc.start();
     osc.stop(now + 0.35);
 
-    // If guestbook record, show liner log booklet
     if (selectedIdx === projects.length) {
       setTimeout(() => {
         setShowLinerNotes(true);
       }, 1000);
     } else {
-      // Enter project sandbox
       setTimeout(() => {
         onOpenProject(projects[selectedIdx]);
       }, 1200);
@@ -148,8 +155,9 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
   };
 
   const getRecordColor = (idx: number) => {
-    if (idx === projects.length) return '#1f2937'; // Charcoal guestbook vinyl
-    const colors = ['#10b981', '#ef4444', '#f59e0b', '#3b82f6', '#d97706', '#059669'];
+    if (discColor) return discColor;
+    if (idx === projects.length) return '#1f2937';
+    const colors = ['#10b981', '#ef4444', '#f59e0b', '#3b82f6'];
     return colors[idx % colors.length];
   };
 
@@ -187,7 +195,7 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
           </div>
         </div>
 
-        {/* Selected Record Spec Sheet (Back of Sleeve) */}
+        {/* Selected Record Spec Sheet */}
         <div className="sleeve-back-details">
           {selectedIdx < projects.length ? (
             <>
@@ -216,7 +224,10 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
 
       {/* Turntable Platter Visual */}
       <div className="turntable-chassis glass">
-        <div className={`turntable-platter ${isPlaying ? 'spin' : ''}`}>
+        <div
+          className={`turntable-platter ${isPlaying ? 'spin' : ''}`}
+          style={discColor ? { background: `radial-gradient(circle, ${discColor} 0%, #09090b 85%)` } : undefined}
+        >
           <div className="vinyl-grooves" />
           
           {/* Placed Record Label Center */}
@@ -238,6 +249,27 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
           <div className="tonearm-base" />
           <div className="tonearm-weight" />
           <div className="tonearm-needle" />
+        </div>
+
+        {/* Vinyl Press Color Picker Toolbar */}
+        <div className="vinyl-color-picker">
+          <span className="picker-label">
+            <Palette size={11} /> VINYL PRESS:
+          </span>
+          <div className="picker-swatches">
+            {VINYL_COLORS.map((c) => (
+              <button
+                key={c.id}
+                className={`swatch-btn ${discColor === c.bg ? 'active' : ''}`}
+                style={{ backgroundColor: c.bg || '#27272a' }}
+                onClick={() => {
+                  synthAudio.playClick();
+                  setDiscColor(c.bg);
+                }}
+                title={c.label}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Vintage Audio Toggle Control */}

@@ -838,3 +838,93 @@ body, html {
   background-color: #f43f5e;
   box-shadow: 0 0 6px #f43f5e, 0 0 12px #f43f5e;
 }
+
+/* Lofi Navigation Toggle Button */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-lofi-btn {
+  background: rgba(180, 83, 9, 0.08);
+  border: 1px solid rgba(180, 83, 9, 0.2);
+  color: #b45309;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.nav-lofi-btn:hover {
+  background: rgba(180, 83, 9, 0.16);
+  border-color: rgba(180, 83, 9, 0.4);
+  transform: translateY(-1px);
+}
+
+.nav-lofi-btn.active {
+  background: #b45309;
+  color: #ffffff;
+  border-color: #b45309;
+  box-shadow: 0 4px 12px rgba(180, 83, 9, 0.3);
+}
+
+.nav-lofi-btn.active .led-dot.on {
+  background-color: #ffffff;
+  box-shadow: 0 0 6px #ffffff;
+}
+
+/* Vinyl Press Color Picker */
+.vinyl-color-picker {
+  position: absolute;
+  bottom: 24px;
+  left: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+}
+
+.picker-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: #71717a;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.picker-swatches {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch-btn {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  outline: none;
+}
+
+.swatch-btn:hover {
+  transform: scale(1.25);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+.swatch-btn.active {
+  transform: scale(1.3);
+  border-color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
