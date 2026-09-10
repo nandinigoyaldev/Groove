@@ -251,38 +251,39 @@ export const VinylPlayer: React.FC<VinylPlayerProps> = ({ projects, onOpenProjec
           <div className="tonearm-needle" />
         </div>
 
-        {/* Vinyl Press Color Picker Toolbar */}
-        <div className="vinyl-color-picker">
-          <span className="picker-label">
-            <Palette size={11} /> VINYL PRESS:
-          </span>
-          <div className="picker-swatches">
-            {VINYL_COLORS.map((c) => (
-              <button
-                key={c.id}
-                className={`swatch-btn ${discColor === c.bg ? 'active' : ''}`}
-                style={{ backgroundColor: c.bg || '#27272a' }}
-                onClick={() => {
-                  synthAudio.playClick();
-                  setDiscColor(c.bg);
-                }}
-                title={c.label}
-              />
-            ))}
+        {/* Turntable Controls Bar */}
+        <div className="turntable-controls-bar">
+          <div className="turntable-audio-control">
+            <button
+              className={`audio-retro-btn ${isMuted ? 'muted' : 'active'}`}
+              onClick={handleToggleMute}
+              title={isMuted ? "Unmute system audio" : "Mute system audio"}
+            >
+              {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+              <span>{isMuted ? 'AUDIO OFF' : 'AUDIO ON'}</span>
+              <span className={`led-dot ${isMuted ? 'off' : 'on'}`} />
+            </button>
           </div>
-        </div>
 
-        {/* Vintage Audio Toggle Control */}
-        <div className="turntable-audio-control">
-          <button
-            className={`audio-retro-btn ${isMuted ? 'muted' : 'active'}`}
-            onClick={handleToggleMute}
-            title={isMuted ? "Unmute system audio" : "Mute system audio"}
-          >
-            {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
-            <span>{isMuted ? 'AUDIO OFF' : 'AUDIO ON'}</span>
-            <span className={`led-dot ${isMuted ? 'off' : 'on'}`} />
-          </button>
+          <div className="vinyl-color-picker">
+            <span className="picker-label">
+              <Palette size={11} /> VINYL PRESS:
+            </span>
+            <div className="picker-swatches">
+              {VINYL_COLORS.map((c) => (
+                <button
+                  key={c.id}
+                  className={`swatch-btn ${discColor === c.bg ? 'active' : ''}`}
+                  style={{ backgroundColor: c.bg || '#27272a' }}
+                  onClick={() => {
+                    synthAudio.playClick();
+                    setDiscColor(c.bg);
+                  }}
+                  title={c.label}
+                />
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="turntable-branding">SPINS // LP-80</div>

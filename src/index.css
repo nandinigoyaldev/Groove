@@ -778,15 +778,22 @@ body, html {
   }
 }
 
-/* Vintage Turntable Audio Button and LED */
-.turntable-audio-control {
+/* Turntable Controls Bar */
+.turntable-controls-bar {
   position: absolute;
   bottom: 20px;
   left: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.turntable-audio-control {
   display: flex;
   align-items: center;
   gap: 8px;
-  z-index: 10;
 }
 
 .audio-retro-btn {
@@ -883,23 +890,25 @@ body, html {
 
 /* Vinyl Press Color Picker */
 .vinyl-color-picker {
-  position: absolute;
-  bottom: 24px;
-  left: 32px;
   display: flex;
   align-items: center;
   gap: 8px;
-  z-index: 10;
+  background: rgba(24, 24, 27, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px 10px;
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
 }
 
 .picker-label {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 800;
-  color: #71717a;
+  color: #a1a1aa;
   letter-spacing: 0.5px;
   display: flex;
   align-items: center;
   gap: 4px;
+  font-family: var(--font-mono);
 }
 
 .picker-swatches {
@@ -909,8 +918,8 @@ body, html {
 }
 
 .swatch-btn {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
