@@ -51,28 +51,6 @@ const PROJECTS: Project[] = [
     particleType: 'lasers',
     url: '/projects/paradigm-shift/index.html',
   },
-  {
-    id: 'dice-tumbler',
-    title: 'Crank',
-    description: 'A mechanical polyhedral dice shaker and probability ledger.',
-    longDescription: 'Roll polyhedral dice inside an antique mahogany shaker cabinet. Create custom text-decision decks, adjust dice skins, crank the mechanical winding gear, and watch organic gravity physics with full statistical tracking.',
-    tech: ['HTML', 'CSS', 'Web Audio API', 'JavaScript'],
-    themeColor: '#d97706',
-    gradient: '#faf9f5',
-    particleType: 'sparkles',
-    url: '/projects/dice-tumbler/index.html',
-  },
-  {
-    id: 'pitch-control',
-    title: 'Pitch',
-    description: 'An analog stadium scoreboard console & tactical pitch controller.',
-    longDescription: 'Command tactical cricket matches on an interactive vintage stadium score console. Features mechanical score flippers, stadium floodlight bulbs, pitch friction dial, Web Audio synthesizers (bat crack, crowd surge, umpire buzzer), and pro locker room equipment.',
-    tech: ['HTML', 'CSS', 'JavaScript', 'Web Audio API'],
-    themeColor: '#059669',
-    gradient: '#faf9f5',
-    particleType: 'grid',
-    url: '/projects/pitch-control/index.html',
-  },
 ];
 
 export default function App() {
